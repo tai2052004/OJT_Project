@@ -1,0 +1,122 @@
+
+
+body {
+    background-image: url('../images/nuiphusi.jpeg'); /* Đổi thành đường dẫn ảnh của bạn */
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.quiz-container {
+    width: 45%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+}
+
+.question-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    width: 70%;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.question-number {
+    font-weight: bold;
+    color: #333;
+}
+
+.question-status {
+    color: #666;
+}
+
+.question-content {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.japanese-text {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.translation {
+    font-size: 18px;
+    color: #555;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.option {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 16px;
+}
+
+.option:hover {
+    background-color: #f5f5f5;
+}
+
+.option.selected {
+    background-color: #f8a978;
+    border-color: #f8a978;
+    color: #333;
+}
+
+.submit-btn {
+    display: block;
+    width: 200px;
+    margin: 30px auto;
+    padding: 12px 0;
+    background-color: #4aafca;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #3a9ab5;
+}
+.quiz-header {
+    text-align: center;
+    background: rgba(118,118,118,0.5);
+    padding: 10px;
+}
+.quiz-header h1 {
+    margin: 0 0;
+}
+.progress {
+    margin: 0 0 ;
+    font-weight: bold;
+    color : black;
+    font-size : 20px;
+}
+@media (max-width: 600px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quiz-container {
+        padding: 15px;
+    }
+}

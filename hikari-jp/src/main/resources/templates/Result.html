@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="java">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/Result.css?v=1.0.1">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-logo">
+        <img src="../static/images/logo-hikari.png">
+    </div>
+    <div class="header-searchbar">
+        <form action="SearchServlet" method="post" >
+            <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
+            <a class="submit-button" type="submit" >
+                <i class="fa fa-search"></i>
+            </a>
+        </form>
+    </div>
+
+    <div class="header-navigate">
+        <div class="home">
+            <a href="landingPage.html">Home</a>
+        </div>
+        <div class="lookup">
+            <a href="">Translation</a>
+        </div>
+        <div class="lookup active">
+            <a href="lookUp.html">Look Up</a>
+        </div>
+
+        <div class="JLPT">
+            <a href="">JLPT Test</a>
+        </div>
+        <div class="Premium">
+            <a href="">Premium</a>
+        </div>
+        <div class="">
+            <a href="">FlashCard</a>
+        </div>
+        <div class="">
+            <a href="">Contact</a>
+        </div>
+    </div>
+</div>
+<div class="body-img"><img src="../static/images/background_practice.png" alt=""></div>
+
+<div class="second-body">
+    <div class="result-container">
+        <div class="result-title">RESULT</div>
+        <div class="result-content">
+            <p><strong>Test Date</strong> Mon Feb 17 2025</p>
+            <p><strong>受験レベル Level:</strong> N5</p>
+            <p><strong>Section:</strong> ぶんぽう</p>
+            <ul>
+                <li><strong>Point:</strong> 40/60.</li>
+                <li><strong>Duration:</strong> 110p</li>
+            </ul>
+        </div>
+        <div class="result-buttons">
+            <button class="btn btn-danger" onclick="window.location='Practice.html'">Back</button>
+            <button class="btn btn-success">View Answer</button>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-content">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="HikariJP Logo">
+        </div>
+        <div class="quick-links">
+            <h4>Quick Link</h4>
+            <ul class="list">
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+            </ul>
+        </div>
+        <div class="contact-info">
+            <h4>Contact Us</h4>
+            <ul class="list">
+                <li><i class="fas fa-phone"></i> 0702411147</li>
+                <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+</body>
+
+
+</html>

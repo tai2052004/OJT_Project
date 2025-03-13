@@ -1,0 +1,247 @@
+body {
+    background-image: url('../images/anh_nen.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Container chính */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.search_rs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.search, .rs, .cmt, .infor {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.search {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.search input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.search button {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search button:hover {
+    background: #0056b3;
+    color: white;
+}
+
+/* Thẻ p và thông tin */
+p {
+    background: #4595e6;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    font-weight: bold;
+}
+
+.kanji {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Bảng ví dụ */
+.viducactu table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.viducactu th, .viducactu td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.viducactu th {
+    background-color: #f8f8f8;
+}
+
+/* Hiệu ứng hover */
+.viducactu tr:hover {
+    background: #f1f1f1;
+}
+
+/* Nút bấm */
+.toggle-btn {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.toggle-btn:hover {
+    background-color: #0056b3;
+}
+.icon1{
+    width:150px;
+}
+.icon2{
+    width:150px;
+}
+.infor{
+    width: 870px;
+}
+.extra-text {
+    display: none;
+}
+.btn-custom-blue {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.btn-custom-blue:hover {
+    background-color: #0056b3;
+}
+/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    width: 100%;
+    height: 100px; /* Chiều cao header */
+    background: linear-gradient(45deg, #0099ff, #003366); /* Màu nền chuyển gradient */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+}
+
+.header-logo img {
+    width: 150px; /* Logo kích thước */
+    height: 80px;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.header-logo img:hover {
+    transform: scale(1.1); /* Hiệu ứng phóng to logo */
+}
+
+.header-searchbar {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-bar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    width: 300px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.search-bar:focus {
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.8);
+}
+
+.submit-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    background: #0099ff;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.submit-button:hover {
+    background: #003366;
+}
+
+.header-navigate {
+    display: flex;
+    gap: 20px;
+}
+
+.header-navigate div a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.header-navigate div a:hover,
+.active a {
+    background: #0099ff;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.8);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .header-searchbar {
+        margin: 10px 0;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .header-navigate {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
+

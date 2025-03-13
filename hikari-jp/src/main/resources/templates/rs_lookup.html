@@ -1,0 +1,207 @@
+<html>
+<head>
+    <title>Kanji Lookup</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/rs_lookup.css">
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@2.0.0/dist/hanzi-writer.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <div class="header-logo">
+        <img src="../static/images/logo-hikari.png">
+    </div>
+    <div class="header-searchbar">
+        <form action="SearchServlet" method="post" >
+            <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
+            <a class="submit-button" type="submit" >
+                <i class="fa fa-search"></i>
+            </a>
+        </form>
+    </div>
+
+    <div class="header-navigate">
+        <div class="home">
+            <a href="landingPage.html">Home</a>
+        </div>
+        <div class="lookup">
+            <a href="">Translation</a>
+        </div>
+        <div class="lookup active">
+            <a href="lookUp.html">Look Up</a>
+        </div>
+
+        <div class="JLPT">
+            <a href="">JLPT Test</a>
+        </div>
+        <div class="Premium">
+            <a href="">Premium</a>
+        </div>
+        <div class="">
+            <a href="">FlashCard</a>
+        </div>
+        <div class="">
+            <a href="">Contact</a>
+        </div>
+    </div>
+</div>
+<div class="container search_rs gap-3">
+    <div class="search col-12 mb-4">
+        <div class="mt-4">
+            <div href="rs_lookup.html">
+                <div class="d-flex justify-content-between mb-3 gap-3">
+                    <input type="text" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
+                    <a href="rs_lookup.html" class="btn btn-primary icon1">🔍</a>
+                    <a href="rs_lookup.html" class="btn btn-dark icon2">🎤</a>
+                </div>
+            </div>
+            <div class="d-flex mb-3 gap-3">
+                <select class="form-select w-25 me-2">
+                    <option>Nhật - Việt</option>
+                    <option>Việt - Nhật</option>
+                    <option>Nhật - Nhật</option>
+                </select>
+                <a href="vocabulary.html" class="btn btn-secondary">Từ vựng</a>
+                <a href="rs_lookup.html" class="btn btn-custom-blue">Hán tự</a>
+                <a href="grammar.html" class="btn btn-secondary">Ngữ pháp</a>
+            </div>
+        </div>
+    </div>
+
+    <div class=" d-flex gap-4 clearfix">
+        <div class="rs_cmt col-4">
+            <div class="rs mb-3 p-3">
+                <span class="title">Kết quả tra cứu</span>
+                <p>木</p>
+                <div id="kanji" class="kanji-box"></div>
+                <button class="btn btn-secondary mt-3" onclick="showKanji('木')">Xem cách viết</button>
+            </div>
+            <div class="cmt p-3">
+                <span class="title">Comment</span>
+                <textarea class="form-control" placeholder="Nhập bình luận..."></textarea>
+                <button class="btn btn-primary mt-2">Gửi</button>
+            </div>
+        </div>
+
+        <div class="container infor col-md-8">
+            <div class="infor_word gap-4 p-3">
+                <div class="infor_rs d-flex gap-4">
+                    <p>Chi tiết từ:</p>
+                    <h4>木</h4>
+                </div>
+                <div class="word">
+                    <div class="hantu d-flex gap-4">
+                        <p><strong>Hán tự</strong></p>
+                        <h4>木</h4>
+                    </div>
+                </div>
+                <div class="kun d-flex gap-4">
+                    <p><strong>Kunyomi</strong></p>
+                    <h4>き　こー</h4>
+                </div>
+                <div class="on d-flex gap-4">
+                    <p><strong>Onyomi</strong></p>
+                    <h4>ボク　モク</h4>
+                </div>
+                <div class="sonet d-flex gap-4">
+                    <p><strong>Số nét</strong></p>
+                    <h4>4</h4>
+                </div>
+                <div class="jlpt d-flex gap-4">
+                    <p><strong>JLPT</strong></p>
+                    <h4>N5</h4>
+                </div>
+                <div class="bo d-flex gap-4">
+                    <p><strong>Bộ</strong></p>
+                    <h4>大 Đại | Cổn</h4>
+                </div>
+                <div class="nghia">
+                    <p class="nghia1"><strong>Nghĩa</strong></p>
+                    <h5>
+                        Cây, cây to dùng làm nhà cửa đồ đạc được gọi là kiều mộc [喬木], cây có cành mọc là là gần đất gọi là quán mộc [灌木]. Gỗ.
+                    </h5>
+                </div>
+                <div class=" content-container">
+                    <p class="giai_nghia"><strong>Giải nghĩa</strong></p>
+                    <h5 class="context">
+                        1. Cây, cây to dùng làm nhà cửa đồ đạc được gọi là kiều mộc [喬木].
+                        <span class="extra-text">
+                            <br>2. Gỗ. Như mộc khí [木器] đồ gỗ.<br>
+                        </span>
+                    </h5>
+                    <button class="toggle-btn" onclick="toggleContent()">Xem thêm</button>
+                </div>
+
+                <div class="vidu">
+                    <h5>Ví dụ</h5>
+                </div>
+
+                <div class="container viducactu">
+                    <div class="title">Kunyomi</div>
+                    <h2>き</h2>
+                    <table>
+                        <tr>
+                            <th>Kanji</th>
+                            <th>Âm đọc</th>
+                            <th>Hán Việt</th>
+                            <th>Nghĩa</th>
+                        </tr>
+                        <tr>
+                            <td>木々</td>
+                            <td>きぎ</td>
+                            <td>MỘC</td>
+                            <td>Nhiều cây</td>
+                        </tr>
+                        <tr>
+                            <td>木地</td>
+                            <td>きじ</td>
+                            <td>MỘC ĐỊA</td>
+                            <td>Gỗ thô</td>
+                        </tr>
+                        <tr>
+                            <td>木戸</td>
+                            <td>きど</td>
+                            <td>MỘC HỘ</td>
+                            <td>Cửa gỗ</td>
+                        </tr>
+                        <tr>
+                            <td>木木</td>
+                            <td>きぎ</td>
+                            <td>MỘC MỘC</td>
+                            <td>Cây cối</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function showKanji(kanji){
+        const kanjiBox = document.getElementById('kanji');
+        kanjiBox.innerHTML = '';
+        const writer = HanziWriter.create('kanji',kanji,{
+            width: 200,
+            height: 200,
+            padding: 5,
+            strokeColor: '#222',
+            delayBetweenStrokes: 300,
+        });
+        writer.animateCharacter();
+    }
+    function toggleContent() {
+        const extraText = document.querySelector('.extra-text');
+        const button = document.querySelector('.toggle-btn');
+
+        if (extraText.style.display === 'none' || extraText.style.display === '') {
+            extraText.style.display = 'inline';
+            button.textContent = 'Thu gọn';
+        } else {
+            extraText.style.display = 'none';
+            button.textContent = 'Xem thêm';
+        }
+    }
+</script>
+<body>
+<html>
+

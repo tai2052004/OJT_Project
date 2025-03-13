@@ -1,0 +1,135 @@
+
+
+/* Container chính */
+.profile-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background: #f4f4f4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: solid 1px rgba(0,0,0,0.2) ;
+}
+
+/* Ảnh profile */
+.profile-pic {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.profile-pic img {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px;
+}
+
+.change-pic-btn {
+    background: #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 12px;
+    cursor: pointer;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+.bi-camera-fill {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.change-pic-btn:hover {
+    background: #ccc;
+}
+
+/* Menu sidebar */
+.menu {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.menu a {
+    margin: 0 10px;
+    display: block;
+    padding: 15px 15px 15px 30px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: start;
+    font-size: 18px;
+}
+
+.menu a.active {
+    background: #ddd;
+    border-left: 4px solid #3A8CAA;
+    color: #3A8CAA;
+}
+
+.bi-icon {
+    margin-right: 10px;
+}
+
+/* Nội dung chính */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+h2 {
+    color: #3A8CAA;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Sort Button */
+.sort {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.sort-btn {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.sort-select {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ======= TABLE ======= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background: white;
+    color: black;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.status.paid {
+    color: #1B9544;
+    font-weight: bold;
+}

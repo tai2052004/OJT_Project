@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Dictionary Page</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/Vocabulary.css">
+</head>
+<body class="bg-blue-100">
+<div class="header">
+    <div class="header-logo">
+        <img src="../static/images/logo-hikari.png">
+    </div>
+    <div class="header-searchbar">
+        <form action="SearchServlet" method="post" >
+            <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
+            <a class="submit-button" type="submit" >
+                <i class="fa fa-search"></i>
+            </a>
+        </form>
+    </div>
+
+    <div class="header-navigate">
+        <div class="home">
+            <a href="landingPage.html">Home</a>
+        </div>
+        <div class="lookup">
+            <a href="">Translation</a>
+        </div>
+        <div class="lookup active">
+            <a href="lookUp.html">Look Up</a>
+        </div>
+
+        <div class="JLPT">
+            <a href="">JLPT Test</a>
+        </div>
+        <div class="Premium">
+            <a href="">Premium</a>
+        </div>
+        <div class="">
+            <a href="">FlashCard</a>
+        </div>
+        <div class="">
+            <a href="">Contact</a>
+        </div>
+    </div>
+</div>
+<div class="container mx-auto p-4">
+    <div class="search col-12 mb-4">
+        <div class="mt-4">
+                <div class="d-flex justify-content-between mb-3 gap-3">
+                    <input type="text" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
+                    <a href="rs_lookup.html" class="btn btn-primary icon1">🔍</a>
+                    <a href="rs_lookup.html" class="btn btn-dark icon2">🎤</a>
+                </div>
+            <div class="d-flex mb-3 gap-3">
+                <select class="form-select w-25 me-2">
+                    <option>Nhật - Việt</option>
+                    <option>Việt - Nhật</option>
+                    <option>Nhật - Nhật</option>
+                </select>
+                <a href="vocabulary.html" class="btn  btn-custom-blue">Từ vựng</a>
+                <a href="rs_lookup.html" class="btn btn-secondary">Hán tự</a>
+                <a href="grammar.html" class="btn btn-secondary">Ngữ pháp</a>
+            </div>
+        </div>
+    </div>
+    <main class="mt-4 flex space-x-4">
+        <aside class="w-1/4 bg-white p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold mb-4">Kết quả tra cứu:</h2>
+            <div class="bg-blue-200 p-2 rounded mb-4">
+                <p class="text-2xl">木</p>
+                <p>き</p>
+                <p>Cây cối</p>
+            </div>
+            <div>
+                <h3 class="font-bold mb-2">Các từ liên quan tới 木</h3>
+                <ul class="list-disc list-inside">
+                    <li>木材</li>
+                    <li>木製</li>
+                    <li>木工</li>
+                    <li>木の葉</li>
+                    <li>木の実</li>
+                </ul>
+            </div>
+            <div class="mt-4">
+                <h3 class="font-bold mb-2">Các chữ kanji của 木</h3>
+                <div class="bg-gray-200 p-4 rounded text-center">
+                    <p class="text-4xl">木</p>
+                    <a href="rs_lookup.html">
+                        <button>xem chi tiết</button>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-4">
+                <h3 class="font-bold mb-2">Ý kiến đóng góp</h3>
+                <p>Chữ BÁT có nghĩa là cây mọc thẳng đứng, có thể hiểu là cây cối.</p>
+                <p>Chữ BÁT có nghĩa là cây mọc thẳng đứng, có thể hiểu là cây cối.</p>
+            </div>
+        </aside>
+        <section class="w-3/4 bg-white p-4 rounded-lg shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <h1 class="text-6xl">木</h1>
+                <i class="fas fa-volume-up text-2xl"></i>
+            </div>
+            <div class="mb-4">
+                <p class="text-xl">き「MỘC」</p>
+                <p>き</p>
+                <p>◆ Cây cối</p>
+                <p>★ Danh từ</p>
+                <p>◆ Cây; gỗ</p>
+            </div>
+            <div class="mb-4">
+                <p>大きな木があります。</p>
+                <i class="fas fa-volume-up text-xl"></i>
+                <p>おおきなきがあります。</p>
+                <p>Có một cái cây lớn.</p>
+            </div>
+            <div class="mb-4">
+                <p>木村さんを知っていますか。</p>
+                <i class="fas fa-volume-up text-xl"></i>
+                <p>きむらさんをしっていますか。</p>
+                <p>Bạn có biết anh Kimura không?</p>
+            </div>
+            <div class="mb-4">
+                <img src="../static/images/anh_cay.jpg" alt="A large tree in a field" class="rounded-lg" width="300" height="200"/>
+            </div>
+            <div class="flex space-x-4 mb-4">
+                <button class="bg-yellow-400 text-black p-2 rounded">木 là gì</button>
+                <button class="bg-yellow-400 text-black p-2 rounded">木とは?</button>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-2xl font-bold">Từ đồng nghĩa của 木</h2>
+                <p>樹木 ツリー</p>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-4">木 được sử dụng trong thực tế</h2>
+                <div class="bg-gray-200 p-4 rounded mb-4">
+                    <p>夜空を彩るのは月の満月「スノームーン」、恋愛のパレード</p>
+                </div>
+                <div class="bg-gray-200 p-4 rounded mb-4">
+                    <p>庭の植物　草のモンスターたち</p>
+                </div>
+                <div class="bg-gray-200 p-4 rounded mb-4">
+                    <p>海の青さ　樹のブルー</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

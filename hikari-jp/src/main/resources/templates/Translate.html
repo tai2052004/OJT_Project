@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="java">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Translation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/Translate.css?v=1.0.1">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+            crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<div class="header">
+    <div class="header-logo">
+        <img src="../static/images/logo-hikari.png">
+    </div>
+    <div class="header-searchbar">
+        <form action="SearchServlet" method="post" >
+            <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
+            <a class="submit-button" type="submit" >
+                <i class="fa fa-search"></i>
+            </a>
+        </form>
+    </div>
+
+    <div class="header-navigate">
+        <div class="home">
+            <a href="landingPage.html">Home</a>
+        </div>
+        <div class="lookup">
+            <a href="">Translation</a>
+        </div>
+        <div class="lookup active">
+            <a href="lookUp.html">Look Up</a>
+        </div>
+
+        <div class="JLPT">
+            <a href="">JLPT Test</a>
+        </div>
+        <div class="Premium">
+            <a href="">Premium</a>
+        </div>
+        <div class="">
+            <a href="">FlashCard</a>
+        </div>
+        <div class="">
+            <a href="">Contact</a>
+        </div>
+    </div>
+</div>
+<div class="body-img"><img src="../static/images/body_background.png" alt=""></div>
+
+<!--<jsp:include page="Header.html"/>-->
+<div class="body">
+    <div class="first-body">
+        <div class="title">
+            <p>Translation</p>
+            <img src="../static/images/magnifying-glass.png" alt="">
+        </div>
+        <div class="translate">
+            <div class="trans bf-translate">
+                <div class="language language-1">
+                    <div class="choosing-language choosing-language1">
+                        <select name="" id="source-language">
+                            <option value="auto">language detection</option>
+                            <option value="vi">Vietnamese</option>
+                            <option value="ja">Japanese</option>
+                        </select>
+                    </div>
+                    <div class="choose-img"><img src="../static/images/ArrowDownSquareFill.png" alt=""></div>
+                </div>
+                <div class="user-input"><textarea id="inputText" placeholder="Enter your word..."></textarea></div>
+                <div class="translate-block translate-1">
+                    <div class="tools">
+                        <div class="tool-img">
+                            <div class="micro-img"><img src="../static/images/micro.png" alt=""></div>
+                            <div class="voice-img"><img src="../static/images/sound.png" alt=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rotate-arrow" onclick="swaptrans()">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+            <div class="trans aft-translate">
+                <div class="language language-2">
+                    <div class="choosing-language choosing-language2">
+                        <select name="" id="target-language">
+                            <option value="auto">language detection</option>
+                            <option value="ja">Japanese</option>
+                            <option value="vi">Vietnamese</option>
+                        </select>
+                    </div>
+                    <div class="choose-img"><img src="../static/images/ArrowDownSquareFill.png" alt=""></div>
+                </div>
+                <p id="translatedText"></p>
+                <p id="hiragana-text"></p>
+                <div class="translate-block translate-2">
+                    <div class="tools">
+                        <div class="tool-img">
+                            <div class="micro-img"><img src="../static/images/micro.png" alt=""></div>
+                            <div class="voice-img"><img src="../static/images/sound.png" alt=""></div>
+                        </div>
+                        <div class="more-detail" onclick="window.location='lookup.jsp'">
+                            <div><p>More Detail</p></div>
+                            <div><img src="../static/images/ArrowRight.png" alt=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="relevant-word">
+            <div class="relevant-word-title">Some relevant words</div>
+            <div class="relevant-word-body">
+                <div class="rl">
+                    <div class="rl_title">Sakura</div>
+                    <div class="rl_star_button">
+                        <button class="star-button" id="star-button"><img class="star_image" id="star_image" src="../static/images/Star_white.png" alt=""></button>
+                    </div>
+                    <div class="rl_translated">hoa anh đào</div>
+                    <div class="rl_next_button">
+                        <button class=next-button"><img src="../static/images/ArrowRight.png" alt=""></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="history-and-save">
+            <div class="history-and-save-button">
+                <button class="history-title active" id="history-title">History</button>
+                <button class="saved-title" id="saved-title">Saved</button>
+            </div>
+            <div class="history-and-save-body">
+                <div class="history-body">
+                    <div class="hb">
+                        <div class="hb_title">Sakura</div>
+                        <div class="hb_star_button">
+                            <button class="star-button"><img class="star_image" src="../static/images/Star_white.png" alt=""></button>
+                        </div>
+                        <div class="hb_translated">hoa anh đào</div>
+                        <div class="hb_next_button">
+                            <button class="next-button"><img src="../static/images/ArrowRight.png" alt=""></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="Saved-body">
+                    <div class="sb">
+                        <div class="sb_title">Sakana</div>
+                        <div class="sb_star_button">
+                            <button class="star-button"><img class="star_image" src="../static/images/Star_yellow.png" alt=""></button>
+                        </div>
+                        <div class="sb_translated">Cá</div>
+                        <div class="sb_next_button">
+                            <button class="next-button"><img src="../static/images/ArrowRight.png" alt=""></button>
+                        </div>
+                    </div>
+                    <div class="sb">
+                        <div class="sb_title">Kuruma</div>
+                        <div class="sb_star_button">
+                            <button class="star-button"><img class="star_image" src="../static/images/Star_yellow.png" alt=""></button>
+                        </div>
+                        <div class="sb_translated">Xe ô tô</div>
+                        <div class="sb_next_button">
+                            <button class="next-button"><img src="../static/images/ArrowRight.png" alt=""></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer>
+    <div class="footer-content">
+        <div class="logo">
+            <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+        </div>
+        <div class="quick-links">
+            <h4>Quick Link</h4>
+            <ul class="list">
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+            </ul>
+        </div>
+        <div class="contact-info">
+            <h4>Contact Us</h4>
+            <ul class="list">
+                <li><i class="fas fa-phone"></i> 0702411147</li>
+                <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+</footer>
+<script src="../static/js/Translate.js"></script>
+</body>
+</html>

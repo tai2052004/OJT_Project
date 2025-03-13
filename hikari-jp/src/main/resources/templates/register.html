@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="../static/css/register.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+<div class="container">
+    <div class="logo-section">
+        <img src="../static/images/logo-hikari.png" alt="HIKARIJP">
+    </div>
+    <div class="register-section">
+        <h2>Register</h2>
+        <p>Please enter your name, login and your password</p>
+        <form>
+            <label for="username">Username</label>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="alex">
+                <span class="icon"><i class="bi bi-person"></i></span>
+            </div>
+
+            <label for="Email">Email</label>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="alex@gmail.com">
+                <span class="icon"><i class="bi bi-envelope"></i></span>
+            </div>
+
+            <label for="password">Password</label>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Enter your password">
+                <span class="icon"><i class="bi bi-lock"></i></span>
+            </div>
+
+            <label for="re-password">Re-enter Password</label>
+            <div class="input-group">
+                <input type="password" id="re-password" placeholder="Enter your password">
+                <span class="icon"><i class="bi bi-lock"></i></span>
+            </div>
+
+            <button type="submit" class="register-btn" onclick="window.location.href='register.html'"></button>
+            <p>OR</p>
+            <button type="button" class="login-btn" onclick="window.location.href='login.html'">
+                Already have an Account?<span>Login now</span>
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

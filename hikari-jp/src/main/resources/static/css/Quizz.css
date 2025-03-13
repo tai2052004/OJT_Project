@@ -1,0 +1,90 @@
+/* Thiết lập nền */
+body {
+    margin: 0;
+    font-family: "Times New Roman", sans-serif;
+    background-image: url('../images/nuiphusi.jpeg'); /* Đổi thành đường dẫn ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+/* Khung chứa quiz */
+.quiz-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 100px 0;
+}
+
+/* Hộp chứa nội dung quiz */
+.quiz-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+p {
+    color: #555;
+    font-size: 14px;
+}
+
+/* Form */
+label {
+    display: block;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 15px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Nút Start Quiz */
+.start-quiz {
+    width: 40%;
+    background: #3A8CAA;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.start-quiz:hover {
+    background: #333;
+}
+
+.quiz-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #444;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.quiz-container {
+    flex: 1;
+}
+

@@ -1,0 +1,104 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url("../images/gradient.png");
+    background-size: 100%;
+    font-family: "Times New Roman", sans-serif;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20em;
+}
+.logo-section img {
+    max-width: 350px;
+}
+.login-section {
+    background: #ffffff;
+    padding: 50px 60px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 450px;
+    height: 600px;
+}
+.login-section h2 {
+    font-size: 46px;
+    color: #18A6C6;
+    font-weight: bold;
+    margin: 0;
+}
+.login-section p {
+    color: #555555;
+    font-size: 24px;
+    margin-bottom: 8em;
+}
+label {
+    font-size: 16px;
+}
+form {
+    margin-top: 30px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    border-radius: 5px;
+    margin: 15px 0;
+    width: 450px;
+}
+.input-group input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    outline: none;
+    width: 100%;
+    padding: 15px;
+    font-size: 14px;
+}
+.icon {
+    background: #3A8CAA;
+    padding: 15px;
+}
+.bi {
+    font-size: 20px;
+    color: #ffffff;
+}
+.forgot-password {
+    display: block;
+    text-align: right;
+    color: #1E2772;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.login-btn, .signup-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 15px 0;
+}
+.login-btn {
+    background: #3A8CAA;
+    color: white;
+}
+.signup-btn {
+    background: transparent;
+    border: 2px solid #3A8CAA;
+    color: #3A8CAA;
+}
+.login-section p {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 14px;
+    color: gray;
+}

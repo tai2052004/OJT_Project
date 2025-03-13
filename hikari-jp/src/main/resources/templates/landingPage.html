@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HikariJP</title>
+    <link rel="stylesheet" href="../static/css/landingPage.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+<!--<div th:replace="fragments/header.html :: header"></div>-->
+    <nav class="navbar" th:fragment="navbar">
+        <div class="logo">
+            <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+            <button><i class="bi bi-search"></i></button>
+        </div>
+        <div class="nav-links">
+            <a href="Translate.html">Translation</a>
+            <a href="lookUp.html">Lookup</a>
+            <a href="#">JLPT Test</a>
+            <a href="premium.html">Premium</a>
+            <a href="flashcards.html">Flashcard</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="sign-in" onclick="window.location.href='login.html'">Sign In</button>
+            <button class="register" onclick="window.location.href='register.html'">Register</button>
+        </div>
+    </nav>
+
+<!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-image">
+            <img src="../static/images/landing-page.png" alt="Japanese Landing Page image">
+        </div>
+        <div class="hero-content">
+            <h2>Master JLPT at Home</h2>
+            <h1>Easier Than Ever</h1>
+            <h2>Start Today!</h2>
+            <button class="start-now">Start Now</button>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section class="plans">
+        <h2>Choose Your Plan</h2>
+        <div class="plan-cards">
+            <div class="plan-card premium">
+                <h3>ONLINE PREMIUM</h3>
+                <div class="plan-content">
+                    <div class="plan-icon">
+                        <img src="../static/images/Preminum-logo.png" alt="Premium Icon">
+                    </div>
+                    <p>Unlock unlimited flashcard quizzes and all advanced features to accelerate your learning journey.</p>
+                </div>
+                <div class="jlpt-levels">
+                    <span class="level">N5</span>
+                    <span class="level">N4</span>
+                    <span class="level">N3</span>
+                    <span class="level">N2</span>
+                    <span class="level">N1</span>
+                </div>
+            </div>
+            <div class="plan-card basic">
+                <h3>ONLINE BASIC</h3>
+                <div class="plan-content">
+                    <div class="plan-icon">
+                        <img src="../static/images/Basic-logo.png" alt="Basic Icon">
+                    </div>
+                    <p>Free access! Look up words and take up to 3 quizzes to test your knowledge.</p>
+                </div>
+                 <div class="jlpt-levels">
+                    <span class="level">N5</span>
+                    <span class="level">N4</span>
+                    <span class="level">N3</span>
+                    <span class="level">N2</span>
+                    <span class="level">N1</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="chosen-reason">
+        <h2>Why Choose Us?</h2>
+        <div class="chosen-reason-content">
+            <div class="chosen-icon">
+                <img src="../static/images/chosen-logo.png" alt="Chosen Icon">
+            </div>
+            <p>Learning Japanese with HikariJP is not just about mastering a language; it's about exploring knowledge and culture, broadening your horizons, and fostering personal growth. With us, you will confidently take firm steps on your journey to conquering the peaks of your career and life.</p>
+        </div>
+    </section>
+<!--<div th:replace="fragments/footer :: footer"></div>-->
+<!--Footer fragment-->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+            </div>
+            <div class="quick-links">
+                <h4>Quick Link</h4>
+                <ul class="list">
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+                </ul>
+            </div>
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <ul class="list">
+                    <li><i class="fas fa-phone"></i> 0702411147</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                    <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

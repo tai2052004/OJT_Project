@@ -1,0 +1,120 @@
+body {
+    overflow-x: hidden;
+    margin: 0 0;
+    font-family: "Times New Roman", serif;
+    background-image: url("../images/gradient.png");
+}
+h2 {
+    font-size: 36px;
+}
+h1 {
+    font-size: 42px;
+}
+.hero {
+    position: relative;
+    min-height: 450px;
+}
+.hero-image img{
+    height: 450px;
+    width: 100%;
+    object-fit: fill;
+    position: absolute;
+}
+.hero-content{
+    position: relative;
+    top: 5em;
+    left: 5em;
+}
+.hero-content h2 {
+    margin: 0 0;
+    color: #ffffff;
+}
+.hero-content h1 {
+    color: #FFE168;
+}
+.hero-content button {
+    margin-top: 1em;
+    background-color: #000000;
+    color: #FFC107;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-family: "Times New Roman",serif;
+    font-weight: 600;
+    font-size: 24px;
+    cursor: pointer;
+}
+.plans {
+    padding: 20px 25px;
+}
+.plans h2 {
+    text-align: center;
+    font-size: 45px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+}
+.plan-cards {
+    margin: 60px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+.plan-icon img {
+    height: 100px;
+}
+.plan-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px;
+    width: 600px;
+    height: 300px;
+    box-shadow: 8px 8px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+.plan-card h3 {
+    color: #FF3D00;
+    font-size: 30px;
+    font-weight: 800;
+}
+.plan-content {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+.plan-card p {
+    font-size: 24px;
+}
+.jlpt-levels .level {
+    border: solid 3px #FF3D00;
+    border-radius: 50px;
+    padding: 8px;
+    font-size: 24px;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+.chosen-reason {
+    padding: 20px 25px;
+    margin-bottom: 3em;
+}
+.chosen-reason h2 {
+    text-align: center;
+    font-size: 45px;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+}
+.chosen-reason-content {
+    display: flex;
+    margin: 20px 50px;
+    gap: 10em;
+}
+.chosen-reason-content .chosen-icon img {
+    height: 300px;
+}
+.chosen-reason-content p{
+    font-size: 24px;
+}
+
+
+

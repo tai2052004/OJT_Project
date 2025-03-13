@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorite Flashcards</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/favoriteFlashcard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+    </div>
+    <div class="search-bar">
+        <input type="text" placeholder="Search">
+        <button><i class="bi bi-search"></i></button>
+    </div>
+    <div class="nav-links">
+        <a href="Translate.html">Translation</a>
+        <a href="lookUp.html">Lookup</a>
+        <a href="#">JLPT Test</a>
+        <a href="premium.html">Premium</a>
+        <a href="flashcards.html">Flashcard</a>
+        <a href="#">Contact</a>
+    </div>
+    <div class="auth-buttons">
+        <button class="sign-in">Sign In</button>
+        <button class="register">Register</button>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div class="container">
+        <h1 class="page-title">Favorite Flashcards</h1>
+        <div class="container-first">
+            <aside class="sidebar">
+                <div class="selection-box">
+                    <h2>Select level</h2>
+                    <ul class="selection-list">
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="level" value="N5" checked>
+                                N5
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="level" value="N4">
+                                N4
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="level" value="N3">
+                                N3
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="level" value="N2">
+                                N2
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="level" value="N1">
+                                N1
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="selection-box">
+                    <h2>Select topic</h2>
+                    <ul class="selection-list">
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="topic" value="Vocabulary" checked>
+                                Vocabulary
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="topic" value="Kanji">
+                                Kanji
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-label">
+                                <input type="radio" name="topic" value="Grammar">
+                                Grammar
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <div class="flashcards-container">
+                <div style="display: flex; justify-content: space-between ; margin-bottom: 20px; font-size: 20px">
+                    <span class="cards-saved">6 Cards Saved</span>
+                    <select class="sort-dropdown">
+                        <option>Newest First</option>
+                        <option>Oldest First</option>
+                        <option>Alphabetical</option>
+                    </select>
+                </div>
+
+                <div class="flashcards-grid">
+                    <!-- Flashcard 1 -->
+                    <div class="flashcard">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span class="level-tag n5">N5</span>
+                            <span class="type-tag">Kanji</span>
+                        </div>
+                        <div class="kanji">猫</div>
+                        <div class="reading">ねこ</div>
+                        <div class="meaning">Cat</div>
+                    </div>
+
+                    <!-- Flashcard 2 -->
+                    <div class="flashcard">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span class="level-tag n5">N5</span>
+                            <span class="type-tag">Kanji</span>
+                        </div>
+                        <div class="kanji">山</div>
+                        <div class="reading">やま</div>
+                        <div class="meaning">Mountain</div>
+                    </div>
+
+                    <!-- Flashcard 3 -->
+                    <div class="flashcard">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span class="level-tag n5">N5</span>
+                            <span class="type-tag">Kanji</span>
+                        </div>
+                        <div class="kanji">水</div>
+                        <div class="reading">みず</div>
+                        <div class="meaning">Water</div>
+                    </div>
+
+                    <!-- Flashcard 4 -->
+                    <div class="flashcard">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span class="level-tag n5">N5</span>
+                            <span class="type-tag">Kanji</span>
+                        </div>
+                        <div class="kanji">犬</div>
+                        <div class="reading">いぬ</div>
+                        <div class="meaning">Dog</div>
+                    </div>
+
+                    <!-- Flashcard 5 -->
+                    <div class="flashcard">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span class="level-tag n5">N5</span>
+                            <span class="type-tag">Kanji</span>
+                        </div>
+                        <div class="kanji">空</div>
+                        <div class="reading">そら</div>
+                        <div class="meaning">Sky</div>
+                    </div>
+
+                    <!-- Flashcard 6 -->
+                    <div class="flashcard">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span class="level-tag n5">N5</span>
+                            <span class="type-tag">Kanji</span>
+                        </div>
+                        <div class="kanji">花</div>
+                        <div class="reading">はな</div>
+                        <div class="meaning">Flower</div>
+                    </div>
+                </div>
+                <div class="pagination">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="footer-content">
+        <div class="logo">
+            <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+        </div>
+        <div class="quick-links">
+            <h4>Quick Link</h4>
+            <ul class="list">
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+            </ul>
+        </div>
+        <div class="contact-info">
+            <h4>Contact Us</h4>
+            <ul class="list">
+                <li><i class="fas fa-phone"></i> 0702411147</li>
+                <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,142 @@
+body {
+    background-image: url('../images/nuiphusi.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 70%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.score {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.quiz-results {
+    width: 40%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+}
+
+.question-card {
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.question-card.correct {
+    background-color: rgba(240, 255, 240, 0.8);
+    border: 1px solid #cce5cc;
+}
+
+.question-card.incorrect {
+    background-color: rgba(255, 240, 240, 0.8);
+    border: 1px solid #e5cccc;
+}
+
+.question-number {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.japanese {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.vietnamese {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.answer-row {
+    margin-bottom: 5px;
+}
+
+.answer-label {
+    font-weight: bold;
+}
+
+.answer {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.answer.correct {
+    color: #28a745;
+}
+
+.answer.incorrect {
+    color: #dc3545;
+}
+
+.buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: #5ba4c9;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.incorrect-icon {
+    float: right;
+    color: #dc3545;
+    font-size: 1.5rem;
+}
+.bi-check2 {
+    float:right;
+    color: #1B9544;
+    font-size: 1.5rem;
+}
+.quiz-header {
+    text-align: center;
+    background: rgba(118,118,118,0.5);
+    padding: 10px;
+}
+.quiz-header h1 {
+    margin: 0 0;
+}
+.score {
+    margin: 0 0 ;
+    font-weight: bold;
+    color : black;
+}
