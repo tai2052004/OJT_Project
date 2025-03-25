@@ -25,7 +25,7 @@
             <a href="landingPage.html">Home</a>
         </div>
         <div class="lookup">
-            <a href="">Translation</a>
+            <a href="Translate.html">Translation</a>
         </div>
         <div class="lookup active">
             <a href="lookUp.html">Look Up</a>
@@ -50,7 +50,7 @@
         <div class="search col-12 mb-4">
             <div class="mt-4">
                 <div  class="d-flex justify-content-between mb-3 gap-3">
-                    <input type="text" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
+                    <input id="textToSpeak" onblur="convertTextToSpeech()" type="text" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
                     <a href="rs_lookup.html" class="btn btn-primary icon1">🔍</a>
                     <a href="rs_lookup.html" class="btn btn-dark icon2">🎤</a>
                 </div>
@@ -82,6 +82,8 @@
             <li>Mazii có thể chuyển thành te, ta, bị động...</li>
             <li>Tra cứu katakana: viết hoa chữ đó, ví dụ: BETONAMU.</li>
         </ul>
+
+        <audio id="audioPlayer" controls disabled></audio>
     </div>
     <div class="mb-3">
         <span class="title">Lịch sử</span>
@@ -102,5 +104,6 @@
         </div>
     </div>
 </div>
+<script src="../static/js/lookUp.js"></script>
 </body>
 </html>
