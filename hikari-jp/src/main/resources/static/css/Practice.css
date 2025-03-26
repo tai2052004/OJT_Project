@@ -81,6 +81,7 @@ body, html {
     border-radius: 10px;
     justify-content: space-between;
     padding: 0 20px;
+    width: 60%;
 }
 .grade
 {
@@ -126,6 +127,7 @@ body, html {
 }
 .subject
 {
+    flex: 1;
     display: flex;
     background: #C1BEBE;
     width: 60%;
