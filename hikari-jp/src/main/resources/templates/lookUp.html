@@ -50,9 +50,9 @@
         <div class="search col-12 mb-4">
             <div class="mt-4">
                 <div  class="d-flex justify-content-between mb-3 gap-3">
-                    <input type="text" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
-                    <a href="rs_lookup.html" class="btn btn-primary icon1">🔍</a>
-                    <a href="rs_lookup.html" class="btn btn-dark icon2">🎤</a>
+                    <input type="text" id="query" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
+                    <button id="search-button"  class="btn btn-primary icon1">🔍</button>
+                    <button  class="btn btn-dark icon2">🎤</button>
                 </div>
                 <div class="d-flex mb-3 gap-3">
                     <select class="form-select w-25 me-2">
@@ -75,22 +75,12 @@
     </div>
 </div>
 <div class="container infor">
-    <div class="tips mb-3">
-        <span class="title">💡 Tips</span>
-        <ul>
-            <li>Đăng nhập tài khoản Mazii để đồng bộ dữ liệu.</li>
-            <li>Mazii có thể chuyển thành te, ta, bị động...</li>
-            <li>Tra cứu katakana: viết hoa chữ đó, ví dụ: BETONAMU.</li>
-        </ul>
+    <div>
+        <div id="loading" class="loading" style="display: none;">Đang tải...</div>
+        <div id="results" class="container" style="display: none;"></div>
+        <div id="image-results"></div>
     </div>
-    <div class="mb-3">
-        <span class="title">Lịch sử</span>
-        <div class="d-flex gap-2 mt-2">
-            <button class="btn btn-outline-dark">人</button>
-            <button class="btn btn-outline-dark">大学</button>
-            <button class="btn btn-outline-dark">木</button>
-        </div>
-    </div>
+
     <div>
         <span class="title">JLPT</span>
         <div class="d-flex gap-2 mt-2">
@@ -102,5 +92,6 @@
         </div>
     </div>
 </div>
+<script src="../static/js/jisho.js"></script>
 </body>
 </html>
