@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/css/Practice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -17,7 +18,7 @@
         <img src="../static/images/logo-hikari.png">
     </div>
     <div class="header-searchbar">
-        <form action="SearchServlet" method="post" >
+        <form action="" method="post" >
             <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
             <a class="submit-button" type="submit" >
                 <i class="fa fa-search"></i>
@@ -94,44 +95,52 @@
 
 
     <div class="second-body">
-        <div class="second-body-1">
-            <div class="time" id="time">60:00</div>
-            <div class="subject-name">どっかい 6</div>
-            <div class="submit-answer"><button class="submit-answer-button" onclick="window.location='Result.html'">Submit</button></div>
-        </div>
-        <div class="progress-container"><progress class="progress-bar" id="progress-bar"></progress></div>
-        <div class="question_num">
-            <div class="num" id="num1">1</div>
-            <div class="num" id="num2">2</div>
-            <div class="num" id="num3">3</div>
-            <div class="num" id="num4">4</div>
-        </div>
-        <div class="passage">
-            日本の花火大会はとても素晴らしいと友達から聞いていたので、去年の夏、初めて行ってみた。花火大会は７時からで、会場は駅から歩いて２０分ぐらいのところだった。 私は友達と６時半に駅で会い、会場に向かった。しかし、駅から会場までの道は人でいっぱいで、１時間以上かかった。途中で花火大会は始まってしまい、私たちはあるきながら花火を見た。<br>
-            会場も人でいっぱいで座るところは見つけられなかったが、２時間の花火大会は本当に素晴らしかった。<br>
-            しかし、花火大会が終わった後が大変だった。みんなが駅へ向かおうとするので、駅までの道が行くときよりももっと込んでいたからだ。駅に着いたのは花火が終わってから２時間後だった。<br>
-            花火を見ている時間よりも歩いている時間のほうが長い花火大会になった。<br>
-            今年の花火大会の日、私はうちにいた。そしてソファーに座りビールを飲みながら素晴らしいは花火をテレビでゆっくりと楽しんだ。テレビでは花火の歴史なでも説明してくれるし、作った人の紹介もしてくれるので、とても面白かった来年もテレビで見るつもりだ。
-        </div>
-        <div class="question">
-            <div class="question-content num1">
-                <div class="question-in num1">1. どうして友達と６時半に駅で会いましたか。</div>
-                <div class="answer">A. 会場に７時２０分ごろにつきたいと思ったから。</div>
-                <div class="answer">B. 会場に７時前につきたいと思ったから。</div>
-                <div class="answer">C. 会場に７時半ごろにつきたいと思ったから。</div>
-                <div class="answer">D. 会場までの道で花火を見ようと思ったから。</div>
-                <input type="hidden" value="" >
+        <div class="fixed-head">
+            <div class="second-body-1">
+                <div class="time" id="time">60:00</div>
+                <div class="subject-name">どっかい 6</div>
+                <div class="submit-answer"><button class="submit-answer-button" onclick="submitQuiz()">Submit</button></div>
             </div>
-            <div class="question-content num2">
-                <div class="question-in">2. 会場でどうして座るところを見つけられなかったのですか。</div>
-                <div class="answer">A. 人が大勢いて座るところがなかったから。</div>
-                <div class="answer">B. 花火大会の間はすわっては行けなかった買ったから。</div>
-                <div class="answer">C. 夜になっていたので暗かったから。</div>
-                <div class="answer">D. 花火大会が終わっていたから。</div>
-                <input type="hidden" value="" >
+            <div class="toggle-div">
+                <i class="fas fa-angle-double-down" id="toggleQuestions"></i>
+            </div>
+            <div class="question_num">
+                <div class="num" id="num1">1</div>
+                <div class="num" id="num2">2</div>
+                <div class="num" id="num3">3</div>
+                <div class="num" id="num4">4</div>
             </div>
         </div>
 
+<!--        <div class="passage">-->
+<!--            日本の花火大会はとても素晴らしいと友達から聞いていたので、去年の夏、初めて行ってみた。花火大会は７時からで、会場は駅から歩いて２０分ぐらいのところだった。 私は友達と６時半に駅で会い、会場に向かった。しかし、駅から会場までの道は人でいっぱいで、１時間以上かかった。途中で花火大会は始まってしまい、私たちはあるきながら花火を見た。<br>-->
+<!--            会場も人でいっぱいで座るところは見つけられなかったが、２時間の花火大会は本当に素晴らしかった。<br>-->
+<!--            しかし、花火大会が終わった後が大変だった。みんなが駅へ向かおうとするので、駅までの道が行くときよりももっと込んでいたからだ。駅に着いたのは花火が終わってから２時間後だった。<br>-->
+<!--            花火を見ている時間よりも歩いている時間のほうが長い花火大会になった。<br>-->
+<!--            今年の花火大会の日、私はうちにいた。そしてソファーに座りビールを飲みながら素晴らしいは花火をテレビでゆっくりと楽しんだ。テレビでは花火の歴史なでも説明してくれるし、作った人の紹介もしてくれるので、とても面白かった来年もテレビで見るつもりだ。-->
+<!--        </div>-->
+<!--        <div class="question">-->
+<!--            <div class="question-content num1">-->
+<!--                <div class="question-in num1">1. どうして友達と６時半に駅で会いましたか。</div>-->
+<!--                <div class="answer">A. 会場に７時２０分ごろにつきたいと思ったから。</div>-->
+<!--                <div class="answer">B. 会場に７時前につきたいと思ったから。</div>-->
+<!--                <div class="answer">C. 会場に７時半ごろにつきたいと思ったから。</div>-->
+<!--                <div class="answer">D. 会場までの道で花火を見ようと思ったから。</div>-->
+<!--                <input type="hidden" value="" >-->
+<!--            </div>-->
+<!--            <div class="question-content num2">-->
+<!--                <div class="question-in">2. 会場でどうして座るところを見つけられなかったのですか。</div>-->
+<!--                <div class="answer">A. 人が大勢いて座るところがなかったから。</div>-->
+<!--                <div class="answer">B. 花火大会の間はすわっては行けなかった買ったから。</div>-->
+<!--                <div class="answer">C. 夜になっていたので暗かったから。</div>-->
+<!--                <div class="answer">D. 花火大会が終わっていたから。</div>-->
+<!--                <input type="hidden" value="" >-->
+<!--            </div>-->
+<!--        </div>-->
+        <div id="quiz-container" class="hidden">
+            <div id="quiz-questions"></div>
+            <div id="quiz-score"></div>
+        </div>
     </div>
 <footer>
     <div class="footer-content">
@@ -158,7 +167,7 @@
         </div>
     </div>
 </footer>
-<script src="../static/js/Practice.js"></script>
+<script src="../static/js/practice.js"></script>
 </body>
 
 

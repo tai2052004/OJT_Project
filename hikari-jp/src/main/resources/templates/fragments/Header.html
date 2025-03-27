@@ -1,50 +1,42 @@
-
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Title</title>
-    <link rel="stylesheet" href="../../static/css/Header.css?v=1.0.1">
-</head>
-<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<!-- KHÔNG ĐƯỢC CHỨA <head> HOẶC <body> Ở ĐÂY! -->
 <div th:fragment="header" class="header">
+    <!-- Logo -->
     <div class="header-logo">
-        <img src="../../static/images/logo.png">
+        <!-- Sử dụng Thymeleaf cho đường dẫn ảnh -->
+        <img th:src="@{/images/logo-hikari.png}" alt="Logo">
     </div>
+
+    <!-- Search Bar -->
     <div class="header-searchbar">
-        <form action="SearchServlet" method="post" >
+        <!-- Sử dụng Thymeleaf cho form action -->
+        <form th:action="@{/search}" method="post">
             <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
-            <a class="submit-button" type="submit" >
+            <button type="submit" class="submit-button">
                 <i class="fa fa-search"></i>
-            </a>
+            </button>
         </form>
     </div>
 
+    <!-- Navigation -->
     <div class="header-navigate">
+        <!-- Sử dụng Thymeleaf cho các link -->
         <div class="home">
-            <a href="Translate.html">Home</a>
+            <a th:href="@{/translate}">Home</a> <!-- Thay bằng URL controller thực tế -->
         </div>
         <div class="lookup active">
-            <a href="">Translation</a>
+            <a th:href="@{/translation}">Translation</a>
         </div>
         <div class="lookup">
-            <a href="lookUp.html">Look Up</a>
+            <a th:href="@{/lookup}">Look Up</a>
         </div>
-
-        <div class="JLPT">
-            <a href="">JLPT Test</a>
-        </div>
-        <div class="Premium">
-            <a href="">Premium</a>
-        </div>
-        <div class="">
-            <a href="">FlashCard</a>
-        </div>
-        <div class="">
-            <a href="">Contact</a>
-        </div>
+        <!-- Các mục khác tương tự -->
     </div>
+
+    <!-- User Image -->
     <div class="user-image">
-        <img src="../../static/images/user_image.jpg" alt="">
+        <img th:src="@{/images/user_image.jpg}" alt="User">
     </div>
 </div>
-</body>
 </html>
