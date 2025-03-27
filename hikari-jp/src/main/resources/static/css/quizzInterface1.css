@@ -1,8 +1,8 @@
 body {
-    
+
     margin: 0 0;
     overflow-x: hidden;
-   
+
 }
 .navbar {
     display: flex;
@@ -232,7 +232,7 @@ h3 {
 .empty-item {
     visibility: hidden; /* Không hiển thị nhưng vẫn giữ chỗ */
 }
-.word-list { display: none; } /* Hide all sections by default */
+/*.word-list { display: none; } !* Hide all sections by default *!*/
 .active { display: block; } /* Show the active section */
 .kanji, .reading, .meaning { display: none; } /* Hide elements initially */
 
