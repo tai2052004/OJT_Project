@@ -12,6 +12,25 @@ const itemsPerPage = 5;
 let currentPage = 1;
 let vocabData = [];
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Lấy tham số từ URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedLevel = urlParams.get("level");
+
+    if (selectedLevel) {
+        // Tìm radio button có value tương ứng và chọn nó
+        let radio = document.querySelector(`input[name="level"][value="${selectedLevel}"]`);
+        if (radio) {
+            radio.checked = true;
+
+            // Tự động click vào nút lấy từ vựng
+            setTimeout(() => {
+                document.getElementById("getVocabularyButton").click();
+            }, 500); // Delay một chút để đảm bảo DOM đã load
+        }
+    }
+});
+
 async function fetchVocabulary() {
     let selectedLevel = document.querySelector("input[name='level']:checked")?.value;
     if (!selectedLevel || !JLPT_TO_WK[selectedLevel]) {
