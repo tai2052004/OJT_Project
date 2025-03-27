@@ -40,109 +40,30 @@
             <button class="button" onclick="changeMode('writing')">Writing</button>
             <button class="button" onclick="window.location.href='Practice.html'">Mini Test</button>
         </div>
-    
+
         <div class="container">
             <div class="sidebar">
                 <h3>JLPT</h3>
                 <label><input type="radio" name="wordType" value="vocabulary" checked> Vocabulary</label><br>
-                <label><input type="radio" name="wordType" value="kanji"> Kanji</label><br>
-                <label><input type="radio" name="wordType" value="grammar"> Grammar</label>
-                <h4>Level</h4>
-                <label><input type="radio" name="level" checked> N5</label><br>
-                <label><input type="radio" name="level"> N4</label><br>
-                <label><input type="radio" name="level"> N3</label><br>
-                <label><input type="radio" name="level"> N2</label><br>
-                <label><input type="radio" name="level"> N1</label>
+                <h3>Level</h3>
+                <label><input type="radio" name="level" value="N5" checked> N5</label><br>
+                <label><input type="radio" name="level" value="N4"> N4</label><br>
+                <label><input type="radio" name="level" value="N3"> N3</label><br>
+                <label><input type="radio" name="level" value="N2"> N2</label><br>
+                <label><input type="radio" name="level" value="N1"> N1</label><br>
+                <button onclick="fetchVocabulary()">Lấy từ vựng</button>
             </div>
-            
+
             <div class="content">
                 <div class="controls">
-                    <label id="vocabularyToggleContainer" style="display: none;"><input type="checkbox" id="toggleKanji"  checked> Từ vựng</label>
-                    <label id="readingToggleContainer"><input type="checkbox" id="toggleReading" checked> Phiên âm</label>
+                    <label><input type="checkbox" id="toggleReading" checked> Phiên âm</label>
                     <label><input type="checkbox" id="toggleMeaning" checked> Nghĩa</label>
                 </div>
                 <h3>Vocabulary List</h3>
-                <div id="vocabularySection" class="word-list active">
-                    <div class="word-item">
-                        <span class="reading">わたし</span>
-                        <span class="meaning">Tôi</span>
-                    </div>
-                    <div class="word-item">
-                        <span class="reading">なに / なん</span>
-                        <span class="meaning">Cái gì</span>
-                    </div>
-                   
-                    <div class="word-item">
-                        <span class="reading">わたし123123</span>
-                        <span class="meaning">Tôi</span>
-                    </div>
-                    <div class="word-item">
-                        <span class="reading">なに / なん</span>
-                        <span class="meaning">Cái gì</span>
-                    </div>
-                   
-                    <div class="word-item">
-                        <span class="reading">なに / なん</span>
-                        <span class="meaning">Cái g12312321ì</span>
-                    </div>
-                </div>
-                <!-- Kanji Section -->
-                <!-- <h3 id="kanjiTitle" style="display: none;">Kanji List</h3> -->
-                <div id="kanjiSection" class="word-list">
-                    <div class="word-item" data-kanji="日" data-kunyomi="ひ -び -か" data-onyomi="ニチ ジツ" 
-                    data-stroke="4" data-jlpt="N5" 
-                    data-meaning="day, sun, Japan, counter for days" 
-                    data-image="">
-                        <span class="kanji">日</span>
-                        <span class="reading">にち / ひ</span>
-                        <span class="meaning">Mặt trời, ngày</span>
-                    </div>
-                    <div class="word-item">
-                        <span class="kanji">月</span>
-                        <span class="reading">げつ / つき</span>
-                        <span class="meaning">Mặt trăng, tháng</span>
-                    </div>
-                </div>
-                <!-- Grammar Section -->
-                <div id="grammarSection" class="word-list">
-                    <div class="word-item">
-                        <span class="kanji">～ている</span>
-                        <span class="meaning">Đang làm gì</span>
-                    </div>
-                    <div class="word-item">
-                        <span class="kanji">～なければならない</span>
-                        <span class="meaning">Phải làm gì</span>
-                    </div>
-                    <div class="word-item">
-                        <span class="kanji">～ている</span>
-                        <span class="meaning">Đang làm gì</span>
-                    </div>
-                   
-                </div>
-                
-                <div class="pagination">
-                    
-                </div>
-            </div>
-                <!-- Popup Modal -->
-        <div id="kanjiModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <div class="modal-header">
-                    <h2 id="modalKanji"></h2>
-                </div>
-                <div class="modal-body">
-                    <div class="kanji-details">
-                        <p><strong>訓読み (Kunyomi):</strong> <span id="modalKunyomi" class="kunyomi"></span></p>
-                        <p><strong>音読み (Onyomi):</strong> <span id="modalOnyomi" class="onyomi"></span></p>
-                        <p><strong>ストローク (Strokes):</strong> <span id="modalStroke"></span></p>
-                        <p><strong>JLPT Level:</strong> <span id="modalJLPT"></span></p>
-                        <p><strong>意味 (Meaning):</strong> <span id="modalMeaning"></span></p>
+                <div id="vocabularySection" class="word-list"></div>
 
-                    </div>
-                    <div class="kanji-image">
-                        <img id="modalImage" src="" alt="Stroke Order">
-                    </div>
+                <div class="pagination">
+
                 </div>
             </div>
         </div>

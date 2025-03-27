@@ -50,7 +50,7 @@ async function translateText() {
         const data = await response.json();
         const translation = data[0].map(item => item[0]).join('');
         translatedText.textContent = translation;
-        const response2 = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ja&tl=ja-Latn&dt=rm&dt=t&q=${encodeURIComponent(translation)}`);
+        const response2 = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=vi&tl=ja&dt=rm&dt=t&q=${encodeURIComponent(translation)}`);
         const data2 = await response2.json();
         const translation2 = data2[0].map(item => item[0]).join('');
 
