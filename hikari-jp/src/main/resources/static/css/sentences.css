@@ -5,67 +5,54 @@ body {
     background-attachment: fixed;
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
 }
+
+/* Container chính */
 .container {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
 }
-.search_chat {
+
+.search_rs {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
+
+.search, .rs, .cmt, .infor {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
 .search {
-    padding: 20px;
-    border-radius: 10px;
-    width: 840px;
-    height:230px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background: #ffffff;
-}
-.chatbox{
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background: #ffffff;
-    width: 400px;
-    height:230px;
-}
-.search input, .search select, .search button {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-.title {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #0d6efd;
-    margin-bottom: 10px;
-}
-.infor button {
-    transition: background 0.3s ease;
-}
-.infor button:hover {
-    background: #0d6efd;
-    color: #ffffff;
-}
-.icon1{
-    width:150px;
-}
-.icon2{
-    width:150px;
-}
-/* Reset mặc định */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-body {
-    font-family: Arial, sans-serif;
+.search input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
+.search button {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search button:hover {
+    background: #0056b3;
+    color: white;
+}
 .header {
     width: 100%;
     height: 100px; /* Chiều cao header */
@@ -167,4 +154,9 @@ body {
         gap: 10px;
     }
 }
+.hidden {
+    display: none;
+}
+
+
 
