@@ -1,8 +1,8 @@
 body {
-    
+
     margin: 0 0;
     overflow-x: hidden;
-   
+
 }
 .navbar {
     display: flex;
@@ -110,7 +110,7 @@ body {
 }
 /*-------------------------------------------------------------------------------------*/
 .body1-img{
-    background-image:url("../images/image17.png");
+    background-image:url(../images/image17.png);
     font-family: Arial, sans-serif;
     background-size: cover;
 }
@@ -178,6 +178,19 @@ h3 {
     color: #333;
     font-size: 24px;
 }
+#kanji-list {
+    min-height: 0; /* Prevent unnecessary height */
+    height: auto;
+    overflow: hidden;
+}
+.meaning {
+    display: inline-block;  /* Ensures proper spacing */
+    max-width: 300px;       /* Adjust width as needed */
+    white-space: normal;     /* Allows text to wrap */
+    word-wrap: break-word;   /* Breaks long words */
+    overflow-wrap: break-word; /* Ensures breaking on overflow */
+}
+
 
 .word-list {
     min-height: 250px; /* Giữ nguyên chiều cao, điều chỉnh nếu cần */
@@ -232,7 +245,7 @@ h3 {
 .empty-item {
     visibility: hidden; /* Không hiển thị nhưng vẫn giữ chỗ */
 }
-/*.word-list { display: none; } !* Hide all sections by default *!*/
+/* .word-list { display: none; } Hide all sections by default */
 .active { display: block; } /* Show the active section */
 .kanji, .reading, .meaning { display: none; } /* Hide elements initially */
 

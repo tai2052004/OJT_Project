@@ -9,7 +9,7 @@
 <body>
 <div class="body1-img">
     <header>
-        <nav class="navbar" >
+        <nav class="navbar" th:fragment="navbar">
             <div class="logo">
                 <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
             </div>
@@ -35,23 +35,27 @@
 
     <!-- main content -->
     <div class="button-container">
-        <button class="button" onclick="window.location.href='flashcards.html'">Flashcard</button>
-        <button class="button" onclick="window.location.href='Quizz.html.html'">Quiz</button>
+        <button class="button" onclick="changeMode('flashcard')">Flashcard</button>
+        <button class="button" onclick="changeMode('quiz')">Quiz</button>
         <button class="button" onclick="changeMode('writing')">Writing</button>
-        <button class="button" onclick="window.location.href='Practice.html'">Mini Test</button>
+        <button class="button" onclick="changeMode('test')">Mini Test</button>
     </div>
 
     <div class="container">
         <div class="sidebar">
             <h3>JLPT</h3>
+            <!-- Change this section in your HTML -->
             <label><input type="radio" name="wordType" value="vocabulary" checked> Vocabulary</label><br>
+            <label><input type="radio" name="wordType" value="kanji"> Kanji</label><br>
+
+
             <h3>Level</h3>
             <label><input type="radio" name="level" value="N5" checked> N5</label><br>
             <label><input type="radio" name="level" value="N4"> N4</label><br>
             <label><input type="radio" name="level" value="N3"> N3</label><br>
             <label><input type="radio" name="level" value="N2"> N2</label><br>
             <label><input type="radio" name="level" value="N1"> N1</label><br>
-            <button id="getVocabularyButton" onclick="fetchVocabulary()">Lấy từ vựng</button>
+
         </div>
 
         <div class="content">
@@ -62,14 +66,16 @@
             <h3>Vocabulary List</h3>
             <div id="vocabularySection" class="word-list"></div>
 
+            <div id="kanji-list" class="word-list"></div>
+
             <div class="pagination">
+
+
 
             </div>
         </div>
     </div>
-
-</div>
-<script src="../static/js/quizzInterace.js"> </script>
+    <script src="../static/js/quizzInterace.js"> </script>
 
 
 
