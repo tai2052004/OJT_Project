@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="/css/otp-verify.css">
+</head>
+<body>
+<div th:if="${successMessage}" class="success-alert">
+    <span th:text="${successMessage}"></span>
+    <br>
+    <button onclick="window.location.href='/user/login'">Quay lại trang đăng nhập</button>
+</div>
+
+<!-- Thông báo lỗi -->
+<div th:if="${error}" class="error-alert">
+    <span th:text="${error}"></span>
+</div>
+<div class="container">
+    <h1>Verify OTP</h1>
+    <div class="error-message" th:if="${error}" th:text="${error}" style="color: red;"></div>
+    <p>Please enter the OTP sent to your email:</p>
+    <p class="email-display" th:text="${email}">example@email.com</p>
+
+    <!-- Form để gửi OTP -->
+    <form action="/verify-otp-register" method="post">
+        <!-- Trường ẩn để gửi email -->
+        <input type="hidden" name="email" th:value="${email}">
+
+        <!-- Ô nhập OTP (Tự động nhập vào input ẩn) -->
+        <div class="otp-input">
+            <input type="text" maxlength="1" id="otp1">
+            <input type="text" maxlength="1" id="otp2">
+            <input type="text" maxlength="1" id="otp3">
+            <input type="text" maxlength="1" id="otp4">
+            <input type="text" maxlength="1" id="otp5">
+            <input type="text" maxlength="1" id="otp6">
+        </div>
+
+        <!-- Trường ẩn chứa OTP hoàn chỉnh -->
+        <input type="hidden" name="otp" id="otpFull">
+
+        <!-- Đếm ngược + Nút gửi lại OTP -->
+        <p id="countdown">Resend OTP in <span id="timer">15</span>s</p>
+        <button type="button" id="resendButton" onclick="resendOTP()" disabled>Resend OTP</button>
+
+        <!-- Nút xác thực -->
+        <button type="submit" id="verifyButton">Verify OTP</button>
+    </form>
+</div>
+
+<script defer src="/js/otp-verify.js"></script>
+</body>
+</html>

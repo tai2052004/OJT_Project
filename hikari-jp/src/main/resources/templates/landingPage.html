@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HikariJP</title>
-    <link rel="stylesheet" href="../static/css/landingPage.css">
+    <link rel="stylesheet" href="/css/landingPage.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -12,7 +12,7 @@
 
 <div class="header">
     <div class="header-logo">
-        <img src="../static/images/logo-hikari.png">
+        <img src="/images/logo-hikari.png">
     </div>
     <div class="header-searchbar">
         <form action="SearchServlet" method="post" >
@@ -56,22 +56,22 @@
 
                     <ul class="dropdown_submenu">
                         <li>
-                            <a href="quizzInterface.html?level=N5" class="dropdown_sublink">N5</a>
+                            <a th:href="@{/quizzInterface(level='N5')}" class="dropdown_sublink">N5</a>
                         </li>
 
                         <li>
-                            <a href="quizzInterface.html?level=N4" class="dropdown_sublink"> N4</a>
+                            <a th:href="@{/quizzInterface(level='N4')}" class="dropdown_sublink"> N4</a>
                         </li>
 
                         <li>
-                            <a href="quizzInterface.html?level=N3" class="dropdown_sublink">N3</a>
+                            <a  th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
                         </li>
 
                         <li>
-                            <a href="quizzInterface.html?level=N2" class="dropdown_sublink">N2</a>
+                            <a  th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
                         </li>
                         <li>
-                            <a href="quizzInterface.html?level=N1" class="dropdown_sublink">N1</a>
+                            <a  th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
                         </li>
                     </ul>
                 </li>
@@ -89,8 +89,8 @@
         </div>
     </div>
         <div class="auth-buttons">
-            <button class="sign-in" onclick="window.location.href='login.html'">Sign In</button>
-            <button class="register" onclick="window.location.href='register.html'">Register</button>
+            <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
+            <button class="register" onclick="window.location.href='/register'">Register</button>
         </div>
     </div>
 </div>
@@ -99,7 +99,7 @@
 <!-- Hero Section -->
     <section class="hero">
         <div class="hero-image">
-            <img src="../static/images/landing-page.png" alt="Japanese Landing Page image">
+            <img src="/images/landing-page.png" alt="Japanese Landing Page image">
         </div>
         <div class="hero-content">
             <h2>Master JLPT at Home</h2>
@@ -117,7 +117,7 @@
                 <h3>ONLINE PREMIUM</h3>
                 <div class="plan-content">
                     <div class="plan-icon">
-                        <img src="../static/images/Preminum-logo.png" alt="Premium Icon">
+                        <img src="/images/Preminum-logo.png" alt="Premium Icon">
                     </div>
                     <p>Unlock unlimited flashcard quizzes and all advanced features to accelerate your learning journey.</p>
                 </div>
@@ -133,7 +133,7 @@
                 <h3>ONLINE BASIC</h3>
                 <div class="plan-content">
                     <div class="plan-icon">
-                        <img src="../static/images/Basic-logo.png" alt="Basic Icon">
+                        <img src="/images/Basic-logo.png" alt="Basic Icon">
                     </div>
                     <p>Free access! Look up words and take up to 3 quizzes to test your knowledge.</p>
                 </div>
@@ -151,7 +151,7 @@
         <h2>Why Choose Us?</h2>
         <div class="chosen-reason-content">
             <div class="chosen-icon">
-                <img src="../static/images/chosen-logo.png" alt="Chosen Icon">
+                <img src="/images/chosen-logo.png" alt="Chosen Icon">
             </div>
             <p>Learning Japanese with HikariJP is not just about mastering a language; it's about exploring knowledge and culture, broadening your horizons, and fostering personal growth. With us, you will confidently take firm steps on your journey to conquering the peaks of your career and life.</p>
         </div>
@@ -161,7 +161,7 @@
     <footer>
         <div class="footer-content">
             <div class="logo">
-                <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+                <img src="/images/logo-hikari.png" alt="HikariJP Logo">
             </div>
             <div class="quick-links">
                 <h4>Quick Link</h4>

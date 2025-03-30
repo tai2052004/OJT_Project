@@ -14,6 +14,22 @@ let vocabData = [];
 let kanjiData = [];
 let currentType = "vocabulary"; // Track the current type
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Lấy tham số từ URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedLevel = urlParams.get("level");
+
+    if (selectedLevel) {
+        // Tìm radio button có value tương ứng và chọn nó
+        let radio = document.querySelector(`input[name="level"][value="${selectedLevel}"]`);
+        if (radio) {
+            radio.checked = true;
+
+            document.getElementById("getVocabularyButton").click();
+        }
+    }
+});
+
 async function fetchData() {
     let selectedLevel = document.querySelector("input[name='level']:checked")?.value;
     let selectedType = document.querySelector("input[name='wordType']:checked")?.value;

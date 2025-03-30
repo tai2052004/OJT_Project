@@ -3,34 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <title>Login Page</title>
-  <link rel="stylesheet" href="../static/css/login.css">
+  <link rel="stylesheet" href="/css/login.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
   <div class="container">
     <div class="logo-section">
-      <img src="../static/images/logo-hikari.png" alt="HIKARIJP">
+      <img src="/images/logo-hikari.png" alt="HIKARIJP">
     </div>
     <div class="login-section">
       <h2>Login</h2>
       <p>Login into your account</p>
-      <form>
-        <label for="email">Email address</label>+
+      <form action="/login" method="post">
+        <span class="error-message" th:if="${error}" th:text="${error}" style="color:red;"></span>
+        <label for="email">Email address</label>
         <div class="input-group">
-          <input type="email" id="email" placeholder="alex@email.com">
+          <input type="email" id="email" name="email" placeholder="alex@email.com" th:value="${email != null ? email : ''}" required>
           <span class="icon"><i class="bi bi-envelope"></i></span>
         </div>
 
         <label for="password">Password</label>
         <div class="input-group">
-          <input type="password" id="password" placeholder="Enter your password">
+          <input type="password" id="password" name="password" placeholder="Enter your password" th:value="${password != null ? password : ''}" required>
           <span class="icon"><i class="bi bi-lock"></i></span>
         </div>
 
-        <a href="forgetPassword.html" class="forgot-password">Forgot password?</a>
-        <button type="submit" class="login-btn" onclick="window.location.href='login.html'">Login now</a></button>
+        <a href="/forget-password" class="forgot-password">Forgot password?</a>
+        <button type="submit" class="login-btn">Login now</a></button>
         <p>OR</p>
-        <button type="button" class="signup-btn" onclick="window.location.href='register.html'">Signup now</a></button>
+        <button type="button" class="signup-btn" onclick="window.location.href='/register'">Signup now</a></button>
       </form>
     </div>
   </div>

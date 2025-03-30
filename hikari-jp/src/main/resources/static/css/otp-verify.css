@@ -1,0 +1,141 @@
+/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Căn giữa màn hình */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Container chính */
+.container {
+    width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Tiêu đề */
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Mô tả */
+p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Email hiển thị */
+.email-display {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Ô nhập OTP */
+.otp-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.otp-input input {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.otp-input input:focus {
+    border-color: #007bff;
+}
+
+/* Nút xác nhận */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Đếm ngược */
+#countdown {
+    font-size: 14px;
+    color: #777;
+    margin-top: 10px;
+}
+
+/* Nút gửi lại OTP */
+#resendButton {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#resendButton:enabled {
+    background-color: #28a745;
+    cursor: pointer;
+}
+
+#resendButton:enabled:hover {
+    background-color: #218838;
+}
+.success-alert {
+    color: green;
+    font-weight: bold;
+    background-color: #d4edda;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.error-alert {
+    color: red;
+    font-weight: bold;
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
