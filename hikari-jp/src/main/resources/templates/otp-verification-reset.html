@@ -12,7 +12,7 @@
     <p class="email-display" th:text="${email}">example@email.com</p>
 
     <!-- Form để gửi OTP -->
-    <form action="/verify-otp-register" method="post">
+    <form action="/verify-otp-reset" method="post">
         <!-- Trường ẩn để gửi email -->
         <input type="hidden" name="email" th:value="${email}">
 
@@ -28,7 +28,6 @@
 
         <!-- Trường ẩn chứa OTP hoàn chỉnh -->
         <input type="hidden" name="otp" id="otpFull">
-        
         <!-- Nút xác thực -->
         <button type="submit" id="verifyButton">Verify OTP</button>
     </form>

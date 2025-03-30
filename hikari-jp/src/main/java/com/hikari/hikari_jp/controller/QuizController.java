@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class QuizController {
     @GetMapping("/quizzInterface")
-    public String quizInterface(@RequestParam String level, Model model) {
+    public String quizInterface(@RequestParam(name = "level", required = false) String level, Model model) {
         model.addAttribute("level", level);
         return "quizzInterface";
     }

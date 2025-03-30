@@ -14,8 +14,8 @@
     <div class="login-section">
       <h2>Login</h2>
       <p>Login into your account</p>
+      <span class="error-message" th:if="${error}" th:text="${error}" style="color:red;"></span>
       <form action="/login" method="post">
-        <span class="error-message" th:if="${error}" th:text="${error}" style="color:red;"></span>
         <label for="email">Email address</label>
         <div class="input-group">
           <input type="email" id="email" name="email" placeholder="alex@email.com" th:value="${email != null ? email : ''}" required>

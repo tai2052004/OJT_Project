@@ -24,11 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
         let radio = document.querySelector(`input[name="level"][value="${selectedLevel}"]`);
         if (radio) {
             radio.checked = true;
-
-            document.getElementById("getVocabularyButton").click();
         }
     }
+    fetchData();
 });
+
 
 async function fetchData() {
     let selectedLevel = document.querySelector("input[name='level']:checked")?.value;
@@ -227,8 +227,9 @@ document.addEventListener("DOMContentLoaded", function () {
 //auto load with default value
 document.addEventListener("DOMContentLoaded", function () {
     // Set default selections
-    let defaultLevel = "N5";  // Default JLPT Level
-    let defaultType = "vocabulary"; // Default word type
+    const urlParams = new URLSearchParams(window.location.search);
+    let selectedLevel = urlParams.get("level") || "N5"; // Mặc định là N5 nếu không có trong URL
+    let selectedType = urlParams.get("wordType") || "vocabulary"; // Mặc định là vocabulary nếu không có trong URL
 
     // Check the corresponding radio buttons
     document.querySelector(`input[name='level'][value='${defaultLevel}']`).checked = true;
