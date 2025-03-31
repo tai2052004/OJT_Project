@@ -81,7 +81,6 @@ body, html {
     border-radius: 10px;
     justify-content: space-between;
     padding: 0 20px;
-    width: 60%;
 }
 .grade
 {
@@ -127,7 +126,6 @@ body, html {
 }
 .subject
 {
-    flex: 1;
     display: flex;
     background: #C1BEBE;
     width: 60%;
@@ -245,6 +243,7 @@ body, html {
     display: flex;
     justify-content: space-between;
     padding: 10px 30px;
+    height: auto;
 }
 .second-body-1 > div
 {
@@ -256,6 +255,10 @@ body, html {
     align-items: center;
     justify-content: center;
     font-size: 22px;
+}
+.submit-answer
+{
+    width: 230px!important;
 }
 .submit-answer-button
 {
@@ -274,13 +277,17 @@ body, html {
     background-position: right;
 }
 
+.selectedNum
+{
+    background: linear-gradient(45deg, #1B9544, lightgreen)!important;
 
+}
 .question_num
 {
     width: 1200px;
     display: grid;
-    grid-template-columns: repeat(12,1fr);
-    margin: 0 70px;
+    grid-template-columns: repeat(10,1fr);
+    margin: 0 auto;
     overflow: hidden;
     height: 0;
     transition: height 0.5s ease-out;
@@ -296,6 +303,7 @@ body, html {
     align-items: center;
     font-size: 18px;
     cursor: pointer;
+    margin: 0 auto;
 }
 .question_num > div:hover
 {
@@ -491,7 +499,10 @@ body {
         gap: 10px;
     }
 }
-
+.wrongNum
+{
+    background: linear-gradient(45deg, #bc2b26, lightcoral)!important;
+}
 .question
 {
     background: linear-gradient(45deg, #3a98b9, #007bff);
@@ -533,7 +544,7 @@ body {
     position: fixed;
     top: 0;
     left: 50px;
-    width: 90%;
+    width: 1400px;
     border-radius: 10px;
     background: lightblue;
     align-items: center;
@@ -556,10 +567,11 @@ body {
 .answer-container
 {
     width: 45%;
+    padding-top: 15px;
 }
 /* Khi được chọn, đổi màu */
 .answer-container .answer.selected {
-    background-color: #3498db;
+    background-color: #2d7a96;
     color: #fff;
     font-weight: bold;
 }
@@ -572,7 +584,17 @@ body {
 .hidden {
     display: none;
 }
-
+.score-result
+{
+    width: 100%;
+    height: 80px;
+    border-radius: 15px;
+    background: linear-gradient(45deg, gainsboro, lightslategrey);
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .result-text {
     font-weight: bold;
     margin: 15px 0 0 20px;
