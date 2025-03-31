@@ -1,4 +1,4 @@
-let totalTime = 60 * 60; // 60 phút = 3600 giây
+let totalTime = 60 * 20; // 60 phút = 3600 giây
 let timeLeft = totalTime;
 let timerInterval = null;
 let countdownElement = document.getElementById("time");
@@ -12,6 +12,9 @@ let num = document.querySelectorAll('.num');
 let levelContentInput = document.getElementById("level_test");
 let subjectTestInput = document.getElementById("subject_test");
 let topicTestInput = document.getElementById("topic_test");
+let gradeContent = document.querySelectorAll('.grade-content');
+let gradeTestInput = document.getElementById("grade-test");
+let levelReading = document.getElementById("level_test_reading");
 
 document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () =>
@@ -24,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 fetchVocabulary();
             }
+            if (subjectTestInput.value.includes("どっかい"))
+            {
+                document.getElementById("myForm").submit();
+            }
             // Clear interval cũ nếu có
             if (timerInterval) clearInterval(timerInterval);
             // Gán interval mới vào biến
@@ -35,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         levelContent.forEach(l => l.classList.remove('num-active'));
         lv.classList.add('num-active');
         levelContentInput.value = lv.textContent;
+        levelReading.value = lv.id;
     }));
     subjectContent.forEach(sc => sc.addEventListener('click',() =>
     {
@@ -42,12 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
         sc.classList.add('num-active');
         subjectTestInput.value = sc.textContent;
     }));
+    gradeContent.forEach(gr => gr.addEventListener('click',() =>
+    {
+        gradeContent.forEach(g => g.classList.remove('num-active'));
+        gr.classList.add('num-active');
+        gradeTestInput.value = gr.textContent;
+    }));
     topicNum.forEach(tn => tn.addEventListener('click',() =>
     {
         topicNum.forEach(t => t.classList.remove('num-active'));
         tn.classList.add('num-active');
         topicTestInput.value = tn.textContent;
     }));
+
+    let value = document.getElementById("checkValue").value;
+    if (value) {
+        secondBody.style.display = "block";
+    }
 
     answers.forEach(answer => {
         answer.addEventListener('click', function () {
@@ -63,36 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add('choose-answer');
         });
     });
-    let observer = new IntersectionObserver(
-        function (entries) {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    document.body.classList.add("scrolled-past-question-num");
-                } else {
-                    document.body.classList.remove("scrolled-past-question-num");
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
-
-    let target = document.querySelector(".question-num");
-    if (target) observer.observe(target);
-
-    // 🛠️ Hiệu ứng cũ vẫn giữ nguyên
-    let elements = document.querySelectorAll(".animate-on-scroll");
-    let observer2 = new IntersectionObserver(
-        function (entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("active");
-                }
-            });
-        },
-        { threshold: 0.2 }
-    );
-
-    elements.forEach(element => observer2.observe(element));
 });
 
 function updateCountdown() {
@@ -115,8 +104,6 @@ let kanjiList = [];
 let vocabularyList = [];
 let questions = [];
 let userAnswers = {};
-const totalQuestions = 20;
-
 
 const JLPT_TO_WK = {
     "N5": "1,2,3,4,5,6,7,8,9,10",
@@ -130,6 +117,7 @@ function testNavigate() {
     let jlptLevel = levelContentInput.value;
     let jlptSubject = subjectTestInput.value;
     let jlptTopic = topicTestInput.value;
+    let jlptGrade = gradeTestInput.value;
     let levels = JLPT_TO_WK[jlptLevel];
 
     if (!levels) {
@@ -168,6 +156,18 @@ function testNavigate() {
         return false;
     }
 
+    if (!jlptGrade) {
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'warning',
+            title: 'Please choose num of question.',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return false;
+    }
+
     return true;
 }
 
@@ -181,9 +181,57 @@ async function fetchVocabulary() {
     await fetchData("kanji");
     await fetchData("vocabulary");
 
+    checkViewPort();
     generateQuestions();
+    generateNumOfQuestion();
 }
 
+function checkViewPort()
+{
+    let togglediv = document.querySelector('.toggle-div');
+    let secondbody1 = document.querySelector('.second-body-1');
+    let question_num = document.querySelector('.question_num');
+    document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value
+    let parentDiv = [secondbody1,togglediv, question_num];
+
+    const originalPosition = parentDiv.map(block => (
+        {
+            parent : block.parentNode,
+            nextSibling : block.nextSibling
+        }
+    ))
+
+    const threshold = togglediv.offsetTop;
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > threshold)
+        {
+            if (!document.querySelector('.fixed-head'))
+            {
+                const fixedHead = document.createElement("div");
+                fixedHead.classList.add("fixed-head");
+
+                parentDiv.forEach( child => fixedHead.appendChild(child));
+
+                const secondbody = document.querySelector('.second-body');
+                if (secondbody)
+                {
+                    secondbody.appendChild(fixedHead);
+                }
+            }
+        } else
+        {
+            const fixhead = document.querySelector('.fixed-head')
+
+            parentDiv.forEach( (c, i) => {
+                const { parent, sibling } = originalPosition[i];
+                parent.insertBefore(c, sibling);
+            });
+            fixhead.remove();
+        }
+    })
+
+}
 async function fetchData(type) {
     let url = API_URL + type + "&levels=" + JLPT_TO_WK[levelContentInput.value];
     let headers = { "Authorization": "Bearer " + API_KEY };
@@ -212,10 +260,11 @@ function generateQuestions() {
     questions = [];
     userAnswers = {};
 
-    let selectedKanji = kanjiList.sort(() => 0.5 - Math.random()).slice(0, 10);
-    let selectedVocab = vocabularyList.sort(() => 0.5 - Math.random()).slice(0, 10);
+    let selectedKanji = kanjiList.sort(() => 0.5 - Math.random()).slice(0, parseInt(gradeTestInput.value) / 2);
+    let selectedVocab = vocabularyList.sort(() => 0.5 - Math.random()).slice(0, parseInt(gradeTestInput.value) / 2);
 
     let selectedWords = [...selectedKanji, ...selectedVocab];
+
 
     selectedWords.forEach((q, index) => {
         let correctAnswer = q.meaning;
@@ -235,18 +284,13 @@ function generateQuestions() {
         });
     });
 
-    startQuiz();
-}
-
-function startQuiz() {
-    document.getElementById("quiz-container").classList.remove("hidden");
     showQuestions();
 }
 
 function showQuestions() {
     let quizHTML = questions.map((q, index) => `
         <div class="question">
-            <p class="question-name"><b>Question ${index + 1}:</b> 「${q.word}」 means ?</p>
+            <p class="question-name" id="question-${index + 1}"><b>Question ${index + 1}:</b> 「${q.word}」 means ?</p>
             <div class="answer-container">
                 ${q.choices.map(choice => `
                     <div class="answer" onclick="selectAnswer(${index}, this, '${choice}')">
@@ -258,8 +302,7 @@ function showQuestions() {
         </div>
     `).join('');
 
-    document.querySelector(".fixed-head").insertAdjacentHTML("afterend", quizHTML);
-    document.getElementById("quiz-score").innerHTML = "";
+    document.querySelector(".second-body").insertAdjacentHTML("afterend", quizHTML);
 }
 
 
@@ -288,22 +331,47 @@ function submitQuiz() {
         let correct = q.correctAnswer;
         document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
         let resultElement = document.getElementById(`result-${index}`);
-
+        let answerQuestion = document.querySelectorAll(`#question-${index + 1} + .answer-container .answer`);
         if (userAnswer === correct) {
             score++;
-            resultElement.innerHTML = `<span class="correct ">✅ Đúng!</span>`;
+            resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
         } else {
-            resultElement.innerHTML = `<span class="wrong ">❌ Sai! Đáp án đúng là: <b>${correct}</b></span>`;
+            document.querySelectorAll('.num').forEach( n =>
+            {
+                if ( parseInt( n.dataset.question) === index + 1)
+                {
+                    n.classList.remove("selectedNum");
+                    n.classList.add("wrongNum");
+                }
+            })
+            answerQuestion.forEach(aq =>
+            {
+                if(aq.innerText.trim() === correct)
+                {
+                    aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
+                }
+                if(aq.innerText.trim() === userAnswer)
+                {
+                    aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
+                }
+            })
+            resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correct}</b></span>`;
         }
     });
 
     Swal.fire({
         title: 'Kết quả bài thi',
-        html: `<h3 style="color: #007bff;">Số câu đúng: ${score}/${totalQuestions}</h3>`,
+        html: `<h3 style="color: #007bff;">Số câu đúng: ${score}/${gradeTestInput.value}</h3>`,
         icon: 'success',
         confirmButtonText: 'OK',
     });
-    document.getElementById("submit-answer-button").innerHTML = `🎯 Tổng điểm: ${score}/${totalQuestions}`;
+
+    let newDiv = document.createElement("div");
+    newDiv.innerText = `🎯 Total Score: ${score}/${gradeTestInput.value}`;
+    newDiv.classList.add("score-result");
+
+    let btn = document.querySelector('.submit-answer-button');
+    btn.parentNode.replaceChild(newDiv,btn);
 }
 function selectAnswer(questionIndex, element, selectedAnswer) {
     // Loại bỏ class 'selected' khỏi tất cả đáp án của câu hỏi này
@@ -311,6 +379,13 @@ function selectAnswer(questionIndex, element, selectedAnswer) {
 
     // Thêm class 'selected' cho đáp án được chọn
     element.classList.add('selected');
+    document.querySelectorAll('.num').forEach(  n =>
+    {
+        if ( parseInt(n.dataset.question) === (questionIndex+1))
+        {
+            n.classList.add("selectedNum");
+        }
+    })
 
     // Lưu đáp án vào userAnswers
     userAnswers[questionIndex] = selectedAnswer;
@@ -320,9 +395,31 @@ document.getElementById("toggleQuestions").addEventListener("click", function ()
     const container = document.querySelector(".question_num");
     // Nếu đang ẩn thì mở rộng lên bằng scrollHeight, ngược lại thu lại
     if (!container.style.height || container.style.height === "0px") {
-        container.style.height = container.scrollHeight + "px";
+        container.style.height = container.scrollHeight + 50 + "px";
     } else {
         container.style.height = "0px";
     }
 });
 
+function generateNumOfQuestion()
+{
+    let questNum = document.querySelector('.question_num');
+    for( let i = 1; i <= parseInt(gradeTestInput.value); i++)
+    {
+        let numDiv = document.createElement("div");
+        numDiv.classList.add("num");
+        numDiv.textContent = i;
+        numDiv.setAttribute("data-question", i);
+        questNum.appendChild(numDiv);
+        console.log()
+    }
+    document.querySelectorAll('.num').forEach( n => n.addEventListener("click", () =>
+    {
+        let numAtr = n.dataset.question;
+        let target_question = document.getElementById("question-" + numAtr);
+        if (target_question)
+        {
+            target_question.scrollIntoView({ behavior : "smooth" })
+        }
+    }))
+}
