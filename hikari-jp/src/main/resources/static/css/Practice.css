@@ -324,25 +324,25 @@ body, html {
 }
 
 
-/*.question-content*/
-/*{*/
-/*    background: #E3F4FA;*/
-/*    width: 45%;*/
-/*    height: 100%;*/
-/*    border-radius: 15px;*/
-/*    font-size: 21px;*/
-/*}*/
+.question-content
+{
+    background: rgba(150, 230, 230, 0.7);
+    width: 45%;
+    height: 100%;
+    border-radius: 15px;
+    font-size: 21px;
+}
 
-/*.question-in*/
-/*{*/
-/*    margin-bottom: 30px;*/
-/*    min-height: 100px;*/
-/*    height: auto;*/
-/*    width: 100%;*/
-/*    background: honeydew;*/
-/*    border-radius: 15px 15px 0 0;*/
-/*    padding: 20px 20px;*/
-/*}*/
+.question-in
+{
+    margin-bottom: 30px;
+    min-height: 100px;
+    height: auto;
+    width: 100%;
+    background: #f8d7da;
+    border-radius: 15px 15px 0 0;
+    padding: 20px 20px;
+}
 
 /*.choose-answer*/
 /*{*/
@@ -543,7 +543,7 @@ body {
 {
     position: fixed;
     top: 0;
-    left: 50px;
+    left: 140px;
     width: 1400px;
     border-radius: 10px;
     background: lightblue;
@@ -552,13 +552,14 @@ body {
 }
 .answer
 {
-    margin: 15px 15px 0 0;
+    margin: 15px auto;
     height: auto;
-    width: 100%;
+    width: 90%;
     background: whitesmoke;
     padding: 15px;
     border-radius: 20px;
     cursor: pointer;
+    text-align: center;
 }
 .answer:hover
 {
@@ -571,9 +572,9 @@ body {
 }
 /* Khi được chọn, đổi màu */
 .answer-container .answer.selected {
-    background-color: #2d7a96;
-    color: #fff;
-    font-weight: bold;
+    background-color: #2d7a96!important;
+    color: #fff!important;
+    font-weight: bold!important;
 }
 
 .result-text {
@@ -610,4 +611,23 @@ body {
 
 .wrong {
     color: red;
+}
+.questionReading
+{
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    margin: 50px auto;
+    padding-right: 10px;
+    padding-bottom: 15px;
+    width: 1200px;
+
+}
+.disabled {
+    pointer-events: none;  /* Ngăn click */
+    opacity: 0.5; /* Làm mờ div */
+}
+.selectedRead
+{
+    background-color: #2d7a96!important;
 }

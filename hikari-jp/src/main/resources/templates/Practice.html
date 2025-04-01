@@ -113,20 +113,23 @@
             <div class="question_num">
 
             </div>
-        <div th:if="${readingPractices != null}">
+        <div class="readingPart" th:if="${readingPractices != null}">
         <div class="passage" th:text="${readingPractices.getPassage()}">
 
         </div>
-        <div class="question">
-            <div class="question-content num1" th:each="question : ${readingPractices.getPracticeDetails()}">
-                <div class="question-in num1" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
-                <div class="answer" th:text="${question.getTestQuestion().getChoice_a()}"></div>
-                <div class="answer" th:text="${question.getTestQuestion().getChoice_b()}"></div>
-                <div class="answer" th:text="${question.getTestQuestion().getChoice_c()}"></div>
-                <div class="answer" th:text="${question.getTestQuestion().getChoice_d()}"></div>
-                <input type="hidden" value="" >
+        <div class="questionReading">
+            <div class="question-content"  th:each="question, iterStat : ${readingPractices.getPracticeDetails()}" th:id="'question-' + ${iterStat.index + 1}">
+                <div class="question-in" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
+                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
+                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
+                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
+                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
+                <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="" >
+                <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}"  th:value="${question.getTestQuestion().getCorrect_answer()}" >
+                <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
             </div>
         </div>
+
         </div>
     </div>
 <footer>
