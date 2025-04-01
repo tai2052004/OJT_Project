@@ -24,16 +24,16 @@
     </div>
 
     <div class="header-navigate">
-        <div class="landingpage">
+        <div class="landingpage active">
             <a href="landingPage.html">Home</a>
         </div>
 
-        <div class="lookup active">
-            <a href="lookUp.html">Look Up</a>
+        <div class="lookup">
+            <a th:href="@{/LookUp}">Look Up</a>
         </div>
 
         <div class="jlpt">
-            <a href="">JLPT Test</a>
+            <a th:href="@{/jlptTest}">JLPT Test</a>
         </div>
 
         <div class="premium">
@@ -79,7 +79,7 @@
                     <a href="#" class="dropdown-link">Writing</a>
                 </li>
                 <li>
-                    <a href="Practice.html" class="dropdown-link">MiniTest</a>
+                    <a th:href="@{/Practice}" class="dropdown-link">Practice</a>
                 </li>
             </ul>
         </div>

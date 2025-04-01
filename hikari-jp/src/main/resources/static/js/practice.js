@@ -1,5 +1,6 @@
-let totalTime = 60 * 20; // 60 phút = 3600 giây
-let timeLeft = totalTime;
+let totalTime = 60 * 20; //
+let totalTimeRead = 60 * 60;
+let timeLeft = 0;
 let timerInterval = null;
 let countdownElement = document.getElementById("time");
 let startButton = document.querySelector('.start-button');
@@ -7,7 +8,6 @@ let secondBody = document.querySelector('.second-body');
 let levelContent = document.querySelectorAll('.level-content');
 let subjectContent = document.querySelectorAll('.subject-content');
 let topicNum = document.querySelectorAll('.topic-num');
-let answers = document.querySelectorAll('.answer');
 let num = document.querySelectorAll('.num');
 let levelContentInput = document.getElementById("level_test");
 let subjectTestInput = document.getElementById("subject_test");
@@ -15,10 +15,16 @@ let topicTestInput = document.getElementById("topic_test");
 let gradeContent = document.querySelectorAll('.grade-content');
 let gradeTestInput = document.getElementById("grade-test");
 let levelReading = document.getElementById("level_test_reading");
+let questionContent = document.querySelectorAll('.question-content');
 
 document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () =>
     {
+        fetch('/clearModel', { method: 'GET' });
+        let scoreResultDiv = document.querySelector(".score-result");
+        if (scoreResultDiv) {
+            scoreResultDiv.outerHTML = '<button class="submit-answer-button" onclick="submitQuiz()">Submit</button>';
+        }
         if (testNavigate())
         {
             secondBody.style.display = "block";
@@ -26,15 +32,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (subjectTestInput.value.includes("たんご"))
             {
                 fetchVocabulary();
+                // Clear interval cũ nếu có
+                if (timerInterval) clearInterval(timerInterval);
+                // Gán interval mới vào biến
+                timeLeft = totalTime;
+                timerInterval = setInterval(updateCountdown, 1000);
+                document.querySelector('.readingPart').style.display = "none";
             }
             if (subjectTestInput.value.includes("どっかい"))
             {
+                let hiddenInputSubject = subjectTestInput.value;
+                let hiddenInputLevel = levelContentInput.value;
+                let hiddenInputTopic = topicTestInput.value;
+                let hiddenInputGrade = gradeTestInput.value;
+                sessionStorage.setItem("savedHiddenSubject", hiddenInputSubject);
+                sessionStorage.setItem("savedHiddenLevel", hiddenInputLevel);
+                sessionStorage.setItem("savedHiddenTopic", hiddenInputTopic);
+                sessionStorage.setItem("savedHiddenGrade", hiddenInputGrade);
                 document.getElementById("myForm").submit();
+                // Clear interval cũ nếu có
+
             }
-            // Clear interval cũ nếu có
-            if (timerInterval) clearInterval(timerInterval);
-            // Gán interval mới vào biến
-            timerInterval = setInterval(updateCountdown, 1000);
+
         }
     });
     levelContent.forEach(lv => lv.addEventListener('click',() =>
@@ -49,6 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
         subjectContent.forEach(s => s.classList.remove('num-active'));
         sc.classList.add('num-active');
         subjectTestInput.value = sc.textContent;
+        if (subjectTestInput.value.includes("どっかい"))
+        {
+            gradeContent.forEach(gr =>
+            {
+                gr.classList.add("disabled");
+            });
+        }
+        else
+        {
+            gradeContent.forEach(gr =>
+            {
+                gr.classList.remove("disabled");
+            });
+        }
     }));
     gradeContent.forEach(gr => gr.addEventListener('click',() =>
     {
@@ -62,26 +95,48 @@ document.addEventListener('DOMContentLoaded', () => {
         tn.classList.add('num-active');
         topicTestInput.value = tn.textContent;
     }));
+    let savedHiddenSubject = sessionStorage.getItem("savedHiddenSubject");
+    let savedHiddenLevel = sessionStorage.getItem("savedHiddenLevel");
+    let savedHiddenTopic = sessionStorage.getItem("savedHiddenTopic");
+    let savedHiddenGrade = sessionStorage.getItem("savedHiddenGrade");
+
+    if (savedHiddenSubject.includes("どっかい"))
+    {
+        if (timerInterval) clearInterval(timerInterval);
+        // Gán interval mới vào biến
+        timeLeft = totalTimeRead;
+        timerInterval = setInterval(updateCountdown, 1000);
+    }
+    if (savedHiddenSubject) {
+        subjectTestInput.value = savedHiddenSubject;
+        sessionStorage.removeItem("savedHiddenSubject");
+    }
+    if (savedHiddenLevel) {
+       levelContentInput.value = savedHiddenLevel;
+        sessionStorage.removeItem("savedHiddenLevel");
+    }
+    if (savedHiddenTopic) {
+        topicTestInput.value = savedHiddenTopic;
+        sessionStorage.removeItem("savedHiddenTopic");
+    }
+    if (savedHiddenGrade)
+    {
+        gradeTestInput.value = savedHiddenGrade;
+        sessionStorage.removeItem("savedHiddenGrade");
+    }
+
+    // Nếu muốn xóa dữ liệu sau khi lấy (chỉ lưu tạm trong 1 lần load)
+
+
+
 
     let value = document.getElementById("checkValue").value;
     if (value) {
         secondBody.style.display = "block";
+        document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value + "(" + levelContentInput.value +")"
+        generateNumOfQuestion(2);
     }
 
-    answers.forEach(answer => {
-        answer.addEventListener('click', function () {
-            let question = this.closest('.question-content');
-            question.querySelectorAll('.answer').forEach(ans => ans.classList.remove('choose-answer'));
-            num.forEach(n =>
-            {
-                if ( n.id.includes(question.classList[1]))
-                {
-                    n.classList.add('complete');
-                }
-            })
-            this.classList.add('choose-answer');
-        });
-    });
 });
 
 function updateCountdown() {
@@ -96,6 +151,8 @@ function updateCountdown() {
         countdownElement.textContent = "Hết giờ!";
     }
 }
+
+
 
 const API_KEY = "ca3a574a-9e5d-4e86-872f-c7d81efe7245";
 const API_URL = "https://api.wanikani.com/v2/subjects?types=kanji&levels=";
@@ -156,16 +213,22 @@ function testNavigate() {
         return false;
     }
 
-    if (!jlptGrade) {
-        Swal.fire({
-            toast: true,
-            position: 'top',
-            icon: 'warning',
-            title: 'Please choose num of question.',
-            showConfirmButton: false,
-            timer: 3000
-        });
-        return false;
+    if (subjectTestInput.value.includes("たんご")) {
+        if (!jlptGrade) {
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'warning',
+                title: 'Please choose num of question.',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return false;
+        }
+    }
+   if (subjectTestInput.value.includes("どっかい"))
+    {
+        gradeTestInput.value = "2";
     }
 
     return true;
@@ -183,7 +246,7 @@ async function fetchVocabulary() {
 
     checkViewPort();
     generateQuestions();
-    generateNumOfQuestion();
+    generateNumOfQuestion(gradeTestInput.value);
 }
 
 function checkViewPort()
@@ -191,7 +254,7 @@ function checkViewPort()
     let togglediv = document.querySelector('.toggle-div');
     let secondbody1 = document.querySelector('.second-body-1');
     let question_num = document.querySelector('.question_num');
-    document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value
+    document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value  + "(" + levelContentInput.value +")"
     let parentDiv = [secondbody1,togglediv, question_num];
 
     const originalPosition = parentDiv.map(block => (
@@ -326,38 +389,81 @@ function submitQuiz() {
         fixedHead.remove();
     }
     clearInterval(timerInterval);
-    questions.forEach((q, index) => {
-        let userAnswer = userAnswers[index];
-        let correct = q.correctAnswer;
-        document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
-        let resultElement = document.getElementById(`result-${index}`);
-        let answerQuestion = document.querySelectorAll(`#question-${index + 1} + .answer-container .answer`);
-        if (userAnswer === correct) {
-            score++;
-            resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
-        } else {
-            document.querySelectorAll('.num').forEach( n =>
+    if (subjectTestInput.value.includes("たんご"))
+    {
+        questions.forEach((q, index) => {
+            let userAnswer = userAnswers[index];
+            let correct = q.correctAnswer;
+            document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
+            let resultElement = document.getElementById(`result-${index}`);
+            let answerQuestion = document.querySelectorAll(`#question-${index + 1} + .answer-container .answer`);
+            if (userAnswer === correct) {
+                score++;
+                resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
+            } else {
+                document.querySelectorAll('.num').forEach( n =>
+                {
+                    if ( parseInt( n.dataset.question) === index + 1)
+                    {
+                        n.classList.remove("selectedNum");
+                        n.classList.add("wrongNum");
+                    }
+                })
+                answerQuestion.forEach(aq =>
+                {
+                    if(aq.innerText.trim() === correct)
+                    {
+                        aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
+                    }
+                    if(aq.innerText.trim() === userAnswer)
+                    {
+                        aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
+                    }
+                })
+                resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correct}</b></span>`;
+            }
+        });
+    }
+    else if (subjectTestInput.value.includes("どっかい"))
+    {
+        questionContent.forEach(qc =>
+        {
+            let parentID = qc.id.split('-')[1];
+            let userAnswer = document.getElementById('userAnswer-' + parentID);
+            let correctAnswer = document.getElementById('correctAnswer-' + parentID);
+            let resultElement = document.getElementById('result-' + parentID);
+            document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
+            let answer = qc.querySelectorAll('.answer');
+            if ( userAnswer.value === correctAnswer.value)
             {
-                if ( parseInt( n.dataset.question) === index + 1)
+                score++;
+                resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
+            }else {
+                document.querySelectorAll('.num').forEach( n =>
                 {
-                    n.classList.remove("selectedNum");
-                    n.classList.add("wrongNum");
-                }
-            })
-            answerQuestion.forEach(aq =>
-            {
-                if(aq.innerText.trim() === correct)
+                    if ( parseInt( n.dataset.question) === parseInt(parentID))
+                    {
+                        n.classList.remove("selectedNum");
+                        n.classList.add("wrongNum");
+                    }
+                })
+                answer.forEach(aq =>
                 {
-                    aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
-                }
-                if(aq.innerText.trim() === userAnswer)
-                {
-                    aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
-                }
-            })
-            resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correct}</b></span>`;
-        }
-    });
+                    if(aq.innerText.trim() === correctAnswer.value)
+                    {
+                        aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
+                    }
+                    if(aq.innerText.trim() === userAnswer.value)
+                    {
+                        aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
+                    }
+                })
+                resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correctAnswer.value}</b></span>`;
+            }
+
+        })
+    }
+
 
     Swal.fire({
         title: 'Kết quả bài thi',
@@ -401,10 +507,11 @@ document.getElementById("toggleQuestions").addEventListener("click", function ()
     }
 });
 
-function generateNumOfQuestion()
+function generateNumOfQuestion(gradeTestInputValue)
 {
     let questNum = document.querySelector('.question_num');
-    for( let i = 1; i <= parseInt(gradeTestInput.value); i++)
+    questNum.innerHTML = "";
+    for( let i = 1; i <= parseInt(gradeTestInputValue); i++)
     {
         let numDiv = document.createElement("div");
         numDiv.classList.add("num");
@@ -413,6 +520,7 @@ function generateNumOfQuestion()
         questNum.appendChild(numDiv);
         console.log()
     }
+
     document.querySelectorAll('.num').forEach( n => n.addEventListener("click", () =>
     {
         let numAtr = n.dataset.question;
@@ -423,3 +531,23 @@ function generateNumOfQuestion()
         }
     }))
 }
+
+function selectAnswerReading(abc)
+{
+
+    abc.parentElement.querySelectorAll('.answer').forEach(a => a.classList.remove('selectedRead'));
+
+    let parentID = abc.parentElement.id.split('-')[1];
+    let userAnswer = document.getElementById("userAnswer-" + parentID);
+    userAnswer.value = abc.textContent;
+    // Thêm class 'selected' cho đáp án được chọn
+    abc.classList.add('selectedRead');
+    document.querySelectorAll('.num').forEach(  n =>
+    {
+        if (n.dataset.question.includes(parentID) )
+        {
+            n.classList.add("selectedNum");
+        }
+    })
+}
+

@@ -15,7 +15,7 @@ public class SpringWeb {
 
     private static void openBrowser(String url) {
         try {
-            Thread.sleep(5000); // Đợi 5 giây để chắc chắn server đã chạy
+            Thread.sleep(2000); // Đợi 5 giây để chắc chắn server đã chạy
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(url));
             } else {
