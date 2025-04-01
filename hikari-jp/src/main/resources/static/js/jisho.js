@@ -1,39 +1,151 @@
-document.getElementById('search-button').addEventListener('click', performSearch);
+// Khai báo các API key
+const UNSPLASH_API_KEY = '0h5JCQWWS58FnIIbcRRDOohn75o-xl-0rbdtEEAFCkU';
+const TEXT_TO_SPEECH_KEY = "AIzaSyBoDBmFoXR8QcqFiGIp7oZ3QniEzoA-OrY";
 
-const API_KEY = '0h5JCQWWS58FnIIbcRRDOohn75o-xl-0rbdtEEAFCkU'; // Thay bằng key của bạn
-const searchInput = document.getElementById('query');
-const imageResults = document.getElementById('image-results');
+// Biến toàn cục
+let translatedText = '';
 
-async function performSearch() {
-    const query = searchInput.value.trim();
-    if (!query) return;
+// Hàm khởi tạo khi trang web tải xong
+document.addEventListener('DOMContentLoaded', function() {
+    // Lấy các phần tử DOM
+    const searchInput = document.getElementById('query');
+    const imageResults = document.getElementById('image-results');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playAudioBtn = document.getElementById('play-audio-btn');
 
-    const loadingElement = document.getElementById('loading');
-    const resultsElement = document.getElementById('results');
+    // Thêm sự kiện cho các nút
+    document.getElementById('search-button').addEventListener('click', performSearch);
+    document.getElementById('play-audio-btn').addEventListener('click', playAudio);
+    document.getElementById("voice-button").addEventListener("click", voiceSearch);
 
-    loadingElement.style.display = 'block';
-    resultsElement.innerHTML = '<div class="translation-status">Đang xử lý...</div>';
-    imageResults.innerHTML = ''; // Xóa ảnh cũ
+    // Hàm thực hiện tìm kiếm
+    async function performSearch() {
+        const query = searchInput.value.trim();
+        if (!query) return;
 
-    try {
-        // Bước 1: Dịch sang tiếng Nhật
-        const translatedQuery = await translateToJapanese(query);
-        resultsElement.innerHTML = `<div class="translation-status">Đã dịch: "${query}" → "${translatedQuery}"</div>`;
+        const loadingElement = document.getElementById('loading');
+        const resultsElement = document.getElementById('results');
 
-        // Bước 2: Tìm kiếm trên Jisho
-        const searchResults = await searchJisho(translatedQuery);
-        displayResults(searchResults);
+        loadingElement.style.display = 'block';
+        resultsElement.innerHTML = '<div class="translation-status">Đang xử lý...</div>';
+        imageResults.innerHTML = '';
+        playAudioBtn.style.display = 'none';
 
-        // Bước 3: Tìm kiếm ảnh từ Unsplash
-        await fetchImages(translatedQuery);
+        try {
+            translatedText = await translateToJapanese(query);
+            resultsElement.innerHTML = `<div class="translation-status">Đã dịch: "${query}" → "${translatedText}"</div>`;
 
-    } catch (error) {
-        console.error('Lỗi:', error);
-        resultsElement.innerHTML = '<div class="error">Có lỗi xảy ra: ' + error.message + '</div>';
-    } finally {
-        loadingElement.style.display = 'none';
+            const searchResults = await searchJisho(translatedText);
+            displayResults(searchResults);
+            await fetchImages(translatedText);
+            await convertTextToSpeech(translatedText);
+        } catch (error) {
+            console.error('Lỗi:', error);
+            resultsElement.innerHTML = '<div class="error">Có lỗi xảy ra: ' + error.message + '</div>';
+        } finally {
+            loadingElement.style.display = 'none';
+        }
     }
-}
+
+    // Hàm hiển thị kết quả tìm kiếm
+    function displayResults(results) {
+        const container = document.getElementById('results');
+        container.style.display = 'block';
+        container.innerHTML = "";
+
+        if (!results || results.length === 0) {
+            container.innerHTML += '<p class="text-center text-danger">Không tìm thấy kết quả</p>';
+            return;
+        }
+
+        // Hiển thị kết quả đầu tiên
+        const firstResult = results[0];
+        const japanese = firstResult.japanese?.[0] || {};
+        const senses = firstResult.senses || [];
+
+        const word = japanese.word || japanese.reading || 'N/A';
+        const reading = japanese.reading && japanese.reading !== word ? japanese.reading : '';
+
+        let html = `
+        <div class="card shadow-lg p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="word-info flex-grow-1">
+                    <h2 class="word-title text-primary mb-2">${word}</h2>
+                    ${reading ? `<p class="reading text-muted"><em>${reading}</em></p>` : ''}
+        `;
+
+        senses.forEach((sense, index) => {
+            const meaning = sense.english_definitions?.join(', ') || 'Không có thông tin';
+            let additionalInfo = sense.info?.length
+                ? sense.info.map(info => `<div class="badge bg-info text-white me-1">${info}</div>`).join('')
+                : '';
+
+            let examplesHtml = '';
+            if (sense.examples?.length) {
+                examplesHtml = '<ul class="list-group mt-2">';
+                sense.examples.forEach(example => {
+                    examplesHtml += `<li class="list-group-item"><strong>${example.japanese}</strong> - ${example.english}</li>`;
+                });
+                examplesHtml += '</ul>';
+            }
+
+            html += `
+                <div class="alert alert-light mt-3">
+                    <p class="fw-bold">Ý nghĩa ${index + 1}: <span class="text-success">${meaning}</span></p>
+                    ${additionalInfo}
+                    ${examplesHtml}
+                </div>
+            `;
+        });
+
+        html += `
+                </div>
+                <div id="image-results" class="ms-3" style="width: 300px; height: 200px;"></div>
+            </div>
+            <div class="mt-3 text-center">
+                <button id="play-audio-btn" class="btn btn-primary">🔊</button>
+                <audio id="audioPlayer" style="display: none;"></audio>
+            </div>
+        </div>
+        <h3 class="text-primary mt-4">🔍 Các kết quả khác</h3>
+        <div class="other-results">
+        `;
+
+        // Hiển thị các kết quả khác
+        for (let i = 1; i < results.length; i++) {
+            const result = results[i];
+            const japanese = result.japanese?.[0] || {};
+            const senses = result.senses || [];
+
+            const word = japanese.word || japanese.reading || 'N/A';
+            const reading = japanese.reading && japanese.reading !== word ? japanese.reading : '';
+
+            const firstSense = senses.length > 0 ? senses[0] : null;
+            const meaning = firstSense ? firstSense.english_definitions?.join(', ') : 'Không có thông tin';
+
+            html += `
+            <div class="border-bottom py-2 clickable-word" data-word="${word}" style="cursor: pointer;">
+                <h4 class="text-dark d-inline-block">${word}</h4> 
+                <p class="text-muted small d-inline ms-2"><strong>Ý nghĩa:</strong> ${meaning}</p>
+                ${reading ? `<p class="text-muted small"><em>${reading}</em></p>` : ''}
+            </div>`;
+        }
+
+        html += `</div>`;
+        container.innerHTML = html;
+
+        // Thêm sự kiện click cho các từ trong "Các kết quả khác"
+        document.querySelectorAll('.clickable-word').forEach(element => {
+            element.addEventListener('click', function() {
+                const wordToSearch = this.getAttribute('data-word');
+                searchInput.value = wordToSearch;
+                performSearch();
+            });
+        });
+    }
+});
+
+// Các hàm utility
 
 // Hàm dịch sang tiếng Nhật
 async function translateToJapanese(text) {
@@ -61,73 +173,118 @@ async function searchJisho(query) {
     return JSON.parse(data.contents).data;
 }
 
-// Hiển thị kết quả
-function displayResults(results) {
-    const container = document.getElementById('results');
-    container.style.display = 'block';
-    container.innerHTML = "";
-    if (!results || results.length === 0) {
-        container.innerHTML += '<p>Không tìm thấy kết quả</p>';
-        return;
-    }
-    let html = `
-        <div class="result-container p-3">
-            <h3 class="text-primary">🔍 Kết quả tìm kiếm</h3>
-            <div class="row g-3">
-    `;
-
-    results.forEach(result => {
-        const japanese = result.japanese?.[0] || {};
-        const senses = result.senses?.[0] || {};
-
-        const word = japanese.word || japanese.reading || 'N/A';
-        const reading = japanese.reading || '';
-        const meaning = senses.english_definitions?.join(', ') || 'Không có thông tin';
-
-        html += `
-            <div class="result-item pb-2">
-    <div class="d-flex align-items-center">
-        <h2 class="me-5">${word}</h2> 
-        <p class="meaning mb-0"><strong>Ý nghĩa:</strong> ${meaning}</p>
-    </div>
-    ${reading ? `<p class="reading text-muted"><em>${reading}</em></p>` : ''}
-    <div class="border-bottom mt-2 w-50"></div> 
-</div>
-
-
-        `;
-    });
-    html += `</div></div>`;
-    container.innerHTML += html;
-}
+// Hàm tìm kiếm ảnh từ Unsplash
 async function fetchImages(query) {
     try {
         const response = await fetch(
-            `https://api.unsplash.com/search/photos?query=${query}&client_id=${API_KEY}&per_page=1`
+            `https://api.unsplash.com/search/photos?query=${query}&client_id=${UNSPLASH_API_KEY}&per_page=1`
         );
         const data = await response.json();
         if (data.results && data.results.length > 0) {
-            displayImages(data.results[0]); // Truyền 1 ảnh duy nhất
+            displayImages(data.results[0]);
         } else {
-            imageResults.innerHTML = '<p>Không tìm thấy ảnh phù hợp</p>';
+            document.getElementById('image-results').innerHTML = '<p>Không tìm thấy ảnh phù hợp</p>';
         }
     } catch (error) {
         console.error('Lỗi khi tải ảnh:', error);
-        imageResults.innerHTML = '<p>Không thể tải ảnh</p>';
+        document.getElementById('image-results').innerHTML = '<p>Không thể tải ảnh</p>';
     }
 }
 
+// Hàm hiển thị ảnh
 function displayImages(image) {
-    imageResults.innerHTML = ''; // Xóa nội dung cũ
+    const imageContainer = document.getElementById('image-results');
+    imageContainer.innerHTML = '';
+
+    if (!image) return;
 
     const imgElement = document.createElement('img');
-    imgElement.src = image.urls.regular; // URL ảnh chất lượng trung bình
+    imgElement.src = image.urls.regular;
     imgElement.alt = image.alt_description || 'Ảnh minh họa';
-
-    // Thêm style để ảnh đẹp hơn (tùy chọn)
-    imgElement.style.maxWidth = '100%';
+    imgElement.style.maxWidth = '450px';
+    imgElement.style.maxHeight = '300px';
     imgElement.style.borderRadius = '8px';
     imgElement.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+    imgElement.style.objectFit = 'cover';
 
-    imageResults.appendChild(imgElement);
+    imageContainer.appendChild(imgElement);
+}
+
+// Hàm phát âm thanh
+function playAudio() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    if (audioPlayer.src) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+    }
+}
+
+// Hàm chuyển văn bản thành giọng nói
+async function convertTextToSpeech(text) {
+    if (!text) {
+        document.getElementById('play-audio-btn').style.display = 'none';
+        return;
+    }
+
+    const request = {
+        input: { text: text },
+        voice: { languageCode: "ja-JP", ssmlGender: "NEUTRAL" },
+        audioConfig: { audioEncoding: "MP3" }
+    };
+
+    try {
+        const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${TEXT_TO_SPEECH_KEY}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(request)
+        });
+
+        const data = await response.json();
+        if (data.audioContent) {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = `data:audio/mp3;base64,${data.audioContent}`;
+            audioPlayer.style.display = 'block';
+            document.getElementById('play-audio-btn').onclick = function() {
+                audioPlayer.currentTime = 0;
+                audioPlayer.play();
+            };
+        }
+    } catch (error) {
+        console.error("Lỗi:", error);
+    }
+}
+
+// Hàm nhận diện giọng nói
+async function voiceSearch() {
+    try {
+        document.getElementById("query").value = "";
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "vi-VN";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.continuous = false;
+
+        recognition.onresult = (event) => {
+            let transcript = event.results[0][0].transcript.trim();
+            document.getElementById("query").value = transcript;
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Lỗi nhận diện giọng nói:", event.error);
+            alert("Lỗi nhận diện giọng nói: " + event.error);
+        };
+
+        recognition.onend = () => {
+            console.log("Dừng ghi âm do người dùng im lặng.");
+            document.getElementById("voice-button").disabled = false;
+        };
+
+        recognition.start();
+        document.getElementById("voice-button").disabled = true;
+    } catch (error) {
+        console.error("Không thể sử dụng microphone:", error);
+        alert("Vui lòng cấp quyền truy cập microphone.");
+    }
 }
