@@ -76,20 +76,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // Detect tab/app switch
     function detectTabSwitch() {
         if (document.hidden || document.visibilityState === "hidden") {
-            alert("You have violated the test rules! Redirecting in 10 seconds...");
+            alert("You have violated the test rules! Redirecting in 5 seconds...");
             setTimeout(() => {
-                window.location.href = "landingPage.html";
-            }, 10000);
+                window.location.href = "/backToHome";
+            }, 5000);
         }
     }
 
     function detectWindowBlur() {
         setTimeout(() => {
             if (!document.hasFocus()) {
-                alert("You have violated the test rules! Redirecting in 10 seconds...");
+                alert("You have violated the test rules! Redirecting in 5 seconds...");
                 setTimeout(() => {
-                    window.location.href = "landingPage.html";
-                }, 10000);
+                    window.location.href = "/backToHome";
+                }, 5000);
             }
         }, 200);
     }
