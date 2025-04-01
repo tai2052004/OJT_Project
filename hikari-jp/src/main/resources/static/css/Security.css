@@ -1,4 +1,6 @@
-
+body {
+    background-color: #FFFFFF;
+}
 
 /* Container chính */
 .profile-container {
@@ -151,4 +153,46 @@ label {
     background: white;
     outline: none;
     box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+}
+
+.notifications {
+    position: fixed;
+    top: 30px;
+    right: 20px;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 250px;
+    z-index: 1000;
+    animation: fadeOut 2s forwards;
+}
+
+.toast.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.toast.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.toast .fa-xmark {
+    margin-left: auto;
+    cursor: pointer;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
 }

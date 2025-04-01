@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Set</title>
+    <link rel="stylesheet" href="../static/css/flashcard-set.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="title">Flashcard Set</h1>
+    <div class="flashcards-container">
+        <div class="flashcards-header">
+            <h2>Danh sách Flashcard Sets</h2>
+            <input type="text" class="favorites-search" placeholder="Tìm kiếm...">
+            <select class="sort-dropdown">
+                <option value="newest">Mới nhất</option>
+                <option value="oldest">Cũ nhất</option>
+            </select>
+        </div>
+
+        <div class="flashcards-grid">
+            <!-- Flashcard Set mẫu -->
+            <div class="flashcard-set">
+                <img src="../static/images/N4_Level.jpg" alt="N5 - Verbs">
+                <div class="set-info">
+                    <span class="level-tag">N5</span>
+                    <div class="category">N5 - Verbs</div>
+                </div>
+            </div>
+
+            <div class="flashcard-set">
+                <img src="../static/images/N4_Level.jpg" alt="N4 - Adjectives">
+                <div class="set-info">
+                    <span class="level-tag">N4</span>
+                    <div class="category">N4 - Adjectives</div>
+                </div>
+            </div>
+
+            <div class="flashcard-set">
+                <img src="../static/images/N4_Level.jpg" alt="N3 - Common Kanji">
+                <div class="set-info">
+                    <span class="level-tag">N3</span>
+                    <div class="category">N3 - Common Kanji</div>
+                </div>
+            </div>
+
+            <div class="flashcard-set">
+                <img src="../static/images/N4_Level.jpg" alt="N2 - Advanced Vocabulary">
+                <div class="set-info">
+                    <span class="level-tag">N2</span>
+                    <div class="category">N2 - Advanced Vocabulary</div>
+                </div>
+            </div>
+
+            <div class="flashcard-set">
+                <img src="../static/images/N4_Level.jpg" alt="N1 - Expert Level">
+                <div class="set-info">
+                    <span class="level-tag">N1</span>
+                    <div class="category">N1 - Expert Level</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

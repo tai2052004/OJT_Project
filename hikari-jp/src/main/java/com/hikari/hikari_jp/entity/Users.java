@@ -27,12 +27,19 @@ public class Users {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
+    @Transient
     private String otp;
 
-    @Column
+    @Transient
     private LocalDateTime otpExpiry;
 
     @Column
     private String googleId;
+
+    @Column
+    private String role;
+
+    @Column
+    private boolean is_premium;
+
 }
