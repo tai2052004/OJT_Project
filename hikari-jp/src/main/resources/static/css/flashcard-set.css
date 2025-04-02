@@ -1,0 +1,132 @@
+/* Reset và thiết lập cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.flashcards-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.flashcards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.flashcards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.flashcard-set {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.flashcard-set:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Áp dụng màu nền theo cấp độ */
+.n5 { background: linear-gradient(135deg, #6366f1, #a855f7); }
+.n4 { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+.n3 { background: linear-gradient(135deg, #f97316, #ec4899); }
+.n2 { background: linear-gradient(135deg, #10b981, #3b82f6); }
+.n1 { background: linear-gradient(135deg, #ef4444, #f97316); }
+
+.set-info {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: white;
+}
+
+.level-tag {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.category {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.set-info::after {
+    content: "Học phần tiếng Nhật";
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-top: auto;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .flashcards-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .flashcards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .flashcards-container {
+        padding: 20px;
+    }
+
+    .flashcards-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}

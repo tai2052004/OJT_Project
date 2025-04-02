@@ -126,7 +126,7 @@ h1 {
     padding: 0 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Đổ bóng */
     font-family: Arial, sans-serif;
-    flex-wrap: wrap; /* Added to help with responsiveness */
+    flex-wrap: nowrap;
 }
 
 .header-logo img {
@@ -180,7 +180,8 @@ h1 {
     display: flex;
     align-items: center;
     gap: 20px;
-    flex-wrap: wrap; /* Added to help with responsiveness */
+    flex-wrap: nowrap;
+    max-width: 50%;
 }
 
 .header-navigate div a {
@@ -202,7 +203,8 @@ h1 {
 
 .auth-buttons {
     display: flex;
-    gap: 15px; /* Tạo khoảng cách giữa các nút */
+    gap: 10px;
+    white-space: nowrap;
 }
 
 .auth-buttons button {

@@ -1,11 +1,14 @@
 package com.hikari.hikari_jp.controller;
+import com.hikari.hikari_jp.entity.UserDetail;
 import com.hikari.hikari_jp.entity.Users;
+import com.hikari.hikari_jp.repository.UserDetailRepository;
 import com.hikari.hikari_jp.repository.UserRepository;
 import com.hikari.hikari_jp.service.EmailService;
 import com.hikari.hikari_jp.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,9 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UserDetailRepository userDetailRepository;
+
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     //Login
@@ -41,8 +47,12 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password,
-                        Model model) {
+                        Model model, HttpSession session) {
         if (userService.checkLogin(email, password)) {
+            Users user = userRepository.findByEmail(email);
+            UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
+            session.setAttribute("user", user);
+            session.setAttribute("userDetail", userDetail);
             return "redirect:/landingPage";
         } else {
             model.addAttribute("email", email);
@@ -81,6 +91,7 @@ public class UserController {
             // Tạo OTP
             String otp = userService.generateOTP(user);
             user.setOtp(otp);
+            user.setRole("user");
 
             // Gửi OTP qua email
             emailService.sendOtpEmail(user.getEmail(), otp);
@@ -124,7 +135,19 @@ public class UserController {
             }
 
             // Lưu user vào database nếu OTP hợp lệ
-            userRepository.save(tempUser);
+            Users savedUser = userRepository.save(tempUser);
+
+            // Tạo user_detail tương ứng
+            UserDetail userDetail = new UserDetail();
+            userDetail.setUserId(savedUser.getId());
+            userDetail.setFullName(null);
+            userDetail.setEmail(savedUser.getEmail());
+            userDetail.setPhoneNumber(null);
+            userDetail.setBirthdate(null);
+            userDetail.setAvatar("profile-image.png");
+
+            userDetailRepository.save(userDetail);
+            // Xóa user tạm khỏi session
             session.removeAttribute("tempUser");
 
             return "otp-success";
@@ -134,6 +157,7 @@ public class UserController {
             return "otp-verification-register";
         }
     }
+
 
     @GetMapping("/otp-success")
     public String otpSuccess(Model model) {
@@ -204,6 +228,14 @@ public class UserController {
         session.removeAttribute("tempUser");
 
         model.addAttribute("successMessage", "Password reset successful! You can log in now.");
-        return "otp-verification-reset";
+        return "otp-success";
     }
+
+    //Logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Xóa toàn bộ session của user
+        return "redirect:/landingPage"; // Chuyển hướng về trang đăng nhập
+    }
+
 }
