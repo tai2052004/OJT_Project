@@ -22,6 +22,7 @@ let questionListening = document.querySelectorAll('.questionListening');
 let readingPart  = document.querySelector('.readingPart');
 let listeningPart  = document.querySelector('.listeningPart');
 let grammarPart = document.querySelector('.grammarPart');
+let questionGrammar = document.querySelectorAll('.questionGrammar');
 
 document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () =>
@@ -210,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         secondBody.style.display = "block";
         document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value + "(" + levelContentInput.value +")"
         generateNumOfQuestion(3);
+        checkViewPort();
     }
 
     let valueGrammar = document.getElementById("checkGrammar").value;
@@ -217,7 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
         secondBody.style.display = "block";
         document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value + "(" + levelContentInput.value +")"
-        generateNumOfQuestion(6);
+        generateNumOfQuestion(5);
+        checkViewPort();
     }
 
 });
@@ -298,7 +301,7 @@ function testNavigate() {
     }
 
     if (subjectTestInput.value.includes("たんご")) {
-        if (!jlptGrade) {
+        if ((!jlptGrade) || (!jlptGrade.includes("10") && !jlptGrade.includes("20") && !jlptGrade.includes("30"))) {
             Swal.fire({
                 toast: true,
                 position: 'top',
@@ -320,7 +323,7 @@ function testNavigate() {
     }
     if (subjectTestInput.value.includes("ぶんぽう"))
     {
-        gradeTestInput.value = "6";
+        gradeTestInput.value = "5";
     }
 
     return true;
@@ -527,7 +530,7 @@ function submitQuiz() {
             }
         });
     }
-    else if (subjectTestInput.value.includes("どっかい") || subjectTestInput.value.includes("ちょうかい"))
+    else if (subjectTestInput.value.includes("どっかい") || subjectTestInput.value.includes("ちょうかい") || subjectTestInput.value.includes("ぶんぽう"))
     {
         let variable = questionContent;
         if (subjectTestInput.value.includes("どっかい"))
@@ -537,6 +540,14 @@ function submitQuiz() {
         else if (subjectTestInput.value.includes("ちょうかい"))
         {
             variable = questionListening;
+        }
+        else if (subjectTestInput.value.includes("ぶんぽう"))
+        {
+            variable = questionGrammar;
+            document.querySelectorAll('.toggle-div-explain').forEach(item =>
+            {
+                item.classList.remove("hidden");
+            })
         }
         variable.forEach(qc =>
         {
@@ -686,5 +697,18 @@ function selectAnswerReading(abc)
             n.classList.add("selectedNum");
         }
     })
+}
+
+function toggleExplain(cde)
+{
+    let divID = cde.id.split("-")[1];
+    let explain = document.getElementById("explain-" + divID);
+    if (!explain.style.height || explain.style.height === "0px") {
+        explain.style.padding = "15px";
+        explain.style.height = explain.scrollHeight + 50 + "px";
+    } else {
+        explain.style.padding = "0";
+        explain.style.height = "0px";
+    }
 }
 

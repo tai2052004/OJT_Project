@@ -116,31 +116,7 @@
             <div class="question_num">
 
             </div>
-        <div class="listeningPart" th:if="${listeningPractices != null}">
-            <div class="questionListening" th:each="question, iterStat : ${listeningPractices}"
-                 th:id="'question-' + ${iterStat.index + 1}">
-                <div class="question-part1">
-                    <div class="question-audio">
-                        <audio id="audioPlayer" controls>
-                            <source th:src="@{${question.getAudio()}}" type="audio/mpeg">
-                        </audio>
-                    </div>
-                    <div class="listeningPart" th:if="${question.getImage_link() != null}">
-                    <div class="image-listening"><img th:src="@{${question.getImage_link()}}" alt=""/></div>
-                    </div>
-                </div>
-                <div class="question-part2">
-                    <div class="question-in" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
-                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
-                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
-                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
-                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
-                </div>
-                <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
-                <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
-                <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
-                </div>
-            </div>
+
 
         <div class="readingPart" th:if="${readingPractices != null}">
             <div class="passage" th:text="${readingPractices.getPassage()}">
@@ -166,22 +142,53 @@
             </div>
 
         </div>
-        <div class="grammarPart" th:if="${grammarPractices != null}">
-                <div class="questionListening" th:each="question, iterStat : ${grammarPractices}"
-                     th:id="'question-' + ${iterStat.index + 1}">
-                    <div class="question-grammar">
-                        <div class="question-in-grammar" th:text="${question.getTestQuestion().getQuestion_text()}">ABC</div>
-                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
-                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
-                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
-                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
-                    </div>
-                    <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
-                    <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
-                    <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
-                </div>
-        </div>
+
     </div>
+<div class="grammarPart" th:if="${grammarPractices != null}">
+    <div class="questionGrammar" th:each="question, iterStat : ${grammarPractices}"
+         th:id="'question-' + ${iterStat.index + 1}">
+        <div class="question-grammar">
+            <div class="question-in-grammar" th:text="${question.getTestQuestion().getQuestion_text()}">ABC</div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
+        </div>
+        <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
+        <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
+        <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
+        <div class="toggle-div-explain hidden" onclick="toggleExplain(this)" th:id="'toggleExplain-' + ${iterStat.index + 1}">
+            <div>Explain</div>
+            <i class="fas fa-angle-double-down"></i>
+        </div>
+        <div class="explain" th:id="'explain-' + ${iterStat.index + 1}" th:text="${question.getExplain()}"></div>
+    </div>
+</div>
+<div class="listeningPart" th:if="${listeningPractices != null}">
+    <div class="questionListening" th:each="question, iterStat : ${listeningPractices}"
+         th:id="'question-' + ${iterStat.index + 1}">
+        <div class="question-part1">
+            <div class="question-audio">
+                <audio id="audioPlayer" controls>
+                    <source th:src="@{${question.getAudio()}}" type="audio/mpeg">
+                </audio>
+            </div>
+            <div class="listeningPart" th:if="${question.getImage_link() != null}">
+                <div class="image-listening"><img th:src="@{${question.getImage_link()}}" alt=""/></div>
+            </div>
+        </div>
+        <div class="question-part2">
+            <div class="question-in" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
+            <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
+        </div>
+        <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
+        <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
+        <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
+    </div>
+</div>
 <footer>
     <div class="footer-content">
         <div class="logo">
