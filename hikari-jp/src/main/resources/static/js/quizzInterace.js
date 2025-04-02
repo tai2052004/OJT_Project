@@ -252,3 +252,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("toggleReading").addEventListener("change", updateVisibility);
     document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
 });
+function changeMode(mode) {
+    const selectedLevel = document.querySelector('input[name="level"]:checked').value;
+    const selectedWordType = document.querySelector('input[name="wordType"]:checked').value;
+    if(mode === 'flashcard') {
+        window.location.href=`/flashcards?level=${selectedLevel}&wordType=${selectedWordType}`;
+    }
+}
+
+
