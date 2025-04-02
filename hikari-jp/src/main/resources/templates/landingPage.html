@@ -11,12 +11,22 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/header :: header}"></div>
-
+<div class="header">
+    <div class="header-logo">
+        <img src="/images/logo-hikari.png">
+    </div>
+    <div class="header-searchbar">
+        <form action="SearchServlet" method="post" >
+            <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
+            <a class="submit-button" type="submit" >
+                <i class="fa fa-search"></i>
+            </a>
+        </form>
+    </div>
 
     <div class="header-navigate">
         <div class="landingpage active">
-            <a href="landingPage.html">Home</a>
+            <a th:href="@{/}">Home</a>
         </div>
 
         <div class="lookup">
@@ -38,7 +48,7 @@
 
             <ul class="dropdown-menu">
                 <li>
-                    <a href="flashcards.html" class="dropdown-link">FlashCard</a>
+                    <a th:href="@{/flashcards}" class="dropdown-link">FlashCard</a>
                 </li>
                 <li class="dropdown-subitem">
                     <div class="dropdown-link">
@@ -79,118 +89,115 @@
             <a href="">Contact</a>
         </div>
     </div>
-        <div class="auth-buttons">
-            <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
-            <button class="register" onclick="window.location.href='/register'">Register</button>
-        </div>
+    <div class="auth-buttons">
+        <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
+        <button class="register" onclick="window.location.href='/register'">Register</button>
     </div>
+</div>
 
 <section class="hero">
+    <div class="hero-image">
+        <img src="/images/landing-page.png" alt="Japanese Landing Page image">
+    </div>
+    <div class="hero-content">
+        <h2>Master JLPT at Home</h2>
+        <h1>Easier Than Ever</h1>
+        <h2>Start Today!</h2>
+        <button class="start-now">Start Now</button>
+    </div>
+</section>
 
-        <div class="hero-image">
-            <img src="/images/landing-page.png" alt="Japanese Landing Page image">
-        </div>
-        <div class="hero-content">
-            <h2>Master JLPT at Home</h2>
-            <h1>Easier Than Ever</h1>
-            <h2>Start Today!</h2>
-            <button class="start-now">Start Now</button>
-        </div>
-    </section>
-
-    <!-- Plans Section -->
-    <section class="plans">
-        <h2>Choose Your Plan</h2>
-        <div class="plan-cards">
-            <div class="plan-card premium">
-                <h3>ONLINE PREMIUM</h3>
-                <div class="plan-content">
-                    <div class="plan-icon">
-                        <img src="/images/Preminum-logo.png" alt="Premium Icon">
-                    </div>
-                    <p>Unlock unlimited flashcard quizzes and all advanced features to accelerate your learning journey.</p>
+<!-- Plans Section -->
+<section class="plans">
+    <h2>Choose Your Plan</h2>
+    <div class="plan-cards">
+        <div class="plan-card premium">
+            <h3>ONLINE PREMIUM</h3>
+            <div class="plan-content">
+                <div class="plan-icon">
+                    <img src="/images/Preminum-logo.png" alt="Premium Icon">
                 </div>
-                <div class="jlpt-levels">
-                    <span class="level">N5</span>
-                    <span class="level">N4</span>
-                    <span class="level">N3</span>
-                    <span class="level">N2</span>
-                    <span class="level">N1</span>
-                </div>
+                <p>Unlock unlimited flashcard quizzes and all advanced features to accelerate your learning journey.</p>
             </div>
-            <div class="plan-card basic">
-                <h3>ONLINE BASIC</h3>
-                <div class="plan-content">
-                    <div class="plan-icon">
-                        <img src="/images/Basic-logo.png" alt="Basic Icon">
-                    </div>
-                    <p>Free access! Look up words and take up to 3 quizzes to test your knowledge.</p>
-                </div>
-                 <div class="jlpt-levels">
-                    <span class="level">N5</span>
-                    <span class="level">N4</span>
-                    <span class="level">N3</span>
-                    <span class="level">N2</span>
-                    <span class="level">N1</span>
-                </div>
+            <div class="jlpt-levels">
+                <span class="level">N5</span>
+                <span class="level">N4</span>
+                <span class="level">N3</span>
+                <span class="level">N2</span>
+                <span class="level">N1</span>
             </div>
         </div>
-    </section>
-    <section class="chosen-reason">
-        <h2>Why Choose Us?</h2>
-        <div class="chosen-reason-content">
-            <div class="chosen-icon">
-                <img src="/images/chosen-logo.png" alt="Chosen Icon">
+        <div class="plan-card basic">
+            <h3>ONLINE BASIC</h3>
+            <div class="plan-content">
+                <div class="plan-icon">
+                    <img src="/images/Basic-logo.png" alt="Basic Icon">
+                </div>
+                <p>Free access! Look up words and take up to 3 quizzes to test your knowledge.</p>
             </div>
-            <p>Learning Japanese with HikariJP is not just about mastering a language; it's about exploring knowledge and culture, broadening your horizons, and fostering personal growth. With us, you will confidently take firm steps on your journey to conquering the peaks of your career and life.</p>
+            <div class="jlpt-levels">
+                <span class="level">N5</span>
+                <span class="level">N4</span>
+                <span class="level">N3</span>
+                <span class="level">N2</span>
+                <span class="level">N1</span>
+            </div>
         </div>
-    </section>
-
+    </div>
+</section>
+<section class="chosen-reason">
+    <h2>Why Choose Us?</h2>
+    <div class="chosen-reason-content">
+        <div class="chosen-icon">
+            <img src="/images/chosen-logo.png" alt="Chosen Icon">
+        </div>
+        <p>Learning Japanese with HikariJP is not just about mastering a language; it's about exploring knowledge and culture, broadening your horizons, and fostering personal growth. With us, you will confidently take firm steps on your journey to conquering the peaks of your career and life.</p>
+    </div>
+</section>
 <!--<div th:replace="fragments/footer :: footer"></div>-->
 <!--Footer fragment-->
-    <footer>
-        <div class="footer-content">
-            <div class="logo">
-                <img src="/images/logo-hikari.png" alt="HikariJP Logo">
-            </div>
-            <div class="quick-links">
-                <h4>Quick Link</h4>
-                <ul class="list">
-                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
-                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
-                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
-                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
-                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
-                </ul>
-            </div>
-            <div class="contact-info">
-                <h4>Contact Us</h4>
-                <ul class="list">
-                    <li><i class="fas fa-phone"></i> 0702411147</li>
-                    <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
-                    <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
-                </ul>
-            </div>
-            <div class="chatbot-logo" id="chatbotLogo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-            </div>
+<footer>
+    <div class="footer-content">
+        <div class="logo">
+            <img src="/images/logo-hikari.png" alt="HikariJP Logo">
+        </div>
+        <div class="quick-links">
+            <h4>Quick Link</h4>
+            <ul class="list">
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+            </ul>
+        </div>
+        <div class="contact-info">
+            <h4>Contact Us</h4>
+            <ul class="list">
+                <li><i class="fas fa-phone"></i> 0702411147</li>
+                <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+            </ul>
+        </div>
+        <div class="chatbot-logo" id="chatbotLogo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </div>
 
-            <div class="chat-box" id="chatBox">
-                <div class="chat-header">
-                    <h3>Chat với chúng tôi</h3>
-                    <span class="close-btn" id="closeBtn">×</span>
-                </div>
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input">
-                    <input type="text" id="userInput" placeholder="Nhập tin nhắn...">
-                    <button id="sendBtn">Gửi</button>
-                </div>
+        <div class="chat-box" id="chatBox">
+            <div class="chat-header">
+                <h3>Chat với chúng tôi</h3>
+                <span class="close-btn" id="closeBtn">×</span>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Nhập tin nhắn...">
+                <button id="sendBtn">Gửi</button>
             </div>
         </div>
-    </footer>
-
+    </div>
+</footer>
 </body>
 <script src="/js/chatGpt.js"></script>
 </html>
