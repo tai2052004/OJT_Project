@@ -14,7 +14,7 @@ public class WebController {
     @GetMapping("/Practice")
     public String practice() { return "Practice"; }
 
-    @GetMapping("/LookUp")
+    @GetMapping("/lookUp")
     public String lookUp() { return "lookUp"; }
 
     @GetMapping("/clearModel")

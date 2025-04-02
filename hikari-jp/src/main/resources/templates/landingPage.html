@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HikariJP</title>
     <link rel="stylesheet" href="/css/landingPage.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -12,8 +13,80 @@
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<!-- Hero Section -->
-    <section class="hero">
+
+    <div class="header-navigate">
+        <div class="landingpage active">
+            <a href="landingPage.html">Home</a>
+        </div>
+
+        <div class="lookup">
+            <a th:href="@{/lookUp}">Look Up</a>
+        </div>
+
+        <div class="jlpt">
+            <a th:href="@{/jlptTest}">JLPT Test</a>
+        </div>
+
+        <div class="premium">
+            <a href="premium.html">Premium</a>
+        </div>
+
+        <div class="dropdown-item">
+            <div class="nav-link">
+                QuizzInterface <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="flashcards.html" class="dropdown-link">FlashCard</a>
+                </li>
+                <li class="dropdown-subitem">
+                    <div class="dropdown-link">
+                        Quiz <i class="ri-add-line dropdown__add"></i>
+                    </div>
+
+                    <ul class="dropdown_submenu">
+                        <li>
+                            <a th:href="@{/quizzInterface(level='N5')}" class="dropdown_sublink">N5</a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/quizzInterface(level='N4')}" class="dropdown_sublink"> N4</a>
+                        </li>
+
+                        <li>
+                            <a  th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
+                        </li>
+
+                        <li>
+                            <a  th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
+                        </li>
+                        <li>
+                            <a  th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-link">Writing</a>
+                </li>
+                <li>
+                    <a th:href="@{/Practice}" class="dropdown-link">Practice</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="contact">
+            <a href="">Contact</a>
+        </div>
+    </div>
+        <div class="auth-buttons">
+            <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
+            <button class="register" onclick="window.location.href='/register'">Register</button>
+        </div>
+    </div>
+
+<section class="hero">
+
         <div class="hero-image">
             <img src="/images/landing-page.png" alt="Japanese Landing Page image">
         </div>
@@ -72,6 +145,52 @@
             <p>Learning Japanese with HikariJP is not just about mastering a language; it's about exploring knowledge and culture, broadening your horizons, and fostering personal growth. With us, you will confidently take firm steps on your journey to conquering the peaks of your career and life.</p>
         </div>
     </section>
-<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!--<div th:replace="fragments/footer :: footer"></div>-->
+<!--Footer fragment-->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="/images/logo-hikari.png" alt="HikariJP Logo">
+            </div>
+            <div class="quick-links">
+                <h4>Quick Link</h4>
+                <ul class="list">
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+                </ul>
+            </div>
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <ul class="list">
+                    <li><i class="fas fa-phone"></i> 0702411147</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                    <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+                </ul>
+            </div>
+            <div class="chatbot-logo" id="chatbotLogo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+
+            <div class="chat-box" id="chatBox">
+                <div class="chat-header">
+                    <h3>Chat với chúng tôi</h3>
+                    <span class="close-btn" id="closeBtn">×</span>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input">
+                    <input type="text" id="userInput" placeholder="Nhập tin nhắn...">
+                    <button id="sendBtn">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 </body>
+<script src="/js/chatGpt.js"></script>
 </html>
