@@ -12,16 +12,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
-<!-- Phần header giữ nguyên như của bạn -->
 <div class="header">
     <div class="header-logo">
-        <img src="/images/logo-hikari.png">
+        <img th:src="@{/images/logo-hikari.png}">
     </div>
     <div class="header-searchbar">
-        <form action="SearchServlet" method="post" >
+        <form action="" method="post" >
             <input type="text" class="search-bar" name="search-bar" placeholder="Find out......">
             <a class="submit-button" type="submit" >
                 <i class="fa fa-search"></i>
@@ -30,77 +28,34 @@
     </div>
 
     <div class="header-navigate">
-        <div class="landingpage">
-            <a th:href="@{/}">Home</a>
+        <div class="home">
+            <a th:href="@{/landingPage}">Home</a>
         </div>
-
         <div class="lookup active">
+            <a th:href="@{/practice}">Practice</a>
+        </div>
+        <div class="lookup">
             <a th:href="@{/lookUp}">Look Up</a>
         </div>
 
-        <div class="jlpt">
-            <a th:href="@{/jlptTest}">JLPT Test</a>
+        <div class="JLPT">
+            <a href="">JLPT Test</a>
         </div>
-
-        <div class="premium">
-            <a href="premium.html">Premium</a>
+        <div class="Premium">
+            <a href="">Premium</a>
         </div>
-
-        <div class="dropdown-item">
-            <div class="nav-link">
-                QuizzInterface <i class="ri-arrow-down-s-line dropdown__arrow"></i>
-            </div>
-
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="flashcards.html" class="dropdown-link">FlashCard</a>
-                </li>
-                <li class="dropdown-subitem">
-                    <div class="dropdown-link">
-                        Quiz <i class="ri-add-line dropdown__add"></i>
-                    </div>
-
-                    <ul class="dropdown_submenu">
-                        <li>
-                            <a th:href="@{/quizzInterface(level='N5')}" class="dropdown_sublink">N5</a>
-                        </li>
-
-                        <li>
-                            <a th:href="@{/quizzInterface(level='N4')}" class="dropdown_sublink"> N4</a>
-                        </li>
-
-                        <li>
-                            <a  th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
-                        </li>
-
-                        <li>
-                            <a  th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
-                        </li>
-                        <li>
-                            <a  th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-link">Writing</a>
-                </li>
-                <li>
-                    <a th:href="@{/Practice}" class="dropdown-link">Practice</a>
-                </li>
-            </ul>
+        <div class="">
+            <a href="">FlashCard</a>
         </div>
-
-        <div class="contact">
+        <div class="">
             <a href="">Contact</a>
         </div>
-    </div>
-    <div class="auth-buttons">
-        <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
-        <button class="register" onclick="window.location.href='/register'">Register</button>
     </div>
 </div>
 
 <input type="hidden" id="checkValue" th:value="${readingPractices}">
+<input type="hidden" id="checkListen" th:value="${listeningPractices}">
+<input type="hidden" id="checkGrammar" th:value="${grammarPractices}">
 
 <div class="body-img"><img th:src="@{/images/background_practice.png}" alt=""></div>
 
@@ -138,10 +93,10 @@
                 <div><img th:src="@{/images/Lock.png}" alt=""></div>
             </div>
         </div>
-<form id="myForm" action="/getReadingPractice" method="GET">
+<form id="myForm" action="/getPractice" method="GET">
         <input type="hidden" name="level_id" id="level_test_reading" value="">
         <input type="hidden" id="level_test" value="">
-        <input type="hidden" id="subject_test" value="">
+        <input type="hidden" name="subject_test" id="subject_test" value="">
         <input type="hidden" name="topic_num" id="topic_test" value="">
         <input type="hidden" id="grade-test" value="">
 </form>
@@ -161,23 +116,70 @@
             <div class="question_num">
 
             </div>
-        <div class="readingPart" th:if="${readingPractices != null}">
-        <div class="passage" th:text="${readingPractices.getPassage()}">
-
-        </div>
-        <div class="questionReading">
-            <div class="question-content"  th:each="question, iterStat : ${readingPractices.getPracticeDetails()}" th:id="'question-' + ${iterStat.index + 1}">
-                <div class="question-in" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
-                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
-                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
-                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
-                <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
-                <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="" >
-                <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}"  th:value="${question.getTestQuestion().getCorrect_answer()}" >
+        <div class="listeningPart" th:if="${listeningPractices != null}">
+            <div class="questionListening" th:each="question, iterStat : ${listeningPractices}"
+                 th:id="'question-' + ${iterStat.index + 1}">
+                <div class="question-part1">
+                    <div class="question-audio">
+                        <audio id="audioPlayer" controls>
+                            <source th:src="@{${question.getAudio()}}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                    <div class="listeningPart" th:if="${question.getImage_link() != null}">
+                    <div class="image-listening"><img th:src="@{${question.getImage_link()}}" alt=""/></div>
+                    </div>
+                </div>
+                <div class="question-part2">
+                    <div class="question-in" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
+                </div>
+                <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
+                <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
                 <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
+                </div>
             </div>
-        </div>
 
+        <div class="readingPart" th:if="${readingPractices != null}">
+            <div class="passage" th:text="${readingPractices.getPassage()}">
+
+            </div>
+            <div class="questionReading">
+                <div class="question-content" th:each="question, iterStat : ${readingPractices.getPracticeDetails()}"
+                     th:id="'question-' + ${iterStat.index + 1}">
+                    <div class="question-in" th:text="${question.getTestQuestion().getQuestion_text()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)"
+                         th:text="${question.getTestQuestion().getChoice_a()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)"
+                         th:text="${question.getTestQuestion().getChoice_b()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)"
+                         th:text="${question.getTestQuestion().getChoice_c()}"></div>
+                    <div class="answer" onclick="selectAnswerReading(this)"
+                         th:text="${question.getTestQuestion().getChoice_d()}"></div>
+                    <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
+                    <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}"
+                           th:value="${question.getTestQuestion().getCorrect_answer()}">
+                    <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="grammarPart" th:if="${grammarPractices != null}">
+                <div class="questionListening" th:each="question, iterStat : ${grammarPractices}"
+                     th:id="'question-' + ${iterStat.index + 1}">
+                    <div class="question-grammar">
+                        <div class="question-in-grammar" th:text="${question.getTestQuestion().getQuestion_text()}">ABC</div>
+                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_a()}"></div>
+                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_b()}"></div>
+                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_c()}"></div>
+                        <div class="answer" onclick="selectAnswerReading(this)" th:text="${question.getTestQuestion().getChoice_d()}"></div>
+                    </div>
+                    <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
+                    <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
+                    <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
+                </div>
         </div>
     </div>
 <footer>
@@ -223,7 +225,6 @@
     </div>
 </footer>
 <script th:src="@{/js/practice.js}"></script>
-<script src="/js/header.js"></script>
 <script src="/js/chatGpt.js"></script>
 </body>
 

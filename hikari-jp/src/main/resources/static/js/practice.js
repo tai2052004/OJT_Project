@@ -1,5 +1,7 @@
 let totalTime = 60 * 20; //
 let totalTimeRead = 60 * 60;
+let totalListening = 60 * 30;
+let totalTimeGrammar = 60 * 40;
 let timeLeft = 0;
 let timerInterval = null;
 let countdownElement = document.getElementById("time");
@@ -16,11 +18,26 @@ let gradeContent = document.querySelectorAll('.grade-content');
 let gradeTestInput = document.getElementById("grade-test");
 let levelReading = document.getElementById("level_test_reading");
 let questionContent = document.querySelectorAll('.question-content');
+let questionListening = document.querySelectorAll('.questionListening');
+let readingPart  = document.querySelector('.readingPart');
+let listeningPart  = document.querySelector('.listeningPart');
+let grammarPart = document.querySelector('.grammarPart');
 
 document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () =>
     {
-        fetch('/clearModel', { method: 'GET' });
+        // fetch('/clearModel', { method: 'POST' })
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('checkValue').value = ""; // Xóa value của input ẩn
+        //     })
+        //     .catch(error => console.error('Error:', error));
+        // fetch('/clearListening', { method: 'POST' })
+        //     .then(response => response.text())
+        //     .then(data => {
+        //         document.getElementById('checkListen').value = ""; // Xóa value của input ẩn
+        //     })
+        //     .catch(error => console.error('Error:', error));
         let scoreResultDiv = document.querySelector(".score-result");
         if (scoreResultDiv) {
             scoreResultDiv.outerHTML = '<button class="submit-answer-button" onclick="submitQuiz()">Submit</button>';
@@ -37,7 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Gán interval mới vào biến
                 timeLeft = totalTime;
                 timerInterval = setInterval(updateCountdown, 1000);
-                document.querySelector('.readingPart').style.display = "none";
+                if (readingPart)
+                {
+                    readingPart.style.display = "none";
+                }
+                if (listeningPart)
+                {
+                    listeningPart.style.display = "none";
+                }
+                if (grammarPart)
+                {
+                    grammarPart.style.display = "none";
+                }
+
             }
             if (subjectTestInput.value.includes("どっかい"))
             {
@@ -51,7 +80,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem("savedHiddenGrade", hiddenInputGrade);
                 document.getElementById("myForm").submit();
                 // Clear interval cũ nếu có
-
+            }
+            if (subjectTestInput.value.includes("ちょうかい"))
+            {
+                let hiddenInputSubject = subjectTestInput.value;
+                let hiddenInputLevel = levelContentInput.value;
+                let hiddenInputTopic = topicTestInput.value;
+                let hiddenInputGrade = gradeTestInput.value;
+                sessionStorage.setItem("savedHiddenSubject", hiddenInputSubject);
+                sessionStorage.setItem("savedHiddenLevel", hiddenInputLevel);
+                sessionStorage.setItem("savedHiddenTopic", hiddenInputTopic);
+                sessionStorage.setItem("savedHiddenGrade", hiddenInputGrade);
+                document.getElementById("myForm").submit();
+                // Clear interval cũ nếu có
+            }
+            if (subjectTestInput.value.includes("ぶんぽう"))
+            {
+                let hiddenInputSubject = subjectTestInput.value;
+                let hiddenInputLevel = levelContentInput.value;
+                let hiddenInputTopic = topicTestInput.value;
+                let hiddenInputGrade = gradeTestInput.value;
+                sessionStorage.setItem("savedHiddenSubject", hiddenInputSubject);
+                sessionStorage.setItem("savedHiddenLevel", hiddenInputLevel);
+                sessionStorage.setItem("savedHiddenTopic", hiddenInputTopic);
+                sessionStorage.setItem("savedHiddenGrade", hiddenInputGrade);
+                document.getElementById("myForm").submit();
+                // Clear interval cũ nếu có
             }
 
         }
@@ -68,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         subjectContent.forEach(s => s.classList.remove('num-active'));
         sc.classList.add('num-active');
         subjectTestInput.value = sc.textContent;
-        if (subjectTestInput.value.includes("どっかい"))
+        if (subjectTestInput.value.includes("どっかい") || subjectTestInput.value.includes("ちょうかい") || subjectTestInput.value.includes("ぶんぽう"))
         {
             gradeContent.forEach(gr =>
             {
@@ -107,6 +161,20 @@ document.addEventListener('DOMContentLoaded', () => {
         timeLeft = totalTimeRead;
         timerInterval = setInterval(updateCountdown, 1000);
     }
+    if (savedHiddenSubject.includes("ちょうかい"))
+    {
+        if (timerInterval) clearInterval(timerInterval);
+        // Gán interval mới vào biến
+        timeLeft = totalListening;
+        timerInterval = setInterval(updateCountdown, 1000);
+    }
+    if (savedHiddenSubject.includes("ぶんぽう"))
+    {
+        if (timerInterval) clearInterval(timerInterval);
+        // Gán interval mới vào biến
+        timeLeft = totalTimeGrammar;
+        timerInterval = setInterval(updateCountdown, 1000);
+    }
     if (savedHiddenSubject) {
         subjectTestInput.value = savedHiddenSubject;
         sessionStorage.removeItem("savedHiddenSubject");
@@ -137,6 +205,21 @@ document.addEventListener('DOMContentLoaded', () => {
         generateNumOfQuestion(2);
     }
 
+    let valueListen = document.getElementById("checkListen").value;
+    if (valueListen) {
+        secondBody.style.display = "block";
+        document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value + "(" + levelContentInput.value +")"
+        generateNumOfQuestion(3);
+    }
+
+    let valueGrammar = document.getElementById("checkGrammar").value;
+    if (valueGrammar)
+    {
+        secondBody.style.display = "block";
+        document.querySelector('.subject-name').innerText = subjectTestInput.value + " " + topicTestInput.value + "(" + levelContentInput.value +")"
+        generateNumOfQuestion(6);
+    }
+
 });
 
 function updateCountdown() {
@@ -149,6 +232,7 @@ function updateCountdown() {
         timeLeft--;
     } else {
         countdownElement.textContent = "Hết giờ!";
+        submitQuiz();
     }
 }
 
@@ -230,6 +314,14 @@ function testNavigate() {
     {
         gradeTestInput.value = "2";
     }
+    if (subjectTestInput.value.includes("ちょうかい"))
+    {
+        gradeTestInput.value = "3";
+    }
+    if (subjectTestInput.value.includes("ぶんぽう"))
+    {
+        gradeTestInput.value = "6";
+    }
 
     return true;
 }
@@ -290,9 +382,14 @@ function checkViewPort()
                 const { parent, sibling } = originalPosition[i];
                 parent.insertBefore(c, sibling);
             });
-            fixhead.remove();
+            if (fixhead)
+            {
+                fixhead.remove();
+            }
+
         }
     })
+
 
 }
 async function fetchData(type) {
@@ -389,13 +486,19 @@ function submitQuiz() {
         fixedHead.remove();
     }
     clearInterval(timerInterval);
+    document.querySelectorAll('.num').forEach( n =>
+        {
+            n.removeEventListener("click",selectAnswer);
+        }
+    );
     if (subjectTestInput.value.includes("たんご"))
     {
         questions.forEach((q, index) => {
             let userAnswer = userAnswers[index];
             let correct = q.correctAnswer;
             document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
-            let resultElement = document.getElementById(`result-${index}`);
+            let all_results = document.querySelectorAll(`#result-${index}`);
+            let resultElement = Array.from(all_results).find(r => !r.closest('.readingPart') && !r.closest('.listeningPart'));
             let answerQuestion = document.querySelectorAll(`#question-${index + 1} + .answer-container .answer`);
             if (userAnswer === correct) {
                 score++;
@@ -424,9 +527,18 @@ function submitQuiz() {
             }
         });
     }
-    else if (subjectTestInput.value.includes("どっかい"))
+    else if (subjectTestInput.value.includes("どっかい") || subjectTestInput.value.includes("ちょうかい"))
     {
-        questionContent.forEach(qc =>
+        let variable = questionContent;
+        if (subjectTestInput.value.includes("どっかい"))
+        {
+            variable = questionContent;
+        }
+        else if (subjectTestInput.value.includes("ちょうかい"))
+        {
+            variable = questionListening;
+        }
+        variable.forEach(qc =>
         {
             let parentID = qc.id.split('-')[1];
             let userAnswer = document.getElementById('userAnswer-' + parentID);
@@ -510,6 +622,12 @@ document.getElementById("toggleQuestions").addEventListener("click", function ()
 function generateNumOfQuestion(gradeTestInputValue)
 {
     let questNum = document.querySelector('.question_num');
+    document.querySelectorAll('.num').forEach(n => {
+        let newNode = n.cloneNode(false); // Clone node để bỏ hết event
+        n.replaceWith(newNode);
+    });
+
+    // 🔹 Xóa toàn bộ div con trong .question_num
     questNum.innerHTML = "";
     for( let i = 1; i <= parseInt(gradeTestInputValue); i++)
     {
@@ -524,7 +642,19 @@ function generateNumOfQuestion(gradeTestInputValue)
     document.querySelectorAll('.num').forEach( n => n.addEventListener("click", () =>
     {
         let numAtr = n.dataset.question;
-        let target_question = document.getElementById("question-" + numAtr);
+        let target_question = null;
+        if ( subjectTestInput.value.includes("たんご"))
+        {
+            let all_questions = document.querySelectorAll("#question-" + numAtr);
+
+            // Lọc ra phần tử không nằm trong .readingPart
+            target_question = Array.from(all_questions).find(q => !q.closest('.readingPart') && !q.closest('.listeningPart'));
+        }
+        else
+        {
+            target_question = document.getElementById("question-" + numAtr);
+        }
+
         if (target_question)
         {
             target_question.scrollIntoView({ behavior : "smooth" })
@@ -536,8 +666,15 @@ function selectAnswerReading(abc)
 {
 
     abc.parentElement.querySelectorAll('.answer').forEach(a => a.classList.remove('selectedRead'));
-
-    let parentID = abc.parentElement.id.split('-')[1];
+    let parentID = null;
+    if (subjectTestInput.value.includes("どっかい"))
+    {
+        parentID = abc.parentElement.id.split('-')[1];
+    }
+    else if (subjectTestInput.value.includes("ちょうかい") || subjectTestInput.value.includes("ぶんぽう"))
+    {
+        parentID = abc.parentElement.parentElement.id.split('-')[1]
+    }
     let userAnswer = document.getElementById("userAnswer-" + parentID);
     userAnswer.value = abc.textContent;
     // Thêm class 'selected' cho đáp án được chọn
