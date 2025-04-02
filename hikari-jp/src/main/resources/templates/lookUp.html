@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/chatbot.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
 <!-- Phần header giữ nguyên như của bạn -->
@@ -24,30 +25,76 @@
     </div>
 
     <div class="header-navigate">
-        <div class="home">
-            <a href="landingPage.html">Home</a>
-        </div>
-        <div class="lookup">
-            <a th:href="@{/Practice}">Practice</a>
-        </div>
-        <div class="lookup active">
-            <a href="lookUp.html">Look Up</a>
+        <div class="landingpage">
+            <a th:href="@{/}">Home</a>
         </div>
 
-        <div class="JLPT">
-            <a href="">JLPT Test</a>
+        <div class="lookup active">
+            <a th:href="@{/lookUp}">Look Up</a>
         </div>
-        <div class="Premium">
-            <a href="">Premium</a>
+
+        <div class="jlpt">
+            <a th:href="@{/jlptTest}">JLPT Test</a>
         </div>
-        <div class="">
-            <a href="">FlashCard</a>
+
+        <div class="premium">
+            <a href="premium.html">Premium</a>
         </div>
-        <div class="">
+
+        <div class="dropdown-item">
+            <div class="nav-link">
+                QuizzInterface <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="flashcards.html" class="dropdown-link">FlashCard</a>
+                </li>
+                <li class="dropdown-subitem">
+                    <div class="dropdown-link">
+                        Quiz <i class="ri-add-line dropdown__add"></i>
+                    </div>
+
+                    <ul class="dropdown_submenu">
+                        <li>
+                            <a th:href="@{/quizzInterface(level='N5')}" class="dropdown_sublink">N5</a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/quizzInterface(level='N4')}" class="dropdown_sublink"> N4</a>
+                        </li>
+
+                        <li>
+                            <a  th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
+                        </li>
+
+                        <li>
+                            <a  th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
+                        </li>
+                        <li>
+                            <a  th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-link">Writing</a>
+                </li>
+                <li>
+                    <a th:href="@{/Practice}" class="dropdown-link">Practice</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="contact">
             <a href="">Contact</a>
         </div>
     </div>
+    <div class="auth-buttons">
+        <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
+        <button class="register" onclick="window.location.href='/register'">Register</button>
+    </div>
 </div>
+
 
 <div class="container search_chat">
     <div class="search_rs gap-3">
@@ -118,6 +165,7 @@
 
     </div>
 </div>
+<script src="/js/header.js"></script>
 <script src="/js/jisho.js"></script>
 <script src="/js/chatGpt.js"></script>
 </body>
