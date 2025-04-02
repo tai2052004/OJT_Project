@@ -42,4 +42,9 @@ public class Users {
     @Column
     private boolean is_premium;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "user_id")
+    private UserDetail userDetail;
+
+
 }

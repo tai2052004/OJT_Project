@@ -65,4 +65,12 @@ public class UserService {
         return user != null && user.getPassword().equals(password);
     }
 
+    public void changePassword(String email, String newPassword) {
+        Users user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new OTPExpiredException("User with email " + email + " not found");
+        }
+        user.setPassword(newPassword);
+        userRepository.save(user);
+    }
 }

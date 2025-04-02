@@ -144,7 +144,7 @@ public class UserController {
             userDetail.setEmail(savedUser.getEmail());
             userDetail.setPhoneNumber(null);
             userDetail.setBirthdate(null);
-            userDetail.setAvatar("profile-image.png");
+            userDetail.setAvatar(null);
 
             userDetailRepository.save(userDetail);
             // Xóa user tạm khỏi session

@@ -18,8 +18,8 @@ public class UserDetailService {
     public void updateUserAvatar(Long userid, String filename) {
         UserDetail user = userDetailRepository.findByUserId(userid);
         if (user != null) {
-            user.setAvatar(filename);  // Cập nhật tên avatar vào cơ sở dữ liệu
-            userDetailRepository.save(user);  // Lưu lại thông tin người dùng
+            user.setAvatar(filename);
+            userDetailRepository.save(user);
         }
     }
 }

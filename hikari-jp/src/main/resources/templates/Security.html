@@ -14,8 +14,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="profile-pic">
-            <img src="/images/profile-image.png" alt="Profile Picture">
-            <button class="change-pic-btn"><i class="bi bi-camera-fill"></i>Change Profile picture</button>
+            <img th:src="${userDetail.avatar != null ? '/upload/' + userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">
         </div>
         <nav class="menu">
             <a href="/profile" class="active"><i class="bi bi-person-circle bi-icon"></i>Personal information</a>

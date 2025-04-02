@@ -47,9 +47,10 @@ public class ProfileController {
 
     @PostMapping("/profile")
     public String updateProfile(@RequestParam String fullName, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate,
-                                HttpSession session) {
+                                HttpSession session, RedirectAttributes redirectAttributes) {
         Users currentUser = (Users) session.getAttribute("user");
         if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "User not logged in!");
             return "redirect:/landingPage";
         }
 
@@ -62,21 +63,25 @@ public class ProfileController {
             userDetail.setBirthdate(birthdate);
             userDetailRepository.save(userDetail);
         }
-
+        redirectAttributes.addFlashAttribute("success", "Edit Profile Successfully!");
         return "redirect:/profile";
     }
 
     @GetMapping("/transaction-history")
     public String transactionHistory(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
+        UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
         model.addAttribute("user", user);
+        model.addAttribute("userDetail", userDetail);
         return "Transaction";
     }
 
     @GetMapping("/security")
     public String changePassword(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
+        UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
         model.addAttribute("user", user);
+        model.addAttribute("userDetail", userDetail);
         return "Security";
     }
 
@@ -107,7 +112,7 @@ public class ProfileController {
     public String updateAvatar(@RequestParam("avatar") MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
         try {
             if (file.isEmpty()) {
-                redirectAttributes.addFlashAttribute("message", "No file selected!");
+                redirectAttributes.addFlashAttribute("error", "No file selected!");
                 return "redirect:/profile";
             }
 
@@ -120,10 +125,10 @@ public class ProfileController {
 
             Users user = (Users) session.getAttribute("user");
             userDetailService.updateUserAvatar(user.getId(), filename);
-            redirectAttributes.addFlashAttribute("message", "Avatar updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Avatar updated successfully!");
             return "redirect:/profile";
         } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("message", "Failed to upload avatar.");
+            redirectAttributes.addFlashAttribute("error", "Failed to upload avatar.");
             return "redirect:/profile";
         }
     }
