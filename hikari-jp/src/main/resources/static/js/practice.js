@@ -1,6 +1,6 @@
 let totalTime = 60 * 20; //
 let totalTimeRead = 60 * 60;
-let totalListening = 60 * 30;
+let totalListening = 10;
 let totalTimeGrammar = 60 * 40;
 let timeLeft = 0;
 let timerInterval = null;

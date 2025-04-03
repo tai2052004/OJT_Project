@@ -288,3 +288,97 @@ async function voiceSearch() {
         alert("Vui lòng cấp quyền truy cập microphone.");
     }
 }
+// Hàm hiển thị 3 gợi ý gần nhất
+function showRecentSuggestions(input) {
+    const history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+    // Lọc và giới hạn 3 kết quả gần nhất
+    const suggestions = history
+        .filter(item => item.toLowerCase().includes(input.toLowerCase()))
+        .slice(0, 3); // Chỉ lấy 3 kết quả
+
+    const dropdown = document.getElementById('suggestions-dropdown');
+    dropdown.innerHTML = '';
+
+    if (suggestions.length > 0 && input.length > 0) {
+        dropdown.style.display = 'block';
+
+        suggestions.forEach(item => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.textContent = item;
+
+            suggestionItem.addEventListener('click', () => {
+                document.getElementById('query').value = item;
+                dropdown.style.display = 'none';
+            });
+
+            dropdown.appendChild(suggestionItem);
+        });
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+// Khi focus vào ô input
+document.getElementById('query').addEventListener('focus', (e) => {
+    showRecentSuggestions(e.target.value);
+});
+
+// Khi nhập nội dung (có debounce)
+let timeout;
+document.getElementById('query').addEventListener('input', (e) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        showRecentSuggestions(e.target.value);
+    }, 300);
+});
+
+// Ẩn dropdown khi click ra ngoài
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#query') && !e.target.closest('#suggestions-dropdown')) {
+        document.getElementById('suggestions-dropdown').style.display = 'none';
+    }
+});
+
+// Lưu lịch sử khi bấm nút tìm kiếm
+document.getElementById('search-button').addEventListener('click', () => {
+    const keyword = document.getElementById('query').value.trim();
+    if (keyword) {
+        let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+        // Xóa nếu đã tồn tại để tránh trùng lặp
+        history = history.filter(item => item !== keyword);
+
+        // Thêm vào đầu mảng và giới hạn 10 mục
+        history.unshift(keyword);
+        if (history.length > 10) history = history.slice(0, 10);
+
+        localStorage.setItem('searchHistory', JSON.stringify(history));
+    }
+});
+let selectedIndex = -1;
+
+document.getElementById('query').addEventListener('keydown', (e) => {
+    const dropdown = document.getElementById('suggestions-dropdown');
+    const items = dropdown.querySelectorAll('div');
+
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+        highlightItem(items, selectedIndex);
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = Math.max(selectedIndex - 1, -1);
+        highlightItem(items, selectedIndex);
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+        e.preventDefault();
+        document.getElementById('query').value = items[selectedIndex].textContent;
+        dropdown.style.display = 'none';
+    }
+});
+
+function highlightItem(items, index) {
+    items.forEach((item, i) => {
+        item.style.backgroundColor = i === index ? '#f8f9fa' : 'white';
+    });
+}
