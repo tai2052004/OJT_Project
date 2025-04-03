@@ -14,74 +14,19 @@
 <div class="container">
 
     <div class="content">
-
-        <div class="question">
-            <p>1. ___のことばは ひらがなで同かきますか。1. 2. 3. 4から、一番いいものをひとつ えらんでください</p>
-            <div class="box">
-                <p>1.1 おふろに <span style="color: red;">入って</span> 少し休んでから、べんきょうします。</p>
-                <ul class="choices">
-                    <li><input type="radio" name="q1"> はって</li>
-                    <li><input type="radio" name="q1"> はいって</li>
-                    <li><input type="radio" name="q1"> いって</li>
-                    <li><input type="radio" name="q1"> いれて</li>
-                </ul>
+        <!-- Questions will be loaded dynamically here -->
+            <!-- Loop through questions -->
+            <div th:each="question, index : ${questions}" class="question" th:data-correct-answer="${question.correctAnswer}">
+                <p th:utext="${index.count} + '. ' + ${question.questionText}"></p>
+                <div class="box">
+                    <ul class="choices">
+                        <li><input type="radio" th:name="'q' + ${question.id}" value="1"> <span th:text="${question.choice1}"></span></li>
+                        <li><input type="radio" th:name="'q' + ${question.id}" value="2"> <span th:text="${question.choice2}"></span></li>
+                        <li><input type="radio" th:name="'q' + ${question.id}" value="3"> <span th:text="${question.choice3}"></span></li>
+                        <li><input type="radio" th:name="'q' + ${question.id}" value="4"> <span th:text="${question.choice4}"></span></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="question">
-            <div class="box">
-                <p>1.2 わたしは毎日<span style="color: red;">勉強</span>します。</p>
-                <ul class="choices">
-                    <li><input type="radio" name="q2"> べんきょう</li>
-                    <li><input type="radio" name="q2"> べんこう</li>
-                    <li><input type="radio" name="q2"> べんぎょう</li>
-                    <li><input type="radio" name="q2"> べんきょ</li>
-                </ul>
-            </div>
-        </div>
-        <div class="question">
-            <div class="box">
-                <p>1.3 example 3。</p>
-                <ul class="choices">
-                    <li><input type="radio" name="q3"> 1</li>
-                    <li><input type="radio" name="q3"> 2</li>
-                    <li><input type="radio" name="q3"> 3</li>
-                    <li><input type="radio" name="q3"> 4</li>
-                </ul>
-            </div>
-        </div>
-        <div class="question">
-            <div class="box">
-                <p>1.4 example 4。</p>
-                <ul class="choices">
-                    <li><input type="radio" name="q4"> 1</li>
-                    <li><input type="radio" name="q4"> 2</li>
-                    <li><input type="radio" name="q4"> 3</li>
-                    <li><input type="radio" name="q4"> 4</li>
-                </ul>
-            </div>
-        </div>
-        <div class="question">
-            <div class="box">
-                <p>1.5 example 5。</p>
-                <ul class="choices">
-                    <li><input type="radio" name="q5"> 1</li>
-                    <li><input type="radio" name="q5"> 2</li>
-                    <li><input type="radio" name="q5"> 3</li>
-                    <li><input type="radio" name="q5"> 4</li>
-                </ul>
-            </div>
-        </div>
-        <div class="question">
-            <div class="box">
-                <p>1.6 example 6。</p>
-                <ul class="choices">
-                    <li><input type="radio" name="q6"> 1</li>
-                    <li><input type="radio" name="q6"> 2</li>
-                    <li><input type="radio" name="q6"> 3</li>
-                    <li><input type="radio" name="q6"> 4</li>
-                </ul>
-            </div>
-        </div>
     </div>
 </div>
 <div class="right-panel">
@@ -91,12 +36,13 @@
         <div class="progress-bar"></div>
     </div>
     <div class="question-boxes">
-
-
-
+        <!-- Question progress indicators -->
     </div>
     <button class="submit-btn">Nộp bài</button>
 </div>
+<input type="hidden" id="userScore" value="0">
+
 <script src="/js/testJLPT.js"></script>
+
 </body>
 </html>
