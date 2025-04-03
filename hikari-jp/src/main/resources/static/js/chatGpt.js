@@ -1,76 +1,126 @@
-// Khai báo API key và model
-const GEMINI_API_KEY = "AIzaSyAEAuYlnVcqUnhkK6h1EMfy_IvF4bcWZSg";  // Đổi thành API key của bạn
+// Configuration
+const GEMINI_API_KEY = "AIzaSyAEAuYlnVcqUnhkK6h1EMfy_IvF4bcWZSg"; // Replace with your API key
 const MODEL_NAME = "gemini-2.0-flash";
 
-// Hàm đọc câu trả lời từ file JSON
+// Keyword responses configuration
+const KEYWORD_RESPONSES = {
+    "luyện tập": {
+        response: "http://localhost:8080/Practice",
+        message: "Bạn muốn luyện tập? Truy cập ngay: {link}"
+    },
+    "practice": {
+        response: "http://localhost:8080/Practice",
+        message: "Want to practice? Click here: {link}"
+    },
+    "thực hành": {
+        response: "http://localhost:8080/Practice",
+        message: "Bạn cần thực hành? Truy cập tại: {link}"
+    },
+    "kiểm tra": {
+        response: "http://localhost:8080/jlptTest",
+        message: "Bạn muốn kiểm tra? Truy cập: {link}"
+    },
+    "test": {
+        response: "http://localhost:8080/jlptTest",
+        message: "Want to take a test? Visit: {link}"
+    },
+    "tra cứu":{
+        response: "http://localhost:8080/lookUp",
+        message: "Bạn muốn tra cứu? Truy cập ngay: {link}"
+    },
+    "look up":{
+        response: "http://localhost:8080/lookUp",
+        message: "Do you want to look up? Visit: {link}"
+    }
+};
+
+// Global chat history
+let chatHistory = [
+    { role: "user", parts: [{ text: "Xin chào" }] },
+    { role: "model", parts: [{ text: "Chào bạn! Tôi là Gemini AI, tôi có thể giúp gì cho bạn?" }] }
+];
+
+// Utility functions
 async function fetchAnswerFromFile(userQuestion) {
     try {
         const response = await fetch('/data.json');
         const data = await response.json();
         return data[userQuestion] || null;
     } catch (error) {
-        console.error("Lỗi tải file JSON:", error);
+        console.error("Error loading JSON file:", error);
         return null;
     }
 }
 
-// Biến toàn cục
-let chatHistory = [
-    { role: "user", parts: [{ text: "Xin chào" }] },
-    { role: "model", parts: [{ text: "Chào bạn! Tôi là Gemini AI, tôi có thể giúp gì cho bạn?" }] }
-];
+function checkKeywordResponse(message) {
+    const lowerCaseMsg = message.toLowerCase();
 
-// Khởi tạo chatbot khi DOM tải xong
-document.addEventListener('DOMContentLoaded', function () {
-    // Lấy các phần tử DOM
-    const chatbotLogo = document.getElementById('chatbotLogo');
-    const chatBox = document.getElementById('chatBox');
-    const closeBtn = document.getElementById('closeBtn');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const chatMessages = document.getElementById('chatMessages');
+    for (const [keyword, config] of Object.entries(KEYWORD_RESPONSES)) {
+        if (lowerCaseMsg.includes(keyword)) {
+            return {
+                text: config.message.replace('{link}', config.response),
+                isKeyword: true
+            };
 
-    // Thêm sự kiện
-    chatbotLogo.addEventListener('click', toggleChatBox);
-    closeBtn.addEventListener('click', closeChatBox);
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') sendMessage();
-    });
 
-    // Hiển thị lịch sử chat ban đầu
+
+        }
+    }
+    return null;
+}
+
+// Main chatbot functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM elements
+    const elements = {
+        logo: document.getElementById('chatbotLogo'),
+        box: document.getElementById('chatBox'),
+        closeBtn: document.getElementById('closeBtn'),
+        input: document.getElementById('userInput'),
+        sendBtn: document.getElementById('sendBtn'),
+        messages: document.getElementById('chatMessages')
+    };
+
+    // Event listeners
+    elements.logo.addEventListener('click', toggleChatBox);
+    elements.closeBtn.addEventListener('click', closeChatBox);
+    elements.sendBtn.addEventListener('click', processUserMessage);
+    elements.input.addEventListener('keypress', (e) => e.key === 'Enter' && processUserMessage());
+
+    // Initial display
     displayChatHistory();
 
-    // Hàm gửi tin nhắn
-    async function sendMessage() {
-        const message = userInput.value.trim();
+    // Core functions
+    async function processUserMessage() {
+        const message = elements.input.value.trim();
         if (!message) return;
 
-        // Hiển thị tin nhắn của người dùng
         displayMessage('user', message);
         chatHistory.push({ role: "user", parts: [{ text: message }] });
-        userInput.value = '';
+        elements.input.value = '';
 
-        // Kiểm tra xem có câu trả lời trong file JSON không
-        const answer = await fetchAnswerFromFile(message);
-        if (answer) {
-            displayMessage('model', answer);
-            chatHistory.push({ role: "model", parts: [{ text: answer }] });
+        // Check for keyword responses first
+        const keywordResponse = checkKeywordResponse(message);
+        if (keywordResponse) {
+            displayMessage('model', keywordResponse.text);
+            chatHistory.push({ role: "model", parts: [{ text: keywordResponse.text }] });
             return;
         }
 
-        // Nếu không có câu trả lời trong JSON, gọi API Gemini
+        // Check JSON responses
+        const jsonResponse = await fetchAnswerFromFile(message);
+        if (jsonResponse) {
+            displayMessage('model', jsonResponse);
+            chatHistory.push({ role: "model", parts: [{ text: jsonResponse }] });
+            return;
+        }
+
+        // Fall back to Gemini API
         fetchGeminiResponse();
     }
 
-    // Hàm gọi API Gemini
     async function fetchGeminiResponse() {
-        // Hiển thị "đang nhập..."
-        const typingIndicator = document.createElement('div');
-        typingIndicator.classList.add('typing-indicator');
-        typingIndicator.textContent = "Gemini đang nhập...";
-        chatMessages.appendChild(typingIndicator);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        showTypingIndicator();
 
         try {
             const response = await fetch(
@@ -98,60 +148,86 @@ document.addEventListener('DOMContentLoaded', function () {
             );
 
             const data = await response.json();
-            chatMessages.removeChild(typingIndicator);
+            hideTypingIndicator();
 
-            if (data.candidates && data.candidates[0].content) {
+            if (data.candidates?.[0]?.content) {
                 const botReply = data.candidates[0].content.parts[0].text;
-                displayMessage('model', botReply);
+                displayMessage("model", botReply);
                 chatHistory.push({ role: "model", parts: [{ text: botReply }] });
             } else {
-                throw new Error("Không nhận được phản hồi hợp lệ từ Gemini");
+                throw new Error("Invalid response from Gemini");
             }
         } catch (error) {
-            console.error("Lỗi:", error);
-            chatMessages.removeChild(typingIndicator);
-            displayMessage('model', `⚠️ Lỗi: ${error.message}`);
+            console.error("Error:", error);
+            hideTypingIndicator();
+            displayMessage("model", `⚠️ Error: ${error.message}`);
         }
     }
 
-    // Hàm hiển thị tin nhắn
+// UI functions
     function displayMessage(role, text) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', `${role}-message`);
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", `${role}-message`);
+        messageDiv.innerHTML = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
 
-        // Kiểm tra nếu tin nhắn có chứa URL
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        if (urlRegex.test(text)) {
-            // Thay thế tất cả các URL trong văn bản bằng thẻ <a>
-            text = text.replace(urlRegex, function(url) {
-                return `<a href="${url}" target="_blank">${url}</a>`;
-            });
+        if (!elements.messages) {
+            console.error("Error: elements.messages is undefined.");
+            return;
         }
 
-        // Thiết lập nội dung tin nhắn
-        messageDiv.innerHTML = text;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        elements.messages.appendChild(messageDiv);
+        elements.messages.scrollTop = elements.messages.scrollHeight;
     }
 
+    function showTypingIndicator() {
+        const indicator = document.createElement("div");
+        indicator.classList.add("typing-indicator");
+        indicator.textContent = "Gemini is typing...";
+        indicator.id = "typing-indicator";
 
-    // Hàm hiển thị lịch sử chat
+        if (!elements.messages) {
+            console.error("Error: elements.messages is undefined.");
+            return;
+        }
+
+        elements.messages.appendChild(indicator);
+        elements.messages.scrollTop = elements.messages.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+        const indicator = document.getElementById("typing-indicator");
+        if (indicator && elements.messages) {
+            elements.messages.removeChild(indicator);
+        }
+    }
+
     function displayChatHistory() {
-        chatMessages.innerHTML = '';
+        if (!elements.messages) {
+            console.error("Error: elements.messages is undefined.");
+            return;
+        }
+
+        elements.messages.innerHTML = "";
         chatHistory.forEach(msg => {
-            if (msg.role === 'model' || msg.role === 'user') {
+            if (msg.role === "model" || msg.role === "user") {
                 displayMessage(msg.role, msg.parts[0].text);
             }
         });
     }
 
-    // Hàm toggle chat box
     function toggleChatBox() {
-        chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
+        if (!elements.box) {
+            console.error("Error: elements.box is undefined.");
+            return;
+        }
+        elements.box.style.display = elements.box.style.display === "flex" ? "none" : "flex";
     }
 
-    // Hàm đóng chat box
     function closeChatBox() {
-        chatBox.style.display = 'none';
+        if (!elements.box) {
+            console.error("Error: elements.box is undefined.");
+            return;
+        }
+        elements.box.style.display = "none";
     }
 });
