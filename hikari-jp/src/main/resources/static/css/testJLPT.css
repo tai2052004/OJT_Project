@@ -84,6 +84,7 @@ body {
     height: 100%;
     background: blue;
 }
+
 .submit-btn {
     background: #2ecc71;
     color: white;
@@ -91,4 +92,8 @@ body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
+}
+.highlight {
+    color: red;
+    font-weight: bold;
 }

@@ -32,8 +32,7 @@ public class WebController {
         return "Practice";
     }
 
-    @GetMapping("/jlptTest")
-    public String jlptTest() { return "testJLPT"; }
+
 
     @GetMapping("/backToHome")
     public String backToHome() { return "landingPage"; }
