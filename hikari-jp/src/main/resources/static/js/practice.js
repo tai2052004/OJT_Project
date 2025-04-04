@@ -27,18 +27,7 @@ let questionGrammar = document.querySelectorAll('.questionGrammar');
 document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () =>
     {
-        // fetch('/clearModel', { method: 'POST' })
-        //     .then(response => response.text())
-        //     .then(data => {
-        //         document.getElementById('checkValue').value = ""; // Xóa value của input ẩn
-        //     })
-        //     .catch(error => console.error('Error:', error));
-        // fetch('/clearListening', { method: 'POST' })
-        //     .then(response => response.text())
-        //     .then(data => {
-        //         document.getElementById('checkListen').value = ""; // Xóa value của input ẩn
-        //     })
-        //     .catch(error => console.error('Error:', error));
+
         let scoreResultDiv = document.querySelector(".score-result");
         if (scoreResultDiv) {
             scoreResultDiv.outerHTML = '<button class="submit-answer-button" onclick="submitQuiz()">Submit</button>';

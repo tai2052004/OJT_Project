@@ -13,11 +13,12 @@ let currentPage = 1;
 let vocabData = [];
 let kanjiData = [];
 let currentType = "vocabulary"; // Track the current type
-
+let toggleReading = document.getElementById("toggleReading");
+let toggleMeaning = document.getElementById("toggleMeaning");
 document.addEventListener("DOMContentLoaded", function () {
     // Lấy tham số từ URL
     const urlParams = new URLSearchParams(window.location.search);
-    const selectedLevel = urlParams.get("level");
+    let selectedLevel = urlParams.get("level") || "N5"; // Mặc định là N5 nếu không có trong URL
 
     if (selectedLevel) {
         // Tìm radio button có value tương ứng và chọn nó
@@ -26,9 +27,38 @@ document.addEventListener("DOMContentLoaded", function () {
             radio.checked = true;
         }
     }
+    // Set default selections
+
+    let selectedType = urlParams.get("wordType") || "vocabulary"; // Mặc định là vocabulary nếu không có trong URL
+
+    // Check the corresponding radio buttons
+    document.querySelector(`input[name='level'][value='${selectedLevel}']`).checked = true;
+    document.querySelector(`input[name='wordType'][value='${selectedType}']`).checked = true;
+
+    // Auto-fetch data with default values
+    fetchData();
+
+    // Auto-fetch when clicking Kanji/Vocabulary radio buttons
+    document.querySelectorAll("input[name='wordType']").forEach((radio) => {
+        radio.addEventListener("change", fetchData);
+    });
+
+    // Auto-fetch when clicking JLPT level radio buttons
+    document.querySelectorAll("input[name='level']").forEach((radio) => {
+        radio.addEventListener("change", fetchData);
+    });
+
+    // Update visibility when toggling reading/meaning
+    toggleReading.addEventListener("change", updateVisibility);
+    toggleMeaning.addEventListener("change", updateVisibility);
     fetchData();
 });
+// Gán sự kiện `change` cho 2 checkbox
+document.getElementById("toggleReading").addEventListener("change", updateVisibility);
+document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
 
+// Gọi lần đầu để cập nhật trạng thái ban đầu
+updateVisibility();
 
 async function fetchData() {
     let selectedLevel = document.querySelector("input[name='level']:checked")?.value;
@@ -116,7 +146,8 @@ function showPage(page) {
     updatePagination();
     updateVisibility();
 }
-
+toggleReading.addEventListener("change", updateVisibility);
+toggleMeaning.addEventListener("change", updateVisibility);
 
 function updatePagination() {
     let totalPages = Math.ceil((currentType === "vocabulary" ? vocabData.length : kanjiData.length) / itemsPerPage);
@@ -180,6 +211,29 @@ function updateVisibility() {
     let showReading = document.getElementById("toggleReading").checked;
     let showMeaning = document.getElementById("toggleMeaning").checked;
 
+
+    if (showReading && showMeaning) {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = false;
+    }
+    // Nếu chỉ có Reading được chọn, disable Meaning
+    else if (showReading || !showMeaning)
+    {
+        toggleReading.disabled = true;
+        toggleMeaning.disabled = false;
+    }
+    else if (showMeaning || !showReading)
+    {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = true;
+    }
+    // Nếu cả hai đều bỏ chọn, có thể chọn lại
+    else {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = false;
+    }
+
+
     document.querySelectorAll(".reading").forEach(el => {
         el.style.display = showReading ? "inline" : "none";
     });
@@ -202,55 +256,29 @@ document.querySelectorAll("input[name='wordType']").forEach((radio) => {
             fetchButton.setAttribute("onclick", "fetchKanji()");
         }
     });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("toggleReading").addEventListener("change", updateVisibility);
-    document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
+
+
 });
 
 
 
 // fetch
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("input[name='wordType']").forEach((radio) => {
-        radio.addEventListener("change", fetchData); // Auto-fetch when clicking Kanji/Vocabulary
-    });
-
-    document.querySelectorAll("input[name='level']").forEach((radio) => {
-        radio.addEventListener("change", fetchData); // Auto-fetch when clicking JLPT level
-    });
-
-    document.getElementById("toggleReading").addEventListener("change", updateVisibility);
-    document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//     document.querySelectorAll("input[name='wordType']").forEach((radio) => {
+//         radio.addEventListener("change", fetchData); // Auto-fetch when clicking Kanji/Vocabulary
+//     });
+//
+//     document.querySelectorAll("input[name='level']").forEach((radio) => {
+//         radio.addEventListener("change", fetchData); // Auto-fetch when clicking JLPT level
+//     });
+//
+//     document.getElementById("toggleReading").addEventListener("change", updateVisibility);
+//     document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
+// });
 
 //auto load with default value
 document.addEventListener("DOMContentLoaded", function () {
-    // Set default selections
-    const urlParams = new URLSearchParams(window.location.search);
-    let selectedLevel = urlParams.get("level") || "N5"; // Mặc định là N5 nếu không có trong URL
-    let selectedType = urlParams.get("wordType") || "vocabulary"; // Mặc định là vocabulary nếu không có trong URL
 
-    // Check the corresponding radio buttons
-    document.querySelector(`input[name='level'][value='${defaultLevel}']`).checked = true;
-    document.querySelector(`input[name='wordType'][value='${defaultType}']`).checked = true;
-
-    // Auto-fetch data with default values
-    fetchData();
-
-    // Auto-fetch when clicking Kanji/Vocabulary radio buttons
-    document.querySelectorAll("input[name='wordType']").forEach((radio) => {
-        radio.addEventListener("change", fetchData);
-    });
-
-    // Auto-fetch when clicking JLPT level radio buttons
-    document.querySelectorAll("input[name='level']").forEach((radio) => {
-        radio.addEventListener("change", fetchData);
-    });
-
-    // Update visibility when toggling reading/meaning
-    document.getElementById("toggleReading").addEventListener("change", updateVisibility);
-    document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
 });
 function changeMode(mode) {
     const selectedLevel = document.querySelector('input[name="level"]:checked').value;
