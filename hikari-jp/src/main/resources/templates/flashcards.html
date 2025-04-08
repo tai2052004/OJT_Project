@@ -21,170 +21,172 @@
         </form>
     </div>
 
-    <div class="header-navigate">
-        <div class="landingpage active">
-            <a th:href="@{/}">Home</a>
-        </div>
-
-        <div class="lookup">
-            <a th:href="@{/lookUp}">Look Up</a>
-        </div>
-
-        <div class="jlpt">
-            <a th:href="@{/jlptTest}">JLPT Test</a>
-        </div>
-
-        <div class="premium">
-            <a href="premium.html">Premium</a>
-        </div>
-
-        <div class="dropdown-item">
-            <div class="nav-link">
-                QuizzInterface <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+        <div class="header-navigate">
+            <div class="landingpage active">
+                <a th:href="@{/}">Home</a>
             </div>
 
-            <ul class="dropdown-menu">
-                <li>
-                    <a th:href="@{/flashcards}" class="dropdown-link">FlashCard</a>
-                </li>
-                <li class="dropdown-subitem">
-                    <div class="dropdown-link">
-                        Quiz <i class="ri-add-line dropdown__add"></i>
-                    </div>
+            <div class="lookup">
+                <a th:href="@{/lookUp}">Look Up</a>
+            </div>
 
-                    <ul class="dropdown_submenu">
-                        <li>
-                            <a th:href="@{/quizzInterface(level='N5')}" class="dropdown_sublink">N5</a>
-                        </li>
+            <div class="jlpt">
+                <a th:href="@{/jlptTest}">JLPT Test</a>
+            </div>
 
-                        <li>
-                            <a th:href="@{/quizzInterface(level='N4')}" class="dropdown_sublink"> N4</a>
-                        </li>
+            <div class="premium">
+                <a href="premium.html">Premium</a>
+            </div>
 
-                        <li>
-                            <a  th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
-                        </li>
+            <div class="dropdown-item">
+                <div class="nav-link">
+                    QuizzInterface <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                </div>
 
-                        <li>
-                            <a  th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
-                        </li>
-                        <li>
-                            <a  th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-link">Writing</a>
-                </li>
-                <li>
-                    <a th:href="@{/Practice}" class="dropdown-link">Practice</a>
-                </li>
-            </ul>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a th:href="@{/flashcards}" class="dropdown-link">FlashCard</a>
+                    </li>
+                    <li class="dropdown-subitem">
+                        <div class="dropdown-link">
+                            Quiz <i class="ri-add-line dropdown__add"></i>
+                        </div>
+
+                        <ul class="dropdown_submenu">
+                            <li>
+                                <a th:href="@{/quizzInterface(level='N5')}" class="dropdown_sublink">N5</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{/quizzInterface(level='N4')}" class="dropdown_sublink"> N4</a>
+                            </li>
+
+                            <li>
+                                <a  th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
+                            </li>
+
+                            <li>
+                                <a  th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
+                            </li>
+                            <li>
+                                <a  th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-link">Writing</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/Practice}" class="dropdown-link">Practice</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="contact">
+                <a href="">Contact</a>
+            </div>
         </div>
-
-        <div class="contact">
-            <a href="">Contact</a>
+        <div class="auth-buttons">
+            <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
+            <button class="register" onclick="window.location.href='/register'">Register</button>
         </div>
     </div>
-    <div class="auth-buttons">
-        <button class="sign-in" onclick="window.location.href='/login'">Sign In</button>
-        <button class="register" onclick="window.location.href='/register'">Register</button>
-    </div>
-</div>
 
-<main class="main-content">
-    <div class="container">
-        <div class="container_first">
-            <h1 class="page-title">Flashcard</h1>
-            <button class="quiz-btn" onclick="window.location.href='test_quiz.html'"><i class="bi bi-question-square"></i>Quiz</button>
-            <button class="favorite-btn">
-                <a href="favoriteFlashcard.html"><i class="bi bi-star-fill"></i>Favorite</a>
-            </button>
-        </div>
-        <div class="container-second">
-            <aside class="sidebar">
-                <div class="selection-box" id="selection-box1">
-                    <h2>Select level</h2>
-                    <label><input type="radio" name="level" value="N5" checked> N5</label><br>
-                    <label><input type="radio" name="level" value="N4"> N4</label><br>
-                    <label><input type="radio" name="level" value="N3"> N3</label><br>
-                    <label><input type="radio" name="level" value="N2"> N2</label><br>
-                    <label><input type="radio" name="level" value="N1"> N1</label><br>
-                </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="container_first">
+                <h1 class="page-title">Flashcard</h1>
+                <button class="quiz-btn" onclick="window.location.href='test_quiz.html'"><i class="bi bi-question-square"></i>Quiz</button>
+                <button class="favorite-btn">
+                    <a href="favoriteFlashcard.html"><i class="bi bi-star-fill"></i>Favorite</a>
+                </button>
+            </div>
+            <div class="container-second">
+                <aside class="sidebar">
 
-                <div class="selection-box" id="selection-box">
-                    <button id="fetchButton" onclick="fetchData()">Lấy từ vựng</button>
+                    <div class="selection-box" id="selection-box">
+                        <button id="fetchButton" onclick="fetchData()">Lấy từ vựng</button>
 
-                    <h2>Select topic</h2>
-                    <ul class="selection-list">
-                        <li>
-                            <label class="radio-label">
-                                <input type="radio" name="wordType" value="vocabulary" checked>
-                                Vocabulary
-                            </label>
-                        </li>
-                        <li>
-                            <label class="radio-label">
-                                <input type="radio" name="wordType" value="kanji">
-                                Kanji
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div id="lessonList" class="selection-box" style="display: none;">
-                    <h2>Select Lesson</h2>
-                    <ul id="lessonItems">
-                        <!-- Danh sách bài học sẽ được tạo bằng JavaScript -->
-                    </ul>
-                </div>
-            </aside>
-
-            <div class="flashcard-container">
-                <div class="flashcard" onclick="flipCard(this)">
-                    <i class="bi bi-star-fill"></i>
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front" id="word"></div>
-                        <div class="flashcard-back" id="meaning"></div>
+                        <h2>Select topic</h2>
+                        <ul class="selection-list">
+                            <li>
+                                <label class="radio-label">
+                                    <input type="radio" name="wordType" value="vocabulary" checked>
+                                    Vocabulary
+                                </label>
+                            </li>
+                            <li>
+                                <label class="radio-label">
+                                    <input type="radio" name="wordType" value="kanji">
+                                    Kanji
+                                </label>
+                            </li>
+                        </ul>
                     </div>
-                </div>
 
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prevBtn" onclick="plusDivs(-1)">
-                        <i class="bi bi-arrow-left-short"></i>
-                    </button>
-                    <button class="nav-btn next-btn" id="nextBtn" onclick="plusDivs(+1)">
-                        <i class="bi bi-arrow-right-short"></i>
-                    </button>
+                    <div class="selection-box" id="selection-box1">
+                        <h2>Select level</h2>
+                        <label><input type="radio" name="level" value="N5" checked> N5</label><br>
+                        <label><input type="radio" name="level" value="N4"> N4</label><br>
+                        <label><input type="radio" name="level" value="N3"> N3</label><br>
+                        <label><input type="radio" name="level" value="N2"> N2</label><br>
+                        <label><input type="radio" name="level" value="N1"> N1</label><br>
+                    </div>
+
+                    <div id="lessonList" class="selection-box" style="display: none;">
+                        <h2>Select Lesson</h2>
+                        <select id="lessonItems" onchange="fetchData(this.value)">
+                            <!-- Danh sách bài học sẽ được tạo bằng JavaScript -->
+                        </select>
+                    </div>
+                </aside>
+
+                <div class="flashcard-container">
+                    <div class="flashcard" onclick="flipCard(this)">
+                        <i class="bi bi-star-fill"></i>
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front" id="word"></div>
+                            <div class="flashcard-back" id="meaning"></div>
+                        </div>
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button class="nav-btn prev-btn" id="prevBtn" onclick="plusDivs(-1)">
+                            <i class="bi bi-arrow-left-short"></i>
+                        </button>
+                        <button class="nav-btn next-btn" id="nextBtn" onclick="plusDivs(+1)">
+                            <i class="bi bi-arrow-right-short"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-    </div>
-    </div>
-</main>
-<footer>
-    <div class="footer-content">
-        <div class="logo">
-            <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
         </div>
-        <div class="quick-links">
-            <h4>Quick Link</h4>
-            <ul class="list">
-                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
-                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
-                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
-                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
-                <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
-            </ul>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="../static/images/logo-hikari.png" alt="HikariJP Logo">
+            </div>
+            <div class="quick-links">
+                <h4>Quick Link</h4>
+                <ul class="list">
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Translation</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Lookup</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> JLPT Test</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Premium</a></li>
+                    <li><i class="bi bi-caret-right"></i><a href="#"><i class="fas fa-angle-right"></i> Flashcard</a></li>
+                </ul>
+            </div>
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <ul class="list">
+                    <li><i class="fas fa-phone"></i> 0702411147</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
+                    <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
+                </ul>
+            </div>
         </div>
-        <div class="contact-info">
-            <h4>Contact Us</h4>
-            <ul class="list">
-                <li><i class="fas fa-phone"></i> 0702411147</li>
-                <li><i class="fas fa-map-marker-alt"></i> 12 My Da Tay 8, Khue My, Ngu Hanh Son, Da Nang City</li>
-                <li><i class="fas fa-envelope"></i> hikari-jp@gmail.com</li>
-            </ul>
-        </div>
-    </div>
-</footer>
-<script th:src="@{/js/flashcard.js}"></script>
-</body>
-</html>
+    </footer>
+    <script th:src="@{/js/flashcard.js}"></script>
+    </body>
+    </html>
