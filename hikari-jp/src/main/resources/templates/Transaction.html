@@ -9,58 +9,60 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-    <div class="profile-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="profile-pic">
-                <img th:src="${userDetail.avatar != null ? '/upload/' + userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">
-            </div>
-            <nav class="menu">
-                <a href="/profile" class="active"><i class="bi bi-person-circle bi-icon"></i>Personal information</a>
-                <a href="/transaction-history"><i class="bi bi-clock-history bi-icon"></i>Transaction history</a>
-                <a href="/security"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
-            </nav>
-        </aside>
+<div class="profile-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="profile-pic">
+            <img th:src="${userDetail.avatar != null ? '/upload/' + userDetail.avatar : '/images/profile-image.png'}"
+                 alt="Profile Picture">
+        </div>
+        <nav class="menu">
+            <a href="/profile"><i class="bi bi-person-circle bi-icon"></i>Personal information</a>
+            <a href="/transaction-history" class="active"><i class="bi bi-clock-history bi-icon"></i>Transaction history</a>
+            <a href="/security"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
+            <a href="#"><i class="bi bi-star bi-icon"></i>My premimum</a>
+        </nav>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="content">
-            <h2>Transaction History</h2>
-            <div class="sort">
-                <label for="sort-option"></label>
-                <select id="sort-option" class="sort-select">
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                </select>
-            </div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Date</th>
-                    <th>Server Package</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Trans001</td>
-                    <td>25/02/2025</td>
-                    <td>1 Month</td>
-                    <td>200.000 VND</td>
-                    <td class="status paid">Paid</td>
-                </tr>
-                <tr>
-                    <td>Trans002</td>
-                    <td>25/02/2025</td>
-                    <td>1 Year</td>
-                    <td>1.000.000 VND</td>
-                    <td class="status paid">Paid</td>
-                </tr>
-                </tbody>
-            </table>
-        </main>
-    </div>
+    <!-- Main Content -->
+    <main class="content">
+        <h2>Transaction History</h2>
+        <div class="sort">
+            <label for="sort-option"></label>
+            <select id="sort-option" class="sort-select">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Date</th>
+                <th>Server Package</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Trans001</td>
+                <td>25/02/2025</td>
+                <td>1 Month</td>
+                <td>200.000 VND</td>
+                <td class="status paid">Paid</td>
+            </tr>
+            <tr>
+                <td>Trans002</td>
+                <td>25/02/2025</td>
+                <td>1 Year</td>
+                <td>1.000.000 VND</td>
+                <td class="status paid">Paid</td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -107,7 +108,6 @@ public class ProfileController {
         return "redirect:/security";
     }
 
-    private final String uploadDir = "upload/";
     @PostMapping("/update-avatar")
     public String updateAvatar(@RequestParam("avatar") MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
         try {
@@ -118,6 +118,11 @@ public class ProfileController {
 
             // Tạo tên file duy nhất
             String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String uploadDir = "upload/";
+            File uploadDirFile = new File(uploadDir);
+            if (!uploadDirFile.exists()) {
+                uploadDirFile.mkdirs(); // Tạo thư mục nếu chưa có
+            }
             Path path = Paths.get(uploadDir, filename);
 
             // Lưu file vào thư mục tĩnh
