@@ -102,7 +102,29 @@ document.addEventListener('DOMContentLoaded', function() {
         displayMessage('user', message);
         chatHistory.push({ role: "user", parts: [{ text: message }] });
         elements.input.value = '';
+        // === Adjusted Code Start ===
+        // Check if the message contains at least one Kanji character.
+        // The regular expression [\u4e00-\u9faf] matches common Kanji ranges.
+        const kanjiMatch = message.match(/[\u4e00-\u9faf]/);
+        if (kanjiMatch) {
+            const detectedKanji = kanjiMatch[0]; // Take the first Kanji found
 
+            // Transfer the detected Kanji into the search bar on the quizzInterface page
+            transferWordToSearch(detectedKanji);
+
+            // Build the URL containing the search parameter for the target page
+            const link = `http://localhost:8080/quizzInterface?search=${encodeURIComponent(detectedKanji)}`;
+
+            // Compose a reply with an embedded link
+            const replyMessage = `Chữ "<strong>${detectedKanji}</strong>" bạn muốn biết có sẵn tại đây: http://localhost:8080/quizzInterface?search=${encodeURIComponent(detectedKanji)}`;
+
+            displayMessage('model', replyMessage);
+            chatHistory.push({ role: "model", parts: [{ text: replyMessage }] });
+
+            // Stop further processing if a Kanji was detected
+            return;
+        }
+        // === Adjusted Code End ===
         // Check for keyword responses first
         const keywordResponse = checkKeywordResponse(message);
         if (keywordResponse) {
@@ -158,6 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const botReply = data.candidates[0].content.parts[0].text;
                 displayMessage('model', botReply);
                 chatHistory.push({ role: "model", parts: [{ text: botReply }] });
+                if (botReply.trim().split(/\s+/).length === 1) {
+                    transferWordToSearch(botReply.trim());
+                }
             } else {
                 throw new Error("Invalid response from Gemini");
             }
@@ -208,3 +233,28 @@ document.addEventListener('DOMContentLoaded', function() {
         elements.box.style.display = 'none';
     }
 });
+function transferWordToSearch(word) {
+    const searchInput = document.querySelector(".search-bar.wordSearch");
+    const kanjiRadio = document.querySelector("input[name='wordType'][value='kanji']");
+
+    if (kanjiRadio && !kanjiRadio.checked) {
+        kanjiRadio.checked = true;
+        // Trigger change to refetch kanji data
+        kanjiRadio.dispatchEvent(new Event("change"));
+    }
+
+    if (searchInput) {
+        searchInput.value = word;
+
+        // Delay filter until data is loaded after change event
+        setTimeout(() => {
+            if (typeof filterData === "function") {
+                filterData();
+            }
+        }, 300); // Adjust timing if needed
+    }
+}
+
+
+
+
