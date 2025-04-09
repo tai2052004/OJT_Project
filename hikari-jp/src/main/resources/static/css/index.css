@@ -31,19 +31,10 @@ body {
 .search {
     padding: 20px;
     border-radius: 10px;
-    width: 840px;
+    width: 1270px;
     height: 230px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background: #ffffff;
-}
-
-.chatbox {
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background: #ffffff;
-    width: 400px;
-    height: 230px;
 }
 
 .search input, .search select, .search button {
@@ -534,33 +525,34 @@ body {
     .chatbox {
         width: 100%;
     }
-}
-#suggestions-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 150px;
-    overflow-y: auto;
-    background: grey;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: none;
-}
 
-#suggestions-dropdown div {
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    border-bottom: 1px solid #f1f1f1;
-}
+    #suggestions-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 150px;
+        overflow-y: auto;
+        background: grey;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: none;
+    }
 
-#suggestions-dropdown div:hover {
-    background-color: #f8f9fa;
-}
+    #suggestions-dropdown div {
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border-bottom: 1px solid #f1f1f1;
+    }
 
-#suggestions-dropdown div:last-child {
-    border-bottom: none;
+    #suggestions-dropdown div:hover {
+        background-color: #f8f9fa;
+    }
+
+    #suggestions-dropdown div:last-child {
+        border-bottom: none;
+    }
 }
