@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/welcomeJLPT.css">
+</head>
+<body>
+<button id="return-btn" onclick="window.location.href = '/backToHome'">Return</button>
+<div class="screen screen-1">
+    <div class="welcome">
+        <div class="line"></div>
+        <div class="content">Welcome To JLPT Test</div>
+        <div class="line"></div>
+    </div>
+
+    <div class="rules">
+        <div class="rule-title">
+            <div class="rules-line"></div>
+            <div class="title">Rules</div>
+            <div class="rules-line"></div>
+        </div>
+        <div class="rule-content">
+            <div class="rule-detail">Stay in fullscreen mode.</div>
+            <div class="rule-detail">Do not switch tabs or apps.</div>
+            <div class="rule-detail">Do not take screenshot.</div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="understand-btn">I understand</button>
+    </div>
+</div>
+<div class="warning-overlay" id="warningOverlay">
+    <div class="warning-box" id="warningBox">
+        <h2>WARNING</h2>
+        <p>You must stay in fullscreen to continue the test</p>
+        <button class="warning-btn" id="continueBtn">Continue in Fullscreen</button>
+    </div>
+</div>
+<div class="screen screen-2">
+    <div class="welcome">
+        <div class="line"></div>
+        <div class="content">Verify your face</div>
+        <div class="line"></div>
+    </div>
+
+    <video id="video" autoplay muted playsinline style="border: 1px solid black;"></video>
+
+    <br>
+    <button id="retryButton" onclick="autoStartScan()" >Verify</button>
+    <p id="message" style="font-size: 18px; font-weight: bold; color: blue;"></p>
+    <div class="result-overlay" style="display: none;">
+        <div class="result">
+            <canvas id="canvas"  style="display: none; border: 1px solid red;"></canvas>
+            <p id="result" style="font-size: 16px;"></p>
+            <button id="ok" style="display: none">Ok</button>
+        </div>
+    </div>
+
+
+    <div class="button-navigate" style="justify-content: space-between;">
+        <button id="back-btn">Back</button>
+        <button id="next" style="display: none">Next</button>
+    </div>
+</div>
+
+<div class="screen screen-3">
+    <div class="welcome">
+        <div class="line"></div>
+        <div class="content">Choose topic</div>
+        <div class="line"></div>
+    </div>
+    <div class="topic">
+        <button id="1">1</button>
+        <button id="2">2</button>
+        <button id="3">3</button>
+    </div>
+
+    <div class="button-container" style="justify-content: space-between;">
+        <button id="back">Back</button>
+        <button id="start-btn" onclick="window.location.href = '/test'">Start the test</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<script th:inline="javascript">
+    let modelUrl = /*[[@{/models}]]*/ '/models';
+</script>
+
+<script src="/js/welcomeJLPT.js"></script>
+</body>
+</html>

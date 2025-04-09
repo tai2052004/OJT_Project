@@ -31,6 +31,8 @@ public class WebController {
         session.removeAttribute("listeningPractices");
         return "Practice";
     }
+    @GetMapping("/jlptTest")
+    public String jlptTest() { return "welcomeJLPT"; }
 
 
 
@@ -42,4 +44,9 @@ public class WebController {
 
     @GetMapping("/premium")
     public String premium() { return "premium"; }
+
+    @GetMapping("/test")
+    public String test() {
+        return "testJLPT";
+    }
 }

@@ -1,6 +1,6 @@
 let totalTime = 60 * 20; //
 let totalTimeRead = 60 * 60;
-let totalListening = 10;
+let totalListening = 60 * 30;
 let totalTimeGrammar = 60 * 40;
 let timeLeft = 0;
 let timerInterval = null;
@@ -223,7 +223,7 @@ function updateCountdown() {
     if (timeLeft > 0) {
         timeLeft--;
     } else {
-        countdownElement.textContent = "Hết giờ!";
+        countdownElement.innerText = "Hết giờ!";
         submitQuiz();
     }
 }
@@ -460,9 +460,13 @@ function showQuestions() {
 
 function submitQuiz() {
     let score = 0;
-    if (!confirm("Bạn có chắc chắn muốn nộp bài không?")) {
-        return; // Nếu bấm Cancel thì dừng hàm
+    if ( timeLeft > 0)
+    {
+        if (!confirm("Bạn có chắc chắn muốn nộp bài không?")) {
+            return; // Nếu bấm Cancel thì dừng hàm
+        }
     }
+
 
     let fixedHead = document.querySelector(".fixed-head");
     if (fixedHead) {

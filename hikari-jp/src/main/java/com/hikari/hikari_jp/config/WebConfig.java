@@ -1,5 +1,8 @@
 package com.hikari.hikari_jp.config;
 
+import jakarta.annotation.PostConstruct;
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.opencv.opencv_java;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,5 +17,16 @@ public class WebConfig implements WebMvcConfigurer {
         // Xử lý ảnh trong thư mục upload
         registry.addResourceHandler("/upload/**")
                 .addResourceLocations("file:upload/");
+
+        registry
+                .addResourceHandler("/models/**")
+                .addResourceLocations("classpath:/static/models/");
     }
+
+    @PostConstruct
+    public void loadOpenCVNativeLibrary() {
+        Loader.load(opencv_java.class); // Tự động load native library
+        System.out.println("OpenCV native library loaded!");
+    }
+
 }
