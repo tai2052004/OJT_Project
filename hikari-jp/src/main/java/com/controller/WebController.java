@@ -35,7 +35,8 @@ public class WebController {
     public String jlptTest() { return "welcomeJLPT"; }
 
 
-
+    @GetMapping("/buyPremium")
+    public String buyPremium() { return "premium"; }
     @GetMapping("/backToHome")
     public String backToHome() { return "landingPage"; }
 

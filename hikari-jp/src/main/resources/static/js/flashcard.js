@@ -241,14 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (fetchButton) {
         fetchButton.style.display = "none";
     }
-    // const selection_box = document.getElementById("selection-box");
-    // if(selection_box) {
-    //     selection_box.style.display="none";
-    // }
-    // const selection_box1 = document.getElementById("selection-box1");
-    // if(selection_box1) {
-    //     selection_box1.style.display="none";
-    // }
+
 
     const urlParams = new URLSearchParams(window.location.search);
     const selectedLevel = urlParams.get("level");
@@ -264,6 +257,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const wordTypeRadio = document.querySelector(`input[name="wordType"][value="${wordType}"]`);
         if (wordTypeRadio) wordTypeRadio.checked = true;
     }
+    if (selectedLevel && wordType) {
+        currentType = wordType; // Set current type to vocabulary or kanji
+        const defaultLessonKey = `${selectedLevel}-1`; // Always load Lesson 1 initially
+        fetchData(defaultLessonKey); // Automatically fetch data for that level
+        toggleLessonList(); // Show lesson list for that level
+    }
+
+
     document.querySelectorAll('input[name="level"]').forEach(radio => {
         radio.addEventListener("change", function () {
             toggleLessonList();

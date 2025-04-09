@@ -8,6 +8,10 @@ const KEYWORD_RESPONSES = {
         response: "http://localhost:8080/Practice",
         message: "Bạn muốn luyện tập? Truy cập ngay: {link}"
     },
+    "học từ vựng": {
+        response: "http://localhost:8080/quizzInterface",
+        message: "Bạn muốn học từ vựng? Truy cập ngay: {link}"
+    },
     "practice": {
         response: "http://localhost:8080/Practice",
         message: "Want to practice? Click here: {link}"
@@ -152,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (data.candidates?.[0]?.content) {
                 const botReply = data.candidates[0].content.parts[0].text;
-                displayMessage("model", botReply);
+                displayMessage('model', botReply);
                 chatHistory.push({ role: "model", parts: [{ text: botReply }] });
             } else {
                 throw new Error("Invalid response from Gemini");
@@ -160,74 +164,47 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error("Error:", error);
             hideTypingIndicator();
-            displayMessage("model", `⚠️ Error: ${error.message}`);
+            displayMessage('model', `⚠️ Error: ${error.message}`);
         }
     }
 
-// UI functions
+    // UI functions
     function displayMessage(role, text) {
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", `${role}-message`);
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', `${role}-message`);
         messageDiv.innerHTML = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-
-        if (!elements.messages) {
-            console.error("Error: elements.messages is undefined.");
-            return;
-        }
-
         elements.messages.appendChild(messageDiv);
         elements.messages.scrollTop = elements.messages.scrollHeight;
     }
 
     function showTypingIndicator() {
-        const indicator = document.createElement("div");
-        indicator.classList.add("typing-indicator");
+        const indicator = document.createElement('div');
+        indicator.classList.add('typing-indicator');
         indicator.textContent = "Gemini is typing...";
-        indicator.id = "typing-indicator";
-
-        if (!elements.messages) {
-            console.error("Error: elements.messages is undefined.");
-            return;
-        }
-
+        indicator.id = 'typing-indicator';
         elements.messages.appendChild(indicator);
         elements.messages.scrollTop = elements.messages.scrollHeight;
     }
 
     function hideTypingIndicator() {
-        const indicator = document.getElementById("typing-indicator");
-        if (indicator && elements.messages) {
-            elements.messages.removeChild(indicator);
-        }
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) elements.messages.removeChild(indicator);
     }
 
     function displayChatHistory() {
-        if (!elements.messages) {
-            console.error("Error: elements.messages is undefined.");
-            return;
-        }
-
-        elements.messages.innerHTML = "";
+        elements.messages.innerHTML = '';
         chatHistory.forEach(msg => {
-            if (msg.role === "model" || msg.role === "user") {
+            if (msg.role === 'model' || msg.role === 'user') {
                 displayMessage(msg.role, msg.parts[0].text);
             }
         });
     }
 
     function toggleChatBox() {
-        if (!elements.box) {
-            console.error("Error: elements.box is undefined.");
-            return;
-        }
-        elements.box.style.display = elements.box.style.display === "flex" ? "none" : "flex";
+        elements.box.style.display = elements.box.style.display === 'flex' ? 'none' : 'flex';
     }
 
     function closeChatBox() {
-        if (!elements.box) {
-            console.error("Error: elements.box is undefined.");
-            return;
-        }
-        elements.box.style.display = "none";
+        elements.box.style.display = 'none';
     }
 });
