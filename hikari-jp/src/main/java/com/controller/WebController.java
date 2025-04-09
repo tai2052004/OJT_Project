@@ -33,10 +33,14 @@ public class WebController {
     }
 
 
-
+    @GetMapping("/buyPremium")
+    public String buyPremium() { return "premium"; }
     @GetMapping("/backToHome")
     public String backToHome() { return "landingPage"; }
 
     @GetMapping("/flashcards")
     public String flashcards() { return "flashcards"; }
+
+    @GetMapping("/premium")
+    public String premium() { return "premium"; }
 }

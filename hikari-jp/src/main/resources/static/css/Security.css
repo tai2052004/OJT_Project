@@ -65,10 +65,19 @@ body {
     font-weight: bold;
     text-align: start;
     font-size: 18px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.menu a:hover {
+    background: #f0f0f0;
+    border-left: 4px solid #3A8CAA;
+    color: #3A8CAA;
 }
 
 .menu a.active {
-    background: #ddd;
+    background: #e0f3fa;
     border-left: 4px solid #3A8CAA;
     color: #3A8CAA;
 }

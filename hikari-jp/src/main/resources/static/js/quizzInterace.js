@@ -10,14 +10,23 @@ const JLPT_TO_WK = {
 
 const itemsPerPage = 5;
 let currentPage = 1;
+let filteredData = []; // Added: holds filtered data
 let vocabData = [];
 let kanjiData = [];
 let currentType = "vocabulary"; // Track the current type
-
+let toggleReading = document.getElementById("toggleReading");
+let toggleMeaning = document.getElementById("toggleMeaning");
 document.addEventListener("DOMContentLoaded", function () {
     // Lấy tham số từ URL
     const urlParams = new URLSearchParams(window.location.search);
-    const selectedLevel = urlParams.get("level");
+    let selectedLevel = urlParams.get("level") || "N5"; // Mặc định là N5 nếu không có trong URL
+    // Set default selections
+    let selectedType = urlParams.get("wordType") || "vocabulary"; // Mặc định là vocabulary nếu không có trong URL
+    // Check the corresponding radio buttons
+    document.querySelector(`input[name='level'][value='${selectedLevel}']`).checked = true;
+    document.querySelector(`input[name='wordType'][value='${selectedType}']`).checked = true;
+    // ADDED: Attach the search event for the search input field
+    document.querySelector(".search-bar.wordSearch").addEventListener("input", filterData);
 
     if (selectedLevel) {
         // Tìm radio button có value tương ứng và chọn nó
@@ -26,9 +35,30 @@ document.addEventListener("DOMContentLoaded", function () {
             radio.checked = true;
         }
     }
+    // Auto-fetch data with default values
+    fetchData();
+
+    // Auto-fetch when clicking Kanji/Vocabulary radio buttons
+    document.querySelectorAll("input[name='wordType']").forEach((radio) => {
+        radio.addEventListener("change", fetchData);
+    });
+
+    // Auto-fetch when clicking JLPT level radio buttons
+    document.querySelectorAll("input[name='level']").forEach((radio) => {
+        radio.addEventListener("change", fetchData);
+    });
+
+    // Update visibility when toggling reading/meaning
+    toggleReading.addEventListener("change", updateVisibility);
+    toggleMeaning.addEventListener("change", updateVisibility);
     fetchData();
 });
+// Gán sự kiện `change` cho 2 checkbox
+document.getElementById("toggleReading").addEventListener("change", updateVisibility);
+document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
 
+// Gọi lần đầu để cập nhật trạng thái ban đầu
+updateVisibility();
 
 async function fetchData() {
     let selectedLevel = document.querySelector("input[name='level']:checked")?.value;
@@ -56,6 +86,9 @@ async function fetchData() {
 
         currentType = selectedType;
         currentPage = 1;
+        // ADDED: Reset search input and set filteredData to the full data set.
+        document.querySelector(".search-bar.wordSearch").value = "";
+        filteredData = (currentType === "vocabulary") ? vocabData : kanjiData;
         showPage(currentPage);
     } catch (error) {
         console.error("Lỗi khi tải dữ liệu:", error);
@@ -64,8 +97,9 @@ async function fetchData() {
 function showPage(page) {
     let listContainer = document.getElementById("vocabularySection");
     listContainer.innerHTML = "";
-
-    let currentData = currentType === "vocabulary" ? vocabData : kanjiData;
+    // ADDED: Use filteredData if it exists; otherwise, use the full data set.
+    let currentData = filteredData || ((currentType === "vocabulary") ? vocabData : kanjiData);
+    // let currentData = currentType === "vocabulary" ? vocabData : kanjiData;
     let start = (page - 1) * itemsPerPage;
     let end = start + itemsPerPage;
     let paginatedItems = currentData.slice(start, end);
@@ -98,16 +132,19 @@ function showPage(page) {
 
             let meaningReading = document.createElement("span");
             meaningReading.classList.add("meaning");
-            meaningReading.textContent = `Meaning: ${item.data.meanings.map(m => m.meaning).join(", ")} | Reading: ${item.data.readings.map(r => r.reading).join(", ")}`;
+            meaningReading.textContent = item.data.meanings.map(m => m.meaning).join(", ");
             meaningReading.style.display = "none"; // Hidden initially
 
-            // // Add click event to toggle meaning & reading
-            // div.addEventListener("click", function () {
-            //     meaningReading.style.display = (meaningReading.style.display === "none") ? "block" : "none";
-            // });
+
 
             div.appendChild(kanjiText);
             div.appendChild(meaningReading);
+            // Attach click event to show overlay
+           // console.log();
+
+            div.addEventListener("click", function() {
+                openKanjiOverlay(item.data);
+            });
         }
 
         listContainer.appendChild(div);
@@ -116,17 +153,21 @@ function showPage(page) {
     updatePagination();
     updateVisibility();
 }
-
+toggleReading.addEventListener("change", updateVisibility);
+toggleMeaning.addEventListener("change", updateVisibility);
 
 function updatePagination() {
-    let totalPages = Math.ceil((currentType === "vocabulary" ? vocabData.length : kanjiData.length) / itemsPerPage);
+    let totalItems = filteredData ? filteredData.length : ((currentType === "vocabulary") ? vocabData.length : kanjiData.length);
+    let totalPages = Math.ceil(totalItems / itemsPerPage);
     let paginationContainer = document.querySelector(".pagination");
     paginationContainer.innerHTML = "";
 
-    // Previous button
-    paginationContainer.innerHTML += `<button class="page-button" onclick="changePage(-1)" ${currentPage === 1 ? "disabled" : ""}>&#8592;</button>`;
-
     let startPage, endPage;
+
+    // Hide "Previous" if on first page
+    if (currentPage > 1) {
+        paginationContainer.innerHTML += `<button class="page-button" onclick="changePage(-1)">&#8592;</button>`;
+    }
 
     if (totalPages <= 7) {
         startPage = 1;
@@ -160,12 +201,17 @@ function updatePagination() {
         paginationContainer.innerHTML += `<button class="page-button" onclick="gotoPage(${totalPages})">${totalPages}</button>`;
     }
 
-    // Next button
-    paginationContainer.innerHTML += `<button class="page-button" onclick="changePage(1)" ${currentPage === totalPages ? "disabled" : ""}>&#8594;</button>`;
+    // Hide "Next" if on last page
+    if (currentPage < totalPages) {
+        paginationContainer.innerHTML += `<button class="page-button" onclick="changePage(1)">&#8594;</button>`;
+    }
 }
 
+
 function gotoPage(page) {
-    let totalPages = Math.ceil((currentType === "vocabulary" ? vocabData.length : kanjiData.length) / itemsPerPage);
+    let totalItems = filteredData ? filteredData.length : ((currentType === "vocabulary") ? vocabData.length : kanjiData.length);
+    let totalPages = Math.ceil(totalItems / itemsPerPage);
+    // let totalPages = Math.ceil((currentType === "vocabulary" ? vocabData.length : kanjiData.length) / itemsPerPage);
     if (page >= 1 && page <= totalPages) {
         currentPage = page;
         showPage(currentPage);
@@ -180,6 +226,29 @@ function updateVisibility() {
     let showReading = document.getElementById("toggleReading").checked;
     let showMeaning = document.getElementById("toggleMeaning").checked;
 
+
+    if (showReading && showMeaning) {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = false;
+    }
+    // Nếu chỉ có Reading được chọn, disable Meaning
+    else if (showReading || !showMeaning)
+    {
+        toggleReading.disabled = true;
+        toggleMeaning.disabled = false;
+    }
+    else if (showMeaning || !showReading)
+    {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = true;
+    }
+    // Nếu cả hai đều bỏ chọn, có thể chọn lại
+    else {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = false;
+    }
+
+
     document.querySelectorAll(".reading").forEach(el => {
         el.style.display = showReading ? "inline" : "none";
     });
@@ -189,75 +258,115 @@ function updateVisibility() {
     });
 }
 
-// Handle radio button changes
-document.querySelectorAll("input[name='wordType']").forEach((radio) => {
-    radio.addEventListener("change", function () {
-        let fetchButton = document.getElementById("fetchButton");
-
-        if (this.value === "vocabulary") {
-            fetchButton.textContent = "Lấy từ vựng";
-            fetchButton.setAttribute("onclick", "fetchVocabulary()");
-        } else {
-            fetchButton.textContent = "Lấy Kanji";
-            fetchButton.setAttribute("onclick", "fetchKanji()");
-        }
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("toggleReading").addEventListener("change", updateVisibility);
-    document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
-});
 
 
 
-// fetch
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("input[name='wordType']").forEach((radio) => {
-        radio.addEventListener("change", fetchData); // Auto-fetch when clicking Kanji/Vocabulary
-    });
+function gotoPage(page) {
+    let totalItems = filteredData ? filteredData.length : ((currentType === "vocabulary") ? vocabData.length : kanjiData.length);
+    let totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        showPage(currentPage);
+    }
+}
+function changePage(step) {
+    gotoPage(currentPage + step);
+}
+/**
+ * Filters the current data based on the search input.
+ * This checks if the search term matches the beginning of:
+ * - the characters for the word
+ * - any of the readings
+ * - any of the meanings
+ */
+function filterData() {
+    const searchTerm = document.querySelector(".search-bar.wordSearch").value.trim();
+    let currentData = (currentType === "vocabulary") ? vocabData : kanjiData;
 
-    document.querySelectorAll("input[name='level']").forEach((radio) => {
-        radio.addEventListener("change", fetchData); // Auto-fetch when clicking JLPT level
-    });
+    if (searchTerm !== "") {
+        filteredData = currentData.filter(item => {
+            let word = item.data.characters;
+            let readings = item.data.readings.map(r => r.reading);
+            let meanings = item.data.meanings.map(m => m.meaning);
+            return word.startsWith(searchTerm) ||
+                readings.some(r => r.startsWith(searchTerm)) ||
+                meanings.some(m => m.startsWith(searchTerm));
+        });
+    } else {
+        // If no search term, use the full list
+        filteredData = currentData;
+    }
+    currentPage = 1;
+    showPage(currentPage);
+}
 
-    document.getElementById("toggleReading").addEventListener("change", updateVisibility);
-    document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
-});
+
 
 //auto load with default value
-document.addEventListener("DOMContentLoaded", function () {
-    // Set default selections
-    const urlParams = new URLSearchParams(window.location.search);
-    let selectedLevel = urlParams.get("level") || "N5"; // Mặc định là N5 nếu không có trong URL
-    let selectedType = urlParams.get("wordType") || "vocabulary"; // Mặc định là vocabulary nếu không có trong URL
 
-    // Check the corresponding radio buttons
-    document.querySelector(`input[name='level'][value='${defaultLevel}']`).checked = true;
-    document.querySelector(`input[name='wordType'][value='${defaultType}']`).checked = true;
-
-    // Auto-fetch data with default values
-    fetchData();
-
-    // Auto-fetch when clicking Kanji/Vocabulary radio buttons
-    document.querySelectorAll("input[name='wordType']").forEach((radio) => {
-        radio.addEventListener("change", fetchData);
-    });
-
-    // Auto-fetch when clicking JLPT level radio buttons
-    document.querySelectorAll("input[name='level']").forEach((radio) => {
-        radio.addEventListener("change", fetchData);
-    });
-
-    // Update visibility when toggling reading/meaning
-    document.getElementById("toggleReading").addEventListener("change", updateVisibility);
-    document.getElementById("toggleMeaning").addEventListener("change", updateVisibility);
-});
 function changeMode(mode) {
     const selectedLevel = document.querySelector('input[name="level"]:checked').value;
     const selectedWordType = document.querySelector('input[name="wordType"]:checked').value;
     if(mode === 'flashcard') {
         window.location.href=`/flashcards?level=${selectedLevel}&wordType=${selectedWordType}`;
     }
+}
+// overlay writing
+function openKanjiOverlay(kanjiData) {
+    const overlay = document.getElementById("kanjiOverlay");
+    const strokeElement = document.getElementById("strokeOrderImage");
+
+    // Clear previous content from stroke area
+    strokeElement.innerHTML = "";
+
+    // Add stroke image using <kaki-jun>
+    strokeElement.innerHTML += `<kaki-jun>${kanjiData.characters}</kaki-jun>`;
+
+    // Remove old detail section if exists
+    const oldDetails = document.getElementById("kanjiDetails");
+    if (oldDetails) {
+        oldDetails.remove();
+    }
+
+    // Create new details element
+    const details = document.createElement("div");
+    details.id = "kanjiDetails";
+    details.classList.add("kanji-details");
+
+    const onyomi = kanjiData.readings
+        .filter(r => r.type === "onyomi")
+        .map(r => r.reading)
+        .join(", ") || "None";
+
+    const kunyomi = kanjiData.readings
+        .filter(r => r.type === "kunyomi")
+        .map(r => r.reading)
+        .join(", ") || "None";
+
+    const meanings = kanjiData.meanings.map(m => m.meaning).join(", ");
+
+    details.innerHTML = `
+    <p><strong>Onyomi:</strong> 
+        <span style="color: red;">${onyomi}</span>
+    </p>
+    <p><strong>Kunyomi:</strong> 
+        <span style="color: blue;">${kunyomi}</span>
+    </p>
+    <p><strong>Meanings:</strong> ${meanings}</p>
+`;
+
+
+    // Append to main overlay content
+    const overlayContent = document.querySelector(".kanji-overlay-content");
+    overlayContent.appendChild(details);
+
+    overlay.classList.remove("hidden");
+}
+
+function closeKanjiOverlay() {
+    document.getElementById("kanjiOverlay").classList.add("hidden");
+    const strokeElement = document.getElementById("strokeOrderImage");
+    strokeElement.innerHTML = "";
 }
 
 

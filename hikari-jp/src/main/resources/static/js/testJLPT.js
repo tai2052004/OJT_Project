@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const progressBar = document.querySelector(".progress-bar");
     const timerElement = document.querySelector('.right-panel p');
     const submitButton = document.querySelector('.submit-btn');
-    let answeredCount = 0;
     let timeLeft = 60 * 60; // 3600 seconds
     let timerInterval;
     let testSubmitted = false; // Flag to track whether the test has been submitted
@@ -125,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         enableFullscreen();
         overlay.style.display = "none";
         timerInterval = setInterval(updateTimer, 1000); // Start countdown timer
+        attachListeners();
     }
 
     startButton.addEventListener("click", startTest);
@@ -182,17 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const progress = (answeredCount / totalQuestions) * 100;
         progressBar.style.width = `${progress}%`;
     }
-    // Generate question boxes dynamically
-    // questions.forEach((question, index) => {
-    //     const box = document.createElement("div");
-    //     box.classList.add("question-box");
-    //     box.textContent = index + 1;
-    //     box.dataset.index = index;
-    //     box.addEventListener("click", () => {
-    //         question.scrollIntoView({ behavior: "smooth", block: "start" });
-    //     });
-    //     questionBoxContainer.appendChild(box);
-    // });
+
 
     // Track answer selection
     // Track answer selection and add unselect functionality
