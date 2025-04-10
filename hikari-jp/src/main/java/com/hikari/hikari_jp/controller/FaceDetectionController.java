@@ -39,10 +39,10 @@ public class FaceDetectionController {
         }
     }
 
-    @GetMapping("/api/face/validate")
-    public ResponseEntity<String> validateFace() {
+    @PostMapping("/api/face/validate")
+    public ResponseEntity<String> validateFace(@RequestParam("file") MultipartFile file) {
         try {
-            String result = FaceDetectionService.validateLastUploadedFace();
+            String result = FaceDetectionService.validateLastUploadedFace(file);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
