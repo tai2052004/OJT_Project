@@ -24,11 +24,11 @@
     </div>
 
     <div class="header-navigate">
-        <div class="landingpage">
+        <div class="landingpage" th:class="'landingpage' + (${currentPage} == 'landing' ? ' active' : '')">
             <a th:href="@{/landingPage}">Home</a>
         </div>
 
-        <div class="lookup active">
+        <div class="lookup" th:class="'lookup' + (${currentPage} == 'lookup' ? ' active' : '')">
             <a th:href="@{/lookUp}">Look Up</a>
         </div>
 
@@ -36,9 +36,11 @@
             <a th:href="@{/jlptTest}">JLPT Test</a>
         </div>
 
-        <div class="premium">
+        <div class="premium" th:class="'premium' + (${currentPage} == 'buyPremium' ? ' active' : '')">
             <a th:href="@{/buyPremium}">Premium</a>
         </div>
+
+
 
         <div class="dropdown-item">
             <div class="nav-link">
