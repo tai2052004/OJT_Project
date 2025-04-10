@@ -278,8 +278,8 @@ async function filterData() {
             const readings = item.data.readings.map(r => r.reading.toLowerCase());
             const meanings = item.data.meanings.map(m => m.meaning.toLowerCase());
             return word.includes(searchTerm) ||
-                readings.some(r => r.includes(searchTerm)) ||
-                meanings.some(m => m.includes(searchTerm));
+                readings.some(r => r.startsWith(searchTerm)) ||
+                meanings.some(m => m.startsWith(searchTerm));
         });
     }
 

@@ -36,6 +36,7 @@ public class UserController {
 
     @GetMapping("/landingPage")
     public String landingPage(Model model) {
+        model.addAttribute("currentPage","landing" );
         return "landingPage";
     }
 
