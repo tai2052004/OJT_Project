@@ -1,3 +1,102 @@
+const video = document.getElementById('video');
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const mess = document.getElementById("message");
+let scanning = true;
+let animationId
+
+async function initFaceCheck() {
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        video.srcObject = stream;
+        video.addEventListener('loadedmetadata', () => {
+            startCheckingLoop(); // <-- Bắt đầu quét mỗi giây
+        });
+    });
+}
+Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl)
+]).then(() => {
+    console.log("✅ Mô hình TinyFaceDetector đã được tải.");
+});
+
+let lastDetectionTime = 0;
+const detectionInterval = 1500;
+
+async function startCheckingLoop(timestamp) {
+    if (!scanning) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const detections = await faceapi.detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions());
+
+    // Vẽ box nếu có phát hiện khuôn mặt
+    if (detections.length > 0) {
+        const box = detections[0].box;
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(box.x, box.y, box.width, box.height);
+    }
+
+    // Gửi ảnh kiểm tra định kỳ
+    if (timestamp - lastDetectionTime >= detectionInterval) {
+        lastDetectionTime = timestamp;
+
+        try {
+            const msg = await captureAndValidate();
+            console.log("📸 Số khuôn mặt phát hiện:", detections.length);
+            if (detections.length === 0) {
+                mess.innerText = "Please let your face in camera";
+                triggerWarning();
+            } else if (!msg.includes("Face valid")) {
+                mess.innerText = "Please don't let anyone else in your camera";
+                triggerWarning();
+            }
+
+        } catch (err) {
+            console.error("Lỗi validate:", err);
+        }
+    }
+
+    animationId = requestAnimationFrame(startCheckingLoop);
+}
+
+function triggerWarning() {
+    scanning = false;
+    document.getElementById('warning-overlay').style.display = 'flex';
+}
+
+function resumeTest() {
+    scanning = true;
+    startCheckingLoop();
+    document.getElementById('warning-overlay').style.display = 'none';
+}
+async function captureAndValidate() {
+    return new Promise((resolve, reject) => {
+        canvas.toBlob(async (blob) => {
+            try {
+                const formData = new FormData();
+                formData.append("file", blob, "face.jpg");
+
+                const response = await fetch("/api/face/validate", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const msg = await response.text();
+                console.log("✅ Server response:", msg);
+                resolve(msg); // trả về kết quả từ backend
+
+            } catch (err) {
+                console.error("❌ Lỗi khi gửi ảnh:", err);
+                reject(err);
+            }
+        }, "image/jpeg");
+    });
+}
+initFaceCheck();
+
 document.addEventListener("DOMContentLoaded", function () {
     const questions = document.querySelectorAll(".question");
     const questionBoxContainer = document.querySelector(".question-boxes");
@@ -8,39 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeLeft = 60 * 60; // 3600 seconds
     let timerInterval;
     let testSubmitted = false; // Flag to track whether the test has been submitted
-    //@@ user java scrip to fetch question from database
-    //------------------------------------------------------------------------------------------
-    // function fetchAndRenderQuestions() {
-    //     fetch("/jlptTest1")
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             renderQuestions(data);
-    //             attachListeners();
-    //         })
-    //         .catch(error => console.error("Error fetching questions:", error));
-    // }
-    // function renderQuestions(questionsData) {
-    //     const questionsContainer = document.querySelector(".content");
-    //     questionsContainer.innerHTML = "";
-    //
-    //     questionsData.forEach((question, index) => {
-    //         let questionHTML = `
-    //             <div class="question" data-correct-answer="${question.correctAnswer}">
-    //                 <p>${index + 1}. ${question.questionText}</p>
-    //                 <div class="box">
-    //                     <ul class="choices">
-    //                         <li><input type="radio" name="q${question.id}" value="1"> ${question.choice1}</li>
-    //                         <li><input type="radio" name="q${question.id}" value="2"> ${question.choice2}</li>
-    //                         <li><input type="radio" name="q${question.id}" value="3"> ${question.choice3}</li>
-    //                         <li><input type="radio" name="q${question.id}" value="4"> ${question.choice4}</li>
-    //                     </ul>
-    //                 </div>
-    //             </div>
-    //         `;
-    //         questionsContainer.innerHTML += questionHTML;
-    //     });
-    // }
-    //---------------------------------------------------------------------
+
+
     // Correct answers (example, make sure to update with actual correct answers)
 
     // Create overlay for rules and start test
@@ -64,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const rules = document.createElement("ul");
     rules.style.color = "white";
-    rules.style.textAlign = "center";
     rules.innerHTML = "<li>Stay in fullscreen mode.</li><li>Do not switch tabs or apps.</li><li>Do not take screenshot.</li><li>Complete the test without interruptions.</li>";
 
     const startButton = document.createElement("button");
@@ -225,80 +292,110 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     submitButton.addEventListener("click", function () {
-        if (testSubmitted) return; // Prevent multiple submissions
-        clearInterval(timerInterval); // Stop the timer
-        let scoreInput = document.getElementById("userScore");
-        let score = 0; // Initialize score
+        if (testSubmitted) return;
+        if ( timeLeft > 0)
+        {
+            Swal.fire({
+                title: 'Are you sure submitting the test?',
+                text: "You can't make any change after submitting!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Submitted successful!',
+                        '',
+                        'success'
+                    );
+                    scanning = false;
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                    }
+                    if (video.srcObject) {
+                        video.srcObject.getTracks().forEach(track => track.stop());
+                        video.style.display = "none";
+                    }
+                    document.exitFullscreen();
+                    clearInterval(timerInterval); // Stop the timer
+                    let scoreInput = document.getElementById("userScore");
+                    let score = 0; // Initialize score
 
-        // Re-select questions dynamically so that it reflects all rendered elements
-        const questions = document.querySelectorAll(".question");
+                    // Re-select questions dynamically so that it reflects all rendered elements
+                    const questions = document.querySelectorAll(".question");
 
-        questions.forEach((question, index) => {
-            const correctAnswer = question.dataset.correctAnswer; // Get the correct answer from dataset
-            const inputs = question.querySelectorAll("input[type='radio']");
-            let selectedValue = null;
+                    questions.forEach((question, index) => {
+                        const correctAnswer = question.dataset.correctAnswer; // Get the correct answer from dataset
+                        const inputs = question.querySelectorAll("input[type='radio']");
+                        let selectedValue = null;
 
-            // Determine the selected answer
-            inputs.forEach(input => {
-                if (input.checked) {
-                    selectedValue = input.value;
+                        // Determine the selected answer
+                        inputs.forEach(input => {
+                            if (input.checked) {
+                                selectedValue = input.value;
+                            }
+                        });
+
+                        // Disable all radio buttons for this question
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                        });
+
+                        // Remove any existing marker in the question
+                        let oldMarker = question.querySelector(".marker");
+                        if (oldMarker) {
+                            oldMarker.remove();
+                        }
+
+                        // Create a new marker to display next to the choices
+                        let marker = document.createElement("span");
+                        marker.className = "marker";
+                        marker.style.marginLeft = "10px"; // add some spacing
+
+                        // Check if the selected answer is correct and set marker text and color
+                        if (selectedValue === correctAnswer) {
+                            score++; // Increase score for correct answer
+                            marker.textContent = "O";
+                            marker.style.color = "green";
+                        } else {
+                            marker.textContent = "X";
+                            marker.style.color = "red";
+                        }
+
+                        // Insert the marker after the choices list in the current question
+                        let choicesList = question.querySelector('.choices');
+                        if (choicesList) {
+                            choicesList.parentNode.insertBefore(marker, choicesList.nextSibling);
+                        }
+                        // Hide "Unselect" button after submission
+                        const unselectButton = question.querySelector("button");
+                        if (unselectButton) {
+                            unselectButton.style.display = "none";
+                        }
+                        // Also, mark the corresponding question box color in the right panel
+                        const box = document.querySelector(`.question-boxes .question-box:nth-child(${index + 1})`);
+                        if (selectedValue === null) {
+                            box.style.backgroundColor = "gray"; // no answer selected
+                        } else if (selectedValue === correctAnswer) {
+                            box.style.backgroundColor = "green"; // correct answer
+                        } else {
+                            box.style.backgroundColor = "red"; // wrong answer
+                        }
+                    });
+
+                    // Store updated score in the hidden input field
+                    scoreInput.value = score;
+
+                    // Mark the test as submitted and disable further submissions
+                    testSubmitted = true;
+                    submitButton.disabled = true;
                 }
             });
+        }// Prevent multiple submissions
 
-            // Disable all radio buttons for this question
-            inputs.forEach(input => {
-                input.disabled = true;
-            });
-
-            // Remove any existing marker in the question
-            let oldMarker = question.querySelector(".marker");
-            if (oldMarker) {
-                oldMarker.remove();
-            }
-
-            // Create a new marker to display next to the choices
-            let marker = document.createElement("span");
-            marker.className = "marker";
-            marker.style.marginLeft = "10px"; // add some spacing
-
-            // Check if the selected answer is correct and set marker text and color
-            if (selectedValue === correctAnswer) {
-                score++; // Increase score for correct answer
-                marker.textContent = "O";
-                marker.style.color = "green";
-            } else {
-                marker.textContent = "X";
-                marker.style.color = "red";
-            }
-
-            // Insert the marker after the choices list in the current question
-            let choicesList = question.querySelector('.choices');
-            if (choicesList) {
-                choicesList.parentNode.insertBefore(marker, choicesList.nextSibling);
-            }
-            // Hide "Unselect" button after submission
-            const unselectButton = question.querySelector("button");
-            if (unselectButton) {
-                unselectButton.style.display = "none";
-            }
-            // Also, mark the corresponding question box color in the right panel
-            const box = document.querySelector(`.question-boxes .question-box:nth-child(${index + 1})`);
-            if (selectedValue === null) {
-                box.style.backgroundColor = "gray"; // no answer selected
-            } else if (selectedValue === correctAnswer) {
-                box.style.backgroundColor = "green"; // correct answer
-            } else {
-                box.style.backgroundColor = "red"; // wrong answer
-            }
-        });
-
-        // Store updated score in the hidden input field
-        scoreInput.value = score;
-        alert("You scored: " + score + " out of " + questions.length);
-
-        // Mark the test as submitted and disable further submissions
-        testSubmitted = true;
-        submitButton.disabled = true;
     });
 
 
@@ -308,6 +405,6 @@ document.addEventListener("DOMContentLoaded", function () {
         rightPanel.style.position = "fixed";
         rightPanel.style.top = `${offset}px`;
     });
-    fetchAndRenderQuestions();
 
 });
+
