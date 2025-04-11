@@ -1,7 +1,7 @@
-package com.hikari.hikari_jp.service;
+package com.service;
 
-import com.hikari.hikari_jp.entity.UserDetail;
-import com.hikari.hikari_jp.repository.UserDetailRepository;
+import com.model.UserDetail;
+import com.repository.UserDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

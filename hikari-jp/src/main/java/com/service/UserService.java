@@ -1,8 +1,8 @@
-package com.hikari.hikari_jp.service;
+package com.service;
 
-import com.hikari.hikari_jp.entity.Users;
-import com.hikari.hikari_jp.exception.OTPExpiredException;
-import com.hikari.hikari_jp.repository.UserRepository;
+import com.model.Users;
+import com.exception.OTPExpiredException;
+import com.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

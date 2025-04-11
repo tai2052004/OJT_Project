@@ -1,4 +1,4 @@
-package com.hikari.hikari_jp.config;
+package com.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;

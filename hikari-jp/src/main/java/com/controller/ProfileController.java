@@ -1,13 +1,11 @@
-package com.hikari.hikari_jp.controller;
+package com.controller;
 
-import com.hikari.hikari_jp.entity.UserDetail;
-import com.hikari.hikari_jp.entity.Users;
-import com.hikari.hikari_jp.repository.UserDetailRepository;
-import com.hikari.hikari_jp.repository.UserRepository;
-import com.hikari.hikari_jp.service.UserDetailService;
-import com.hikari.hikari_jp.service.UserService;
+import com.model.UserDetail;
+import com.model.Users;
+import com.repository.UserDetailRepository;
+import com.repository.UserRepository;
+import com.service.UserDetailService;
 import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Controller
 public class ProfileController {
