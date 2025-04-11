@@ -53,7 +53,7 @@ public class UserController {
             Users user = userRepository.findByEmail(email);
             UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
             session.setAttribute("user", user);
-            session.setAttribute("userDetail", userDetail);
+            session.setAttribute(   "userDetail", userDetail);
             return "redirect:/landingPage";
         } else {
             model.addAttribute("email", email);

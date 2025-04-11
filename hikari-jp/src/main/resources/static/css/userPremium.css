@@ -1,13 +1,10 @@
-/* Reset và Base Styles */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
     color: #333;
     background-color: #FFFFFF;
 }
@@ -102,60 +99,44 @@ body {
     margin-right: 10px;
 }
 
-/* Nội dung chính */
 .content {
     flex: 1;
-    padding: 20px;
-    overflow-y: auto;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-h1, h2 {
-    color: #3A8CAA;
-    margin-bottom: 20px;
-}
-
-h1 {
-    font-size: 24px;
-}
-
-h2 {
-    font-size: 20px;
-}
-
-/* Section Styles */
-.section {
-    margin-bottom: 3rem;
-}
-
+/* Section Titles */
 .section-title {
-    color: #3A8CAA;
+    font-size: 32px;
+    font-weight: 600;
     margin-bottom: 1.5rem;
-    font-weight: 700;
-    font-size: 24px;
+    color: #3A8CAA;
 }
 
-/* Card Styles */
+/* Cards */
 .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
     overflow: hidden;
-    margin-bottom: 30px;
 }
 
 .card-header {
     padding: 1.5rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .card-title {
-    margin-bottom: 0.5rem;
-    color: #3A8CAA;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
 }
 
 .card-description {
-    color: #666;
-    font-size: 0.9rem;
+    color: #6b7280;
+    font-size: 18px;
 }
 
 .card-content {
@@ -164,57 +145,114 @@ h2 {
 
 .card-footer {
     padding: 1.5rem;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #e5e7eb;
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
-/* Badge Styles */
+/* Subscription Status */
+.subscription-status {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.status-label {
+    color: #6b7280;
+    font-size: 18px;
+    margin-bottom: 0.5rem;
+}
+
 .badge {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 16px;
     font-weight: 500;
-}
-
-.badge-blue {
-    background-color: #e6f0ff;
-    color: #3A8CAA;
-}
-
-.badge-green {
-    background-color: #e6f9ee;
-    color: #00875a;
-}
-
-.badge-orange {
-    color: #ff5722;
-}
-
-.badge-outline {
-    border: 1px solid #ddd;
-    background-color: transparent;
 }
 
 .badge-container {
     display: flex;
     gap: 0.5rem;
-    align-items: center;
 }
 
-/* Button Styles */
-.btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+.badge-blue {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-outline {
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+}
+
+.badge-orange {
+    border-color: #fdba74;
+    color: #c2410c;
+}
+
+.badge-green {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+/* Subscription Details */
+.subscription-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-box h3 {
+    font-size: 20px;
+    color: #6b7280;
     font-weight: 500;
-    text-align: center;
+    margin-bottom: 0.25rem;
+}
+
+/* Benefits Box */
+.benefits-box {
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.benefits-box h3 {
+    font-size: 22px;
+    margin-bottom: 0.75rem;
+}
+
+.benefits-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.5rem;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.benefits-list li i {
+    color: #10b981;
+    margin-right: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
     border: none;
-    font-size: 0.9rem;
 }
 
 .btn-primary {
@@ -223,17 +261,22 @@ h2 {
 }
 
 .btn-primary:hover {
-    background-color: #2a7a98;
+    background-color: #1d4ed8;
+}
+
+.btn-primary:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
 }
 
 .btn-outline {
     background-color: transparent;
-    border: 1px solid #ddd;
-    color: #333;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
 }
 
 .btn-outline:hover {
-    background-color: #f5f5f5;
+    background-color: #f3f4f6;
 }
 
 .btn-full {
@@ -245,83 +288,20 @@ h2 {
     font-size: 1rem;
 }
 
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* Subscription Status Styles */
-.subscription-status {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.status-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.status-label {
-    font-size: 0.875rem;
-    color: #666;
-}
-
-.remaining-days {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.subscription-details {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.detail-box {
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 1rem;
-}
-
-.detail-box h3 {
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.benefits-box {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 1rem;
-}
-
-.benefits-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    list-style-position: inside;
-    list-style-type: disc;
-    font-size: 0.9rem;
-}
-
-/* Alert Styles */
+/* Alert */
 .alert {
     display: flex;
     padding: 1rem;
-    border-radius: 6px;
-    background-color: #e0f3fa;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
     margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
 .alert-icon {
-    margin-right: 0.75rem;
-    color: #3A8CAA;
+    color: #4b5563;
+    font-size: 1.25rem;
+    flex-shrink: 0;
 }
 
 .alert-title {
@@ -330,64 +310,67 @@ h2 {
 }
 
 .alert-description {
-    font-size: 0.9rem;
-    color: #555;
+    color: #6b7280;
+    font-size: 0.875rem;
 }
 
-/* Pricing Plans Styles */
+/* Pricing Plans */
 .pricing-plans {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .pricing-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    border: 1px solid #eee;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    height: 500px; /* Fixed height for all cards */
 }
 
 .pricing-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
 }
 
 .pricing-card.popular {
-    border-color: #3A8CAA;
-    box-shadow: 0 5px 15px rgba(58, 140, 170, 0.1);
+    border-color: #10b981;
 }
 
 .popular-badge {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: #3A8CAA;
+    background-color: #1a7cb3;
     color: white;
-    font-size: 0.75rem;
+    font-size: 16px;
     padding: 0.25rem 0.75rem;
-    border-bottom-left-radius: 6px;
+    border-bottom-left-radius: 0.5rem;
 }
 
 .pricing-header {
     padding: 1.5rem;
+    color: white;
 }
 
 .blue-bg {
-    background-color: #e0f3fa;
+    background-color: #A5C6CD;
 }
 
 .green-bg {
-    background-color: #e6f9ee;
+    background-color: #A1CF9E;
 }
 
 .purple-bg {
-    background-color: #f3e6ff;
+    background-color: #cac1dd;
 }
 
 .pricing-title-container {
@@ -398,17 +381,20 @@ h2 {
 }
 
 .pricing-title {
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #333;
 }
 
 .pricing-description {
     font-size: 0.875rem;
-    color: #666;
+    opacity: 0.9;
 }
 
 .pricing-content {
     padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .pricing-price {
@@ -416,13 +402,14 @@ h2 {
 }
 
 .price {
-    font-size: 2rem;
+    font-size: 1.875rem;
     font-weight: 700;
 }
 
 .currency {
     font-size: 1rem;
-    color: #666;
+    color: #6b7280;
+    margin-left: 0.25rem;
 }
 
 .original-price {
@@ -434,163 +421,40 @@ h2 {
 
 .line-through {
     text-decoration: line-through;
-    color: #888;
+    color: #6b7280;
     font-size: 0.875rem;
 }
 
+.pricing-features {
+    margin-bottom: 1.5rem;
+}
+
 .pricing-features h4 {
-    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
 }
 
 .pricing-features ul {
-    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .pricing-features li {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
 }
 
-.icon-check {
-    color: #3A8CAA;
+.pricing-features li i {
+    color: #10b981;
     margin-right: 0.5rem;
     flex-shrink: 0;
+    margin-top: 0.125rem;
 }
 
 .pricing-footer {
     padding: 1.5rem;
-    border-top: 1px solid #eee;
-}
-
-.upgrade-action {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-/* Accordion Styles */
-.accordion {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.accordion-item {
-    border-bottom: 1px solid #eee;
-}
-
-.accordion-item:last-child {
-    border-bottom: none;
-}
-
-.accordion-button {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    text-align: left;
-    background: none;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.accordion-button:hover {
-    background-color: #f9f9f9;
-}
-
-.icon-chevron {
-    transition: transform 0.3s ease;
-}
-
-.accordion-button[aria-expanded="true"] .icon-chevron {
-    transform: rotate(180deg);
-}
-
-.accordion-content {
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-}
-
-.accordion-content.active {
-    padding: 1rem 1.5rem;
-    max-height: 500px;
-}
-
-.faq-list {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    margin-top: 0.5rem;
-}
-
-/* Features Grid */
-.features-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
-
-.feature-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.feature-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #eee;
-}
-
-.feature-title {
-    color: #3A8CAA;
-}
-
-.feature-content {
-    padding: 1.5rem;
-}
-
-/* Responsive Styles */
-@media (min-width: 640px) {
-    .subscription-status {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .benefits-list {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .card-footer {
-        flex-direction: row;
-    }
-
-    .btn {
-        width: auto;
-    }
-}
-
-@media (min-width: 768px) {
-    .subscription-details {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .pricing-plans {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .features-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    border-top: 1px solid #e5e7eb;
+    margin-top: auto; /* Push to bottom of card */
 }
