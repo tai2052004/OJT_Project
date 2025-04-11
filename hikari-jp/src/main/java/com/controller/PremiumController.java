@@ -1,10 +1,10 @@
-package com.hikari.hikari_jp.controller;
+package com.controller;
 
-import com.hikari.hikari_jp.entity.PremiumPlan;
-import com.hikari.hikari_jp.entity.UserPremium;
-import com.hikari.hikari_jp.entity.Users;
-import com.hikari.hikari_jp.service.PremiumService;
-import com.hikari.hikari_jp.service.VNPayService;
+import com.model.PremiumPlan;
+import com.model.UserPremium;
+import com.model.Users;
+import com.service.PremiumService;
+import com.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Controller
 public class PremiumController {

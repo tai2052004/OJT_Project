@@ -1,4 +1,4 @@
-package com.hikari.hikari_jp.config;
+package com.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,6 @@
-package com.hikari.hikari_jp.service;
+package com.service;
 
-import com.hikari.hikari_jp.config.VNPayConfig;
+import com.config.VNPayConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 

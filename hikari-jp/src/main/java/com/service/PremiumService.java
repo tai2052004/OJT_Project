@@ -1,11 +1,11 @@
-package com.hikari.hikari_jp.service;
+package com.service;
 
-import com.hikari.hikari_jp.entity.PremiumPlan;
-import com.hikari.hikari_jp.entity.TransactionHistory;
-import com.hikari.hikari_jp.entity.UserPremium;
-import com.hikari.hikari_jp.repository.PremiumPlanRepository;
-import com.hikari.hikari_jp.repository.TransactionHistoryRepository;
-import com.hikari.hikari_jp.repository.UserPremiumRepository;
+import com.model.PremiumPlan;
+import com.model.TransactionHistory;
+import com.model.UserPremium;
+import com.repository.PremiumPlanRepository;
+import com.repository.TransactionHistoryRepository;
+import com.repository.UserPremiumRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PremiumService {

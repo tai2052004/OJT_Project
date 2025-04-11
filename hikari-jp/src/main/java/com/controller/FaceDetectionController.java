@@ -1,8 +1,7 @@
-package com.hikari.hikari_jp.controller;
+package com.controller;
 
-import com.hikari.hikari_jp.service.FaceDetectionService;
+import com.service.FaceDetectionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
