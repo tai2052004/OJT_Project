@@ -47,8 +47,6 @@ public class WebController {
     @GetMapping("/flashcards")
     public String flashcards() { return "flashcards"; }
 
-    @GetMapping("/premium")
-    public String premium() { return "premium"; }
 
     @GetMapping("/test")
     public String test() {
