@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
     <link rel="stylesheet" href="/css/quizzInterface1.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
@@ -68,13 +69,32 @@
             </div>
         </div>
     </div>
+<!--    adjust add chat bot    4/11/2025-->
+    <div class="chatbot-logo" id="chatbotLogo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <h3>Chat với chúng tôi</h3>
+            <span class="close-btn" id="closeBtn">×</span>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Nhập tin nhắn...">
+            <button id="sendBtn">Gửi</button>
+        </div>
+    </div>
+<!--    end of adjust-->
 </div>
 
 
 
 <script src="/js/quizzInterace.js"> </script>
 <script type="module" src="https://code4fukui.github.io/kaki-jun/kaki-jun.js"></script>
-
+<script src="/js/chatGpt.js"></script>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
