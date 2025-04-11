@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(`input[name='level'][value='${selectedLevel}']`).checked = true;
     document.querySelector(`input[name='wordType'][value='${selectedType}']`).checked = true;
 
-    // Search bar input
+    // Search bar input that will use filter
     document.querySelector(".search-bar.wordSearch").addEventListener("input", filterData);
 
-    // Set search term from URL (if any)
+    // Set search term from URL (if any) con%20c%C3%A1 = con cá // use for get carryover attribute from chat bot
     initialSearchTerm = urlParams.get("search") ? decodeURIComponent(urlParams.get("search")) : null;
 
     // Attach change events
@@ -169,11 +169,24 @@ function showPage(page) {
     updatePagination();
     updateVisibility();
 }
+toggleReading.addEventListener("change",updateVisibility);
+toggleMeaning.addEventListener("change",updateVisibility);
 
 function updatePagination() {
-    const totalItems = filteredData ? filteredData.length : (currentType === "vocabulary" ? vocabData.length : kanjiData.length);
+    let totalItems;
+    if (filteredData){
+        totalItems = filteredData.length;
+    }
+    else if (currentPage === "vocabulary"){
+        totalItems = vocabData.length;
+    }                                         // const totalItems = filteredData ? filteredData.length : (currentType === "vocabulary" ? vocabData.length : kanjiData.length);
+    else if(currentPage ==="kanji"){
+        totalItems = kanjiData.length;
+    }
+
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const paginationContainer = document.querySelector(".pagination");
+    //clear previous data
     paginationContainer.innerHTML = "";
 
     let startPage, endPage;
@@ -250,11 +263,31 @@ function changePage(step) {
 // --- TOGGLE VISIBILITY ---
 
 function updateVisibility() {
-    let showReading = toggleReading.checked;
-    let showMeaning = toggleMeaning.checked;
+    let showReading = document.getElementById("toggleReading").checked;
+    let showMeaning = document.getElementById("toggleMeaning").checked;
 
-    toggleReading.disabled = showReading && !showMeaning;
-    toggleMeaning.disabled = showMeaning && !showReading;
+
+    if (showReading && showMeaning) {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = false;
+    }
+    // Nếu chỉ có Reading được chọn, disable Meaning
+    else if (showReading || !showMeaning)
+    {
+        toggleReading.disabled = true;
+        toggleMeaning.disabled = false;
+    }
+    else if (showMeaning || !showReading)
+    {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = true;
+    }
+    // Nếu cả hai đều bỏ chọn, có thể chọn lại
+    else {
+        toggleReading.disabled = false;
+        toggleMeaning.disabled = false;
+    }
+
 
     document.querySelectorAll(".reading").forEach(el => {
         el.style.display = showReading ? "inline" : "none";
@@ -268,6 +301,7 @@ function updateVisibility() {
 // --- FILTERING ---
 async function filterData() {
     const searchTerm = document.querySelector(".search-bar.wordSearch").value.trim().toLowerCase();
+    //to check what level the word from
     const selectedLevel = document.querySelector("input[name='level']:checked").value;
     const selectedType = currentType;
 
@@ -277,6 +311,8 @@ async function filterData() {
             const word = item.data.characters?.toLowerCase() || "";
             const readings = item.data.readings.map(r => r.reading.toLowerCase());
             const meanings = item.data.meanings.map(m => m.meaning.toLowerCase());
+            //return the matched word if kanji is in searchTerm or hiragana reading is start With searchTerm
+            // or meaning in english start with search term
             return word.includes(searchTerm) ||
                 readings.some(r => r.startsWith(searchTerm)) ||
                 meanings.some(m => m.startsWith(searchTerm));
