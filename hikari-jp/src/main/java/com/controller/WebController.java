@@ -48,8 +48,8 @@ public class WebController {
     public String flashcards() { return "flashcards"; }
 
 
-    @GetMapping("/test")
-    public String test() {
-        return "testJLPT";
-    }
+//    @GetMapping("/test")
+//    public String test() {
+//        return "testJLPT";
+//    }
 }
