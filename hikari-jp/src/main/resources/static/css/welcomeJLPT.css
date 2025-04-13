@@ -213,10 +213,74 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.topic > button:focus {
-    background: deepskyblue;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+.active {
+    background: deepskyblue!important;
+    transform: translateY(-2px)!important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15)!important;
+}
+.choose-level {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin: 20px 0 20px 70px;
+}
+
+.choose-level label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+#level {
+    /* Kích thước lớn */
+    width: 200px;
+    height: 50px;
+    padding: 10px 15px;
+
+    /* Giao diện đẹp */
+    font-size: 16px;
+    color: #333;
+    background-color: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none; /* Tắt style mặc định */
+
+    /* Thêm icon mũi tên */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+}
+
+/* Hiệu ứng khi hover */
+#level:hover {
+    border-color: #6c757d;
+    box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.1);
+}
+
+/* Hiệu ứng khi focus */
+#level:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* Style cho options */
+#level option {
+    padding: 10px;
+    font-size: 16px;
+    background: #fff;
+}
+
+/* Hiệu ứng khi chọn option */
+#level option:checked {
+    background-color: #0d6efd;
+    color: white;
 }
 
 .button-container > button, #return-btn, #ok, #next, #back-btn {

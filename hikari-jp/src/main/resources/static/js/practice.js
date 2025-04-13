@@ -685,7 +685,7 @@ function selectAnswerReading(abc)
     abc.classList.add('selectedRead');
     document.querySelectorAll('.num').forEach(  n =>
     {
-        if (n.dataset.question.includes(parentID) )
+        if (n.dataset.question === parentID )
         {
             n.classList.add("selectedNum");
         }

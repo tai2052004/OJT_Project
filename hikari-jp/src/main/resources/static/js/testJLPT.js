@@ -4,6 +4,40 @@ const ctx = canvas.getContext("2d");
 const mess = document.getElementById("message");
 let scanning = true;
 let animationId
+const questions = document.querySelectorAll(".question");
+const questionBoxContainer = document.querySelector(".question-boxes");
+const rightPanel = document.querySelector(".right-panel");
+const progressBar = document.querySelector(".progress-bar");
+const timerElement = document.querySelector('.right-panel p');
+const submitButton = document.querySelector('.submit-btn');
+let timeGrammar = 60 * 30;
+let timeVocab = 60 * 20;
+let timeListening = 60 * 30;
+let timeReading = 60 * 40;
+let timeLeft= timeVocab; // 3600 seconds
+let timerInterval;
+let testSubmitted = false; // Flag to track whether the test has been submitted
+let btnNavigate = document.querySelectorAll('.header1 button');
+let vocabPart = document.querySelector('.vocabPart');
+let grammarPart = document.querySelector('.grammarPart');
+let readingPart = document.querySelector('.readingPart');
+let listeningPart = document.querySelector('.listeningPart');
+let currentQuestionIndex = 0;
+let abc = vocabPart;
+let question;
+let subjectNow = document.getElementById("subjectNow");
+let vocabSize = document.getElementById("vocabSize");
+let grammarSize = document.getElementById("grammarSize");
+let readingSize = document.getElementById("readingSize");
+let listeningSize = document.getElementById("listeningSize");
+let finalScore = document.querySelector('.final-score');
+let grammarCheck = false;
+let readingCheck = false;
+let listeningCheck = false;
+let grammarBtn = document.getElementById('grammar');
+let readingBtn = document.getElementById('reading');
+let listeningBtn = document.getElementById('listening');
+
 
 async function initFaceCheck() {
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
@@ -97,17 +131,10 @@ async function captureAndValidate() {
 }
 initFaceCheck();
 
-document.addEventListener("DOMContentLoaded", function () {
-    const questions = document.querySelectorAll(".question");
-    const questionBoxContainer = document.querySelector(".question-boxes");
-    const rightPanel = document.querySelector(".right-panel");
-    const progressBar = document.querySelector(".progress-bar");
-    const timerElement = document.querySelector('.right-panel p');
-    const submitButton = document.querySelector('.submit-btn');
-    let timeLeft = 60 * 60; // 3600 seconds
-    let timerInterval;
-    let testSubmitted = false; // Flag to track whether the test has been submitted
 
+
+
+    btnNavigate.forEach( bn => bn.addEventListener('click', () => handleClick(bn)));
 
     // Correct answers (example, make sure to update with actual correct answers)
 
@@ -180,8 +207,33 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             clearInterval(timerInterval);
             if (!testSubmitted) {
-                alert("Time's up! Your test will be submitted.");
-                submitButton.click(); // Automatically trigger the submit button if time runs out
+                if ( grammarCheck === true && readingCheck === true && listeningCheck === true)
+                {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: "Time's up! Your test will be submitted.",
+                        confirmButtonText: 'OK'
+                    });
+                    submitButton.click(); // Automatically trigger the submit button if time runs out
+                }
+                else
+                {
+
+                    if(!grammarCheck)
+                    {
+                        grammarBtn.click();
+                    }
+                    else if (!readingCheck)
+                    {
+                        readingBtn.click();
+                    }
+                    else if (!listeningCheck)
+                    {
+                        listeningBtn.click();
+                    }
+                }
+
             }
         }
     }
@@ -191,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
         enableFullscreen();
         overlay.style.display = "none";
         timerInterval = setInterval(updateTimer, 1000); // Start countdown timer
-        attachListeners();
+        // attachListeners();
     }
 
     startButton.addEventListener("click", startTest);
@@ -253,46 +305,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Track answer selection
     // Track answer selection and add unselect functionality
-    function trackAnswers() {
-        const questions = document.querySelectorAll(".question");
-        let answeredCount = 0;
-
-        questions.forEach((question, index) => {
-            const boxDiv = question.querySelector(".box");
-            const inputs = question.querySelectorAll("input[type='radio']");
-            const box = document.querySelector(`.question-boxes .question-box:nth-child(${index + 1})`);
-
-            const unselectButton = document.createElement("button");
-            unselectButton.textContent = "Unselect";
-            unselectButton.style.display = "none";
-            unselectButton.addEventListener("click", () => {
-                inputs.forEach(input => input.checked = false);
-                if (box.classList.contains("answered")) {
-                    answeredCount--;
-                    box.classList.remove("answered");
-                    box.style.backgroundColor = "";
-                }
-                unselectButton.style.display = "none";
-                updateProgress();
-            });
-            boxDiv.appendChild(unselectButton);
-
-            inputs.forEach(input => {
-                input.addEventListener("change", () => {
-                    if (!box.classList.contains("answered")) {
-                        answeredCount++;
-                        box.classList.add("answered");
-                        box.style.backgroundColor = "green";
-                    }
-                    unselectButton.style.display = "block";
-                    updateProgress();
-                });
-            });
-        });
-    }
+    // function trackAnswers() {
+    //     const questions = document.querySelectorAll(".question");
+    //     let answeredCount = 0;
+    //
+    //     questions.forEach((question, index) => {
+    //         const boxDiv = question.querySelector(".box");
+    //         const inputs = question.querySelectorAll("input[type='radio']");
+    //         const box = document.querySelector(`.question-boxes .question-box:nth-child(${index + 1})`);
+    //
+    //         const unselectButton = document.createElement("button");
+    //         unselectButton.textContent = "Unselect";
+    //         unselectButton.style.display = "none";
+    //         unselectButton.addEventListener("click", () => {
+    //             inputs.forEach(input => input.checked = false);
+    //             if (box.classList.contains("answered")) {
+    //                 answeredCount--;
+    //                 box.classList.remove("answered");
+    //                 box.style.backgroundColor = "";
+    //             }
+    //             unselectButton.style.display = "none";
+    //             updateProgress();
+    //         });
+    //         boxDiv.appendChild(unselectButton);
+    //
+    //         inputs.forEach(input => {
+    //             input.addEventListener("change", () => {
+    //                 if (!box.classList.contains("answered")) {
+    //                     answeredCount++;
+    //                     box.classList.add("answered");
+    //                     box.style.backgroundColor = "green";
+    //                 }
+    //                 unselectButton.style.display = "block";
+    //                 updateProgress();
+    //             });
+    //         });
+    //     });
+    // }
 
     submitButton.addEventListener("click", function () {
         if (testSubmitted) return;
+        let score = 0;
         if ( timeLeft > 0)
         {
             Swal.fire({
@@ -320,74 +373,77 @@ document.addEventListener("DOMContentLoaded", function () {
                         video.style.display = "none";
                     }
                     document.exitFullscreen();
-                    clearInterval(timerInterval); // Stop the timer
-                    let scoreInput = document.getElementById("userScore");
-                    let score = 0; // Initialize score
-
-                    // Re-select questions dynamically so that it reflects all rendered elements
-                    const questions = document.querySelectorAll(".question");
-
-                    questions.forEach((question, index) => {
-                        const correctAnswer = question.dataset.correctAnswer; // Get the correct answer from dataset
-                        const inputs = question.querySelectorAll("input[type='radio']");
-                        let selectedValue = null;
-
-                        // Determine the selected answer
-                        inputs.forEach(input => {
-                            if (input.checked) {
-                                selectedValue = input.value;
-                            }
+                    clearInterval(timerInterval);
+                    timerElement.textContent = "Finished!";
+                    btnNavigate.forEach( bn => {
+                        bn.disabled = false;
+                    });
+                    document.querySelector('.back').style.display = "block";
+                    let variable = document.querySelectorAll('.question-item');
+                    document.querySelectorAll('.toggle-div-explain').forEach(item =>
+                    {
+                        item.classList.remove("hidden");
+                    });
+                    variable.forEach(qc =>
+                    {
+                        let parentID = qc.id.split('-')[1];
+                        let userAnswer = qc.querySelector('#userAnswer-' + parentID);
+                        let correctAnswer = qc.querySelector('#correctAnswer-' + parentID);
+                        let resultElement = qc.querySelector('#result-' + parentID);
+                        document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
+                        let answer = qc.querySelectorAll('.answer');
+                        answer.forEach(aq => {
+                            aq.onclick = null;
                         });
-
-                        // Disable all radio buttons for this question
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                        });
-
-                        // Remove any existing marker in the question
-                        let oldMarker = question.querySelector(".marker");
-                        if (oldMarker) {
-                            oldMarker.remove();
+                        if ( userAnswer.value === correctAnswer.value)
+                        {
+                            score++;
+                            resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
+                        }else {
+                            document.querySelectorAll('.question-box').forEach( n =>
+                            {
+                                if ( parseInt( n.dataset.question) === parseInt(parentID))
+                                {
+                                    n.classList.remove("selectedNum");
+                                    n.classList.add("wrongNum");
+                                }
+                            })
+                            answer.forEach(aq =>
+                            {
+                                if(aq.innerText.trim() === correctAnswer.value)
+                                {
+                                    aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
+                                }
+                                if(aq.innerText.trim() === userAnswer.value)
+                                {
+                                    aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
+                                }
+                            });
+                            resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correctAnswer.value}</b></span>`;
                         }
 
-                        // Create a new marker to display next to the choices
-                        let marker = document.createElement("span");
-                        marker.className = "marker";
-                        marker.style.marginLeft = "10px"; // add some spacing
-
-                        // Check if the selected answer is correct and set marker text and color
-                        if (selectedValue === correctAnswer) {
-                            score++; // Increase score for correct answer
-                            marker.textContent = "O";
-                            marker.style.color = "green";
-                        } else {
-                            marker.textContent = "X";
-                            marker.style.color = "red";
-                        }
-
-                        // Insert the marker after the choices list in the current question
-                        let choicesList = question.querySelector('.choices');
-                        if (choicesList) {
-                            choicesList.parentNode.insertBefore(marker, choicesList.nextSibling);
-                        }
-                        // Hide "Unselect" button after submission
-                        const unselectButton = question.querySelector("button");
-                        if (unselectButton) {
-                            unselectButton.style.display = "none";
-                        }
-                        // Also, mark the corresponding question box color in the right panel
-                        const box = document.querySelector(`.question-boxes .question-box:nth-child(${index + 1})`);
-                        if (selectedValue === null) {
-                            box.style.backgroundColor = "gray"; // no answer selected
-                        } else if (selectedValue === correctAnswer) {
-                            box.style.backgroundColor = "green"; // correct answer
-                        } else {
-                            box.style.backgroundColor = "red"; // wrong answer
-                        }
+                    });
+                    Swal.fire({
+                        title: 'Kết quả bài thi',
+                        html: `<h3 style="color: #007bff;">Số câu đúng: ${score}/${
+                            Number(vocabSize.value) +
+                            Number(grammarSize.value) +
+                            Number(readingSize.value) +
+                            Number(listeningSize.value)
+                        }</h3>`,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
                     });
 
+                    finalScore.innerText = `🎯 Total Score: ${score}/${
+                        Number(vocabSize.value) +
+                        Number(grammarSize.value) +
+                        Number(readingSize.value) +
+                        Number(listeningSize.value)
+                    }`;
+                    finalScore.style.display = "block";
+
                     // Store updated score in the hidden input field
-                    scoreInput.value = score;
 
                     // Mark the test as submitted and disable further submissions
                     testSubmitted = true;
@@ -406,5 +462,360 @@ document.addEventListener("DOMContentLoaded", function () {
         rightPanel.style.top = `${offset}px`;
     });
 
+
+function handleClick(bn) {
+    if ( bn.classList.contains('selected'))
+    {
+        return;
+    }
+    if (!testSubmitted)
+    {
+        if ( timeLeft > 0 )
+        {
+            Swal.fire({
+                title: 'Are you sure changing to another part?',
+                text: "You can't change anything in the last section anymore. !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Change',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btnNavigate.forEach( b => {
+                        if ( b.classList.contains('selected'))
+                        {
+                            b.classList.remove('selected');
+                            b.disabled = true;
+                        }
+                    });
+                    bn.classList.add("selected");
+                    btnNavigate.forEach( b => {
+                        if (!b.classList.contains('selected'))
+                        {
+                            document.querySelector('.' + b.id).style.display = "none";
+                        }
+                    });
+                    currentQuestionIndex = 0;
+                    if ( bn.id.includes("grammar"))
+                    {
+                        subjectNow.value = "grammar";
+                        generateQuestionNode();
+                        document.querySelector('.container').style.width = "800px";
+                        grammarPart.style.display = "block";
+                        grammarCheck = true;
+                        timeLeft = timeGrammar;
+                        abc = grammarPart;
+                        updateQuestionVisibility();
+                    }
+                    if ( bn.id.includes("reading"))
+                    {
+                        subjectNow.value = "reading";
+                        generateQuestionNode();
+                        document.querySelector('.container').style.width = "1400px";
+                        readingCheck = true;
+                        readingPart.style.display = "block";
+                        timeLeft = timeReading;
+                    }
+                    if ( bn.id.includes("listening"))
+                    {
+                        subjectNow.value = "listening";
+                        generateQuestionNode();
+                        document.querySelector('.container').style.width = "800px";
+                        listeningPart.style.display = "block";
+                        listeningCheck = true;
+                        timeLeft = timeListening;
+                        abc = listeningPart;
+                        updateQuestionVisibility();
+                    }
+
+                }
+            });
+        }
+        else
+        {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: "Time's up! You will be changed to the next part.",
+                confirmButtonText: 'OK'
+            });
+                    btnNavigate.forEach( b => {
+                        if ( b.classList.contains('selected'))
+                        {
+                            b.classList.remove('selected');
+                            b.disabled = true;
+                        }
+                    });
+                    bn.classList.add("selected");
+                    btnNavigate.forEach( b => {
+                        if (!b.classList.contains('selected'))
+                        {
+                            document.querySelector('.' + b.id).style.display = "none";
+                        }
+                    });
+                    currentQuestionIndex = 0;
+                    if ( bn.id.includes("grammar"))
+                    {
+                        subjectNow.value = "grammar";
+                        generateQuestionNode();
+                        document.querySelector('.container').style.width = "800px";
+                        grammarPart.style.display = "block";
+                        grammarCheck = true;
+                        timeLeft = timeGrammar;
+                        abc = grammarPart;
+                        updateQuestionVisibility();
+                    }
+                    if ( bn.id.includes("reading"))
+                    {
+                        subjectNow.value = "reading";
+                        generateQuestionNode();
+                        document.querySelector('.container').style.width = "1400px";
+                        readingCheck = true;
+                        readingPart.style.display = "block";
+                        timeLeft = timeReading;
+                    }
+                    if ( bn.id.includes("listening"))
+                    {
+                        subjectNow.value = "listening";
+                        generateQuestionNode();
+                        document.querySelector('.container').style.width = "800px";
+                        listeningPart.style.display = "block";
+                        listeningCheck = true;
+                        timeLeft = timeListening;
+                        abc = listeningPart;
+                        updateQuestionVisibility();
+                    }
+                    setInterval(updateTimer, 1000);
+                }
+
+    }
+    else
+    {
+        btnNavigate.forEach( b => {
+            if ( b.classList.contains('selected'))
+            {
+                b.classList.remove('selected');
+            }
+        });
+        bn.classList.add("selected");
+        btnNavigate.forEach( b => {
+            if (!b.classList.contains('selected'))
+            {
+                document.querySelector('.' + b.id).style.display = "none";
+            }
+        });
+        currentQuestionIndex = 0;
+        clearInterval(timerInterval);
+        if ( bn.id.includes("vocab"))
+        {
+            subjectNow.value = "vocab";
+            generateQuestionNode();
+            document.querySelector('.container').style.width = "800px";
+            vocabPart.style.display = "block";
+            timerElement.textContent = "Finished!"
+            abc = vocabPart;
+            updateQuestionVisibility();
+        }
+        if ( bn.id.includes("grammar"))
+        {
+            subjectNow.value = "grammar";
+            generateQuestionNode();
+            document.querySelector('.container').style.width = "800px";
+            grammarPart.style.display = "block";
+            timerElement.textContent = "Finished!"
+            abc = grammarPart;
+            updateQuestionVisibility();
+        }
+        if ( bn.id.includes("reading"))
+        {
+            subjectNow.value = "reading";
+            generateQuestionNode();
+            document.querySelector('.container').style.width = "1400px";
+            readingPart.style.display = "block";
+            timeLeft = timeReading;
+        }
+        if ( bn.id.includes("listening"))
+        {
+            subjectNow.value = "listening";
+            generateQuestionNode();
+            document.querySelector('.container').style.width = "800px";
+            listeningPart.style.display = "block";
+            timerElement.textContent = "Finished!"
+            abc = listeningPart;
+            updateQuestionVisibility();
+        }
+    }
+
+}
+
+
+function updateQuestionVisibility() {
+    question = abc.querySelectorAll('.question-item');
+    question.forEach((q, index) => {
+        q.classList.remove('active');
+        q.classList.add('hidden');
+        if (index === currentQuestionIndex) {
+            q.classList.add('active');
+            q.classList.remove('hidden');
+        }
+    });
+    // Cập nhật trạng thái nút
+    abc.querySelector('.prev-btn').disabled = currentQuestionIndex === 0;
+    abc.querySelector('.next-btn').disabled = currentQuestionIndex === question.length - 1;
+}
+
+function showNextQuestion() {
+    if (currentQuestionIndex < abc.querySelectorAll('.question-item').length - 1) {
+        currentQuestionIndex++;
+        updateQuestionVisibility();
+    }
+}
+
+function showPrevQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        updateQuestionVisibility();
+    }
+}
+
+// Gọi khi trang load để hiện câu đầu tiên
+window.addEventListener('DOMContentLoaded', () => {
+    updateQuestionVisibility();
+    generateQuestionNode();
 });
 
+function selectAnswer(abc)
+{
+    abc.parentElement.querySelectorAll('.answer').forEach(a => a.classList.remove('selectedRead'));
+    let parentID = null;
+    let userAnswer;
+    if (subjectNow.value.includes("reading"))
+    {
+        parentID = abc.parentElement.id.split('-')[1];
+        userAnswer = abc.parentElement.querySelector("#userAnswer-" + parentID);
+    }
+    else
+    {
+        parentID = abc.parentElement.parentElement.id.split('-')[1]
+        userAnswer = abc.parentElement.parentElement.querySelector("#userAnswer-" + parentID);
+    }
+
+    userAnswer.value = abc.textContent;
+    // Thêm class 'selected' cho đáp án được chọn
+    abc.classList.add('selectedRead');
+    document.querySelectorAll('.question-box').forEach(  n =>
+    {
+        if (n.dataset.question === parentID )
+        {
+            n.classList.add("selectedNum");
+        }
+    })
+}
+
+function generateQuestionNode()
+{
+    let questNum = document.querySelector('.question-boxes');
+    let size = 0;
+    questNum.innerHTML = "";
+    if ( subjectNow.value.includes("vocab"))
+    {
+        size = vocabSize.value;
+    }
+    else if ( subjectNow.value.includes("grammar"))
+    {
+        size = grammarSize.value;
+    }
+    else if ( subjectNow.value.includes("listening"))
+    {
+        size = listeningSize.value;
+    }
+    else if ( subjectNow.value.includes("reading"))
+    {
+        size = readingSize.value;
+    }
+    // 🔹 Xóa toàn bộ div con trong .question_num
+    for( let i = 1; i <= size; i++)
+    {
+        let numDiv = document.createElement("div");
+        numDiv.classList.add("question-box");
+        numDiv.textContent = i;
+        numDiv.setAttribute("data-question", i);
+        questNum.appendChild(numDiv);
+    }
+
+    document.querySelectorAll('.question-box').forEach( n => n.addEventListener("click", () =>
+    {
+        currentQuestionIndex = n.dataset.question - 1;
+        updateQuestionVisibility();
+    }));
+
+    if (testSubmitted)
+    {
+        let variable;
+        if (subjectNow.value.includes("vocab"))
+        {
+            variable = vocabPart.querySelectorAll('.question-item');
+        }
+        else if ( subjectNow.value.includes("grammar"))
+        {
+            variable = grammarPart.querySelectorAll('.question-item');
+        }
+        else if ( subjectNow.value.includes("listening"))
+        {
+            variable = listeningPart.querySelectorAll('.question-item');
+        }
+        else if ( subjectNow.value.includes("reading"))
+        {
+            variable = readingPart.querySelectorAll('.question-item');
+        }
+        variable.forEach(qc =>
+        {
+            let parentID = qc.id.split('-')[1];
+            let userAnswer = qc.querySelector('#userAnswer-' + parentID);
+            let correctAnswer = qc.querySelector('#correctAnswer-' + parentID);
+
+            if ( userAnswer.value === correctAnswer.value)
+            {
+                document.querySelectorAll('.question-box').forEach( n =>
+                {
+                    if ( parseInt( n.dataset.question) === parseInt(parentID))
+                    {
+                        n.classList.add("selectedNum");
+                    }
+                });
+            }else {
+                document.querySelectorAll('.question-box').forEach( n =>
+                {
+                    if ( parseInt( n.dataset.question) === parseInt(parentID))
+                    {
+                        n.classList.remove("selectedNum");
+                        n.classList.add("wrongNum");
+                    }
+                });
+            }
+
+        });
+    }
+}
+function toggleExplain(cde)
+{
+    let divID = cde.id.split("-")[1];
+    let explain = null;
+    if ( subjectNow.value.includes("reading") )
+    {
+        explain = cde.parentElement.parentElement.querySelector("#explain-" + divID);
+    }
+    else
+    {
+        explain = cde.parentElement.querySelector("#explain-" + divID);
+    }
+    if (!explain.style.height || explain.style.height === "0px") {
+        explain.style.padding = "15px";
+        explain.style.height = explain.scrollHeight + 50 + "px";
+    } else {
+        explain.style.padding = "0";
+        explain.style.height = "0px";
+    }
+}
