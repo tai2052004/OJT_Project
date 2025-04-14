@@ -18,7 +18,7 @@
         </div>
         <nav class="menu">
             <a href="/profile"><i class="bi bi-person-circle bi-icon"></i>Personal information</a>
-            <a href="/transaction-history" class="active"><i class="bi bi-clock-history bi-icon"></i>Transaction history</a>
+            <a href="transaction-history" class="active"><i class="bi bi-clock-history bi-icon"></i>Transaction history</a>
             <a href="/security"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
         </nav>
     </aside>
@@ -44,18 +44,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Trans001</td>
-                <td>25/02/2025</td>
-                <td>1 Month</td>
-                <td>200.000 VND</td>
-                <td class="status paid">Paid</td>
-            </tr>
-            <tr>
-                <td>Trans002</td>
-                <td>25/02/2025</td>
-                <td>1 Year</td>
-                <td>1.000.000 VND</td>
+
+            <tr th:each="tran : ${trans}">
+                <td th:text="${tran.getId()}"></td>
+                <td th:text="${tran.getTransactionDate()}"></td>
+                <td th:text="${tran.getAmount()}"></td>
+                <td th:text="${tran.getAmount()}"></td>
                 <td class="status paid">Paid</td>
             </tr>
             </tbody>
