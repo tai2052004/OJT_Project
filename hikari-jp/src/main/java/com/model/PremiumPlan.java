@@ -17,8 +17,8 @@ public class PremiumPlan {
     @Column (name = "name")
     private String name;
 
-    @Column (name = "duration_in_days")
-    private Integer durationInDays;
+    @Column (name = "duration_in_months")
+    private Integer durationInMonths;
 
     @Column (name = "price")
     private Integer price;

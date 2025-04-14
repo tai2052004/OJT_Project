@@ -56,7 +56,6 @@ public class ProfileController {
         UserDetail userDetail = userDetailService.getUserDetailById(currentUser.getId());
         if (userDetail != null) {
             userDetail.setFullName(fullName);
-            userDetail.setEmail(email);
             userDetail.setPhoneNumber(phoneNumber);
             userDetail.setBirthdate(birthdate);
             userDetailRepository.save(userDetail);

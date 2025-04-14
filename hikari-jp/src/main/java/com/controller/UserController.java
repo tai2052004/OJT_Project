@@ -53,6 +53,9 @@ public class UserController {
             UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
             session.setAttribute("user", user);
             session.setAttribute(   "userDetail", userDetail);
+            if (user.getRole().equalsIgnoreCase("admin")) {
+                return "redirect:/admin/userManagement";
+            }
             return "redirect:/landingPage";
         } else {
             model.addAttribute("email", email);
@@ -123,6 +126,7 @@ public class UserController {
                                     @RequestParam String otp,
                                     HttpSession session,
                                     Model model) {
+
         Users tempUser = (Users) session.getAttribute("tempUser");
 
         try {
@@ -134,29 +138,29 @@ public class UserController {
                 return "otp-verification-register";
             }
 
-            // Lưu user vào database nếu OTP hợp lệ
-            Users savedUser = userRepository.save(tempUser);
-
-            // Tạo user_detail tương ứng
             UserDetail userDetail = new UserDetail();
-            userDetail.setUserId(savedUser.getId());
             userDetail.setFullName(null);
-            userDetail.setEmail(savedUser.getEmail());
             userDetail.setPhoneNumber(null);
-            userDetail.setBirthdate(null);
             userDetail.setAvatar(null);
+            userDetail.setBirthdate(null);
 
-            userDetailRepository.save(userDetail);
+            tempUser.setUserDetail(userDetail);
+
+            userRepository.save(tempUser);
+
             // Xóa user tạm khỏi session
             session.removeAttribute("tempUser");
 
             return "otp-success";
+
         } catch (Exception ex) {
+            ex.printStackTrace();
             model.addAttribute("error", "An error occurred. Please try again.");
             model.addAttribute("email", email);
             return "otp-verification-register";
         }
     }
+
 
 
     @GetMapping("/otp-success")

@@ -39,12 +39,14 @@ public class Users {
     @Column
     private String role;
 
-    @Column
-    private boolean is_premium;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "user_id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
 
-
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+        if (userDetail != null) {
+            userDetail.setUser(this);
+        }
+    }
 }
+

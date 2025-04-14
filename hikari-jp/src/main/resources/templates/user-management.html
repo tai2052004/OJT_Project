@@ -71,10 +71,9 @@
       <table class="data-table" id="usersTable">
         <thead>
         <tr>
-          <th>ID</th>
+          <th>No.</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Premium</th>
           <th>Role</th>
           <th>Full Name</th>
           <th>Phone Number</th>
@@ -84,12 +83,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}">
-          <td th:text="${user.id}"></td> <!-- u.id -->
-          <td th:text="${user.username}"></td> <!-- u.username -->
-          <td th:text="${user.email}"></td> <!-- u.email -->
-          <td th:text="${user.is_premium() ? 'Yes' : 'No'}"></td> <!-- u.is_premium -->
-          <td th:text="${user.role}"></td> <!-- u.role -->
+        <tr th:each="user, iterStat : ${users}">
+          <td th:text="${iterStat.count}"></td>
+          <td th:text="${user.username}"></td>
+          <td th:text="${user.email}"></td>
+          <td th:text="${user.role}"></td>
           <td th:text="${user.userDetail?.fullName}"></td>
           <td th:text="${user.userDetail?.phoneNumber}"></td>
           <td th:text="${user.userDetail?.birthdate}"></td>
@@ -108,7 +106,6 @@
                     <!-- Sử dụng th:attr để thay data-id thành user.id động -->
                     <button class="dropdown-item edit-user" th:attr="data-id=${user.id}">Edit user</button>
                     <button class="dropdown-item reset-password" th:attr="data-id=${user.id}">Reset password</button>
-<!--                    <button class="dropdown-item toggle-premium" th:attr="data-id=${user.id}">Make premium</button>-->
                     <div class="dropdown-divider"></div>
                     <button class="dropdown-item delete-user text-danger" th:attr="data-id=${user.id}">Delete user</button>
                 </div>

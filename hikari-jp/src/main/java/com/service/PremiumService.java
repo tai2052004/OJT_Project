@@ -45,7 +45,7 @@ public class PremiumService {
     }
 
     @Transactional
-    public void buyPremium(Long userId, Long planId) {
+    public void buyPremium(Long userId, Long planId, String transactionId) {
         PremiumPlan plan = premiumPlanRepo.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("Plan not found"));
 
@@ -55,15 +55,14 @@ public class PremiumService {
         }
         userPremium.setUserId(userId);
         userPremium.setPlanId(planId);
-//        userPremium.setPremiumPlan(plan);
         userPremium.setStartDate(LocalDate.now());
 
-        if (plan.getDurationInDays() != null) {
+        if (plan.getDurationInMonths() != null) {
             LocalDate endDate = userPremium.getEndDate();
             if (endDate != null && endDate.isAfter(LocalDate.now())) {
-                endDate = endDate.plusDays(plan.getDurationInDays());
+                endDate = endDate.plusMonths(plan.getDurationInMonths());
             } else {
-                endDate = LocalDate.now().plusDays(plan.getDurationInDays());
+                endDate = LocalDate.now().plusMonths(plan.getDurationInMonths());
             }
             userPremium.setEndDate(endDate);
         } else {
@@ -75,11 +74,18 @@ public class PremiumService {
         TransactionHistory transaction = new TransactionHistory();
         transaction.setUserId(userId);
         transaction.setPlanId(planId);
+        transaction.setTransactionId(transactionId);
         transaction.setAmount(plan.getPrice());
         transaction.setPaymentMethod("credit card"); // test chi dung credit card
         transaction.setTransactionDate(LocalDateTime.now());
 
         transactionHistoryRepo.save(transaction);
+    }
+
+
+    private LocalDate addMonths(LocalDate date, Integer months) {
+        if (months == null) return date;
+        return date.plusMonths(months);
     }
 
 

@@ -29,14 +29,14 @@ public class PremiumController {
     @GetMapping("/premium")
     public String viewMyPremium(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
+        PremiumPlan premiumPlan = null;
         if (user == null) return "premium";
         UserPremium userPremium = premiumService.getUserPremium(user.getId());
-        PremiumPlan premiumPlan = premiumService.getPremiumPlanByPlanId(userPremium.getPlanId());
-        int remainingDays = premiumService.getRemainingDays(userPremium);
-
+        if (userPremium != null) {
+            premiumPlan = premiumService.getPremiumPlanByPlanId(userPremium.getPlanId());
+        }
         model.addAttribute("premiumPlan", premiumPlan);
         model.addAttribute("userPremium", userPremium);
-        model.addAttribute("remainingDays", remainingDays);
         return "premium";
     }
 
@@ -83,7 +83,7 @@ public class PremiumController {
             Users user = (Users) session.getAttribute("user");
             if (user != null && planId != null) {
                 try {
-                    premiumService.buyPremium(user.getId(), planId);
+                    premiumService.buyPremium(user.getId(), planId, transactionId);
                 } catch (NumberFormatException e) {
                     System.out.println(e.getMessage());
                 }

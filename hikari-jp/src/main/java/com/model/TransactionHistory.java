@@ -16,12 +16,19 @@ public class TransactionHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "transaction_id")
+    private String transactionId;
+
+    @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "plan_id")
     private Long planId;
 
+    @Column(name = "amount")
     private Integer amount;
 
+    @Column(name = "payment_method")
     private String paymentMethod;
 
     private LocalDateTime transactionDate;
