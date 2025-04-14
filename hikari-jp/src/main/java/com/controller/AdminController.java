@@ -1,12 +1,9 @@
-package com.hikari.hikari_jp.controller;
+package com.controller;
 
-import com.hikari.hikari_jp.entity.UserDetail;
-import com.hikari.hikari_jp.entity.Users;
-import com.hikari.hikari_jp.repository.UserDetailRepository;
-import com.hikari.hikari_jp.repository.UserRepository;
-import com.hikari.hikari_jp.service.UserService;
-import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
+import com.model.UserDetail;
+import com.model.Users;
+import com.repository.UserDetailRepository;
+import com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")

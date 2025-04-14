@@ -1,4 +1,4 @@
-package com.hikari.hikari_jp.service;
+package com.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

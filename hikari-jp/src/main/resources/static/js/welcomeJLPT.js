@@ -1,3 +1,47 @@
+const btnStart = document.getElementById("start-btn");
+const form = document.getElementById("myForm")
+let inputTopic = document.getElementById("topic_test");
+let inputLevel = document.getElementById("level_test");
+let selectLevel = document.getElementById("level");
+let topicList = document.querySelectorAll('.topic-content');
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    btnStart.addEventListener('click', () => {
+        if ( inputTopic.value === null || inputTopic.value === "")
+        {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Please choose topic',
+                confirmButtonText: 'OK',
+                heightAuto: false
+            });
+        }
+        else
+        {
+            form.submit();
+        }
+    });
+
+    selectLevel.addEventListener('change', () => {
+       inputLevel.value = selectLevel.value;
+    });
+
+    topicList.forEach( tp => tp.addEventListener('click', () => {
+        topicList.forEach(l => l.classList.remove('active'));
+        tp.classList.add('active');
+        inputTopic.value = tp.id;
+    }));
+});
+
+
+
+
+
+
+
+
 // Hàm bật chế độ toàn màn hình
 function enterFullscreen() {
     const element = document.documentElement;
@@ -42,6 +86,7 @@ const screen2 = document.querySelector('.screen-2');
 const screen3 = document.querySelector('.screen-3');
 const back = document.getElementById('back');
 const next = document.getElementById('next');
+
 
 // Hiệu ứng khi bấm "I understand"
 understandBtn.addEventListener('click', () => {
@@ -199,3 +244,8 @@ function validateFace() {
         .then(data => resultEl.innerText = data)
         .catch(err => console.error("Lỗi xác thực:", err));
 }
+
+
+
+
+

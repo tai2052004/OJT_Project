@@ -1,6 +1,6 @@
-package com.hikari.hikari_jp.repository;
+package com.repository;
 
-import com.hikari.hikari_jp.entity.UserDetail;
+import com.model.UserDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/welcomeJLPT.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <button id="return-btn" onclick="window.location.href = '/backToHome'">Return</button>
@@ -64,22 +65,35 @@
         <button id="next" style="display: none">Next</button>
     </div>
 </div>
-
+<form id="myForm" action="/test" method="GET">
+    <input type="hidden" name="level_id" id="level_test" value="5">
+    <input type="hidden" name="topic_num" id="topic_test" value="">
+</form>
 <div class="screen screen-3">
     <div class="welcome">
         <div class="line"></div>
         <div class="content">Choose topic</div>
         <div class="line"></div>
     </div>
+    <div class="choose-level">
+        <label for="level">Level:</label>
+        <select name="level_id" id="level">
+            <option value="5" selected>N5</option>
+            <option value="4">N4</option>
+            <option value="3">N3</option>
+            <option value="2">N2</option>
+            <option value="1">N1</option>
+        </select>
+    </div>
     <div class="topic">
-        <button id="1">1</button>
-        <button id="2">2</button>
-        <button id="3">3</button>
+        <button class="topic-content" id="1">1</button>
+        <button class="topic-content" id="2">2</button>
+        <button class="topic-content" id="3">3</button>
     </div>
 
     <div class="button-container" style="justify-content: space-between;">
         <button id="back">Back</button>
-        <button id="start-btn" onclick="window.location.href = '/test'">Start the test</button>
+        <button id="start-btn">Start the test</button>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>

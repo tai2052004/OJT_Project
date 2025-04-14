@@ -1,4 +1,4 @@
-package com.hikari.hikari_jp.controller;
+package com.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

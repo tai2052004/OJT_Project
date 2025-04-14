@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class WebController {
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
         return "landingPage";
     }
 
@@ -17,7 +17,9 @@ public class WebController {
     public String practice() { return "Practice"; }
 
     @GetMapping("/lookUp")
-    public String lookUp() { return "lookUp"; }
+    public String lookUp(Model model) {
+        model.addAttribute("currentPage", "lookup");
+        return "lookUp"; }
 
     @PostMapping("/clearModel")
     public String clearModelVariable(Model model, HttpSession session) {
@@ -36,18 +38,18 @@ public class WebController {
 
 
     @GetMapping("/buyPremium")
-    public String buyPremium() { return "premium"; }
+    public String buyPremium(Model model) {
+        model.addAttribute("currentPage", "buyPremium");
+        return "premium"; }
     @GetMapping("/backToHome")
     public String backToHome() { return "landingPage"; }
 
     @GetMapping("/flashcards")
     public String flashcards() { return "flashcards"; }
 
-    @GetMapping("/premium")
-    public String premium() { return "premium"; }
 
-    @GetMapping("/test")
-    public String test() {
-        return "testJLPT";
-    }
+//    @GetMapping("/test")
+//    public String test() {
+//        return "testJLPT";
+//    }
 }

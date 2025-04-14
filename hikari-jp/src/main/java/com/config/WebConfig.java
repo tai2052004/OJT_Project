@@ -1,4 +1,4 @@
-package com.hikari.hikari_jp.config;
+package com.config;
 
 import jakarta.annotation.PostConstruct;
 import org.bytedeco.javacpp.Loader;

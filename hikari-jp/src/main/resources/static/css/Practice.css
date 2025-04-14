@@ -306,9 +306,10 @@ body, html {
 }
 .explain
 {
-    width: 1000px;
-    margin: 20px 0 0 210px;
+    width: 380px;
+    margin: 20px 0 0 190px;
     overflow: hidden;
+    text-wrap: auto;
     height: 0;
     transition: height 0.5s ease-out;
     background-color: azure;
@@ -353,13 +354,15 @@ body, html {
     height: 100%;
     border-radius: 15px;
     font-size: 21px;
+    overflow: hidden;
+    padding-bottom: 20px;
 }
-.questionListening, .questionGrammar
+.questionListening, .questionGrammar, .questionVocab
 {
     background: linear-gradient(45deg, #3a98b9, #007bff);
     box-shadow: 0 0 10px rgba(0, 153, 255, 0.8);
     border-radius: 15px;
-    width: 1200px;
+    width: 600px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -388,13 +391,14 @@ body, html {
     width: 45%;
     justify-content: center;
     gap: 10px;
+    margin-left: 10px;
 }
 .question-part2
 {
     width: 45%;
     padding-top: 15px;
 }
-.question-in-grammar
+.question-in-grammar, .question-in-vocab
 {
     border-radius: 20px;
     background: lavender;
@@ -405,14 +409,17 @@ body, html {
     height: auto;
     min-height: 70px;
 }
-.question-grammar
+.question-grammar, .question-vocab
 {
     width: 100%;
     height: 100%;
 }
 .question-audio
 {
-    margin: 20px 0 0 20px;
+}
+#audioPlayer
+{
+    width: 100%;
 }
 .question-in
 {
@@ -659,13 +666,6 @@ body {
     color: #fff!important;
     font-weight: bold!important;
 }
-
-.result-text {
-    font-size: 16px;
-    margin-top: 10px;
-    min-width: 400px;
-}
-
 .hidden {
     display: none;
 }
@@ -682,11 +682,15 @@ body {
 }
 .result-text {
     font-weight: bold;
-    margin: 15px 0 0 20px;
     background: lavender;
+    margin-left: 20px;
     border-radius: 15px;
     height: auto;
     padding: 10px;
+    min-width: 300px;
+    font-size: 16px;
+    max-width: 400px;
+    width: auto;
 }
 .subject-name
 {

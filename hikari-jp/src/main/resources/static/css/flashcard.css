@@ -243,7 +243,29 @@
     background-color: #f0f0f0;
     transform: scale(1.05);
 }
+label:hover {
+    background: #f0f0f0;
+    border-radius: 6px;
+}
 
+/* Dropdown bài học */
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Hiệu ứng focus khi chọn dropdown */
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
 
 .header {
     width: 100%;

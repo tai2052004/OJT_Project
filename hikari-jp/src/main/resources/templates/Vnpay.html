@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm payment</title>
+    <link rel="stylesheet" href="/css/vnPay.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="card">
+        <div class="text-center">
+            <img src="/images/vnpay-logo.png" alt="VNPAY Logo">
+        </div>
+
+        <h4 class="card-title">Confirm payment</h4>
+        <p class="text-muted">Registration Package</p>
+
+        <table class="table">
+            <tr>
+                <th>Package:</th>
+                <td th:text="${premiumPlan.name}"></td>
+            </tr>
+            <tr>
+                <th>Price:</th>
+                <td th:text="${formattedPrice} + ' Đ'"></td>
+            </tr>
+            <tr>
+                <th>Total amount:</th>
+                <td><strong th:text="${formattedPrice} + ' Đ'"></strong></td>
+            </tr>
+        </table>
+
+        <form th:action="@{/submitOrder}" method="post">
+            <input type="hidden" name="amount" th:value="${premiumPlan.price}">
+            <input type="hidden" name="orderInfo" th:value="'Payment for ' + ${premiumPlan.name}">
+            <input type="hidden" name="planId" th:value="${premiumPlan.id}">
+            <button type="submit">Thanh toán với VNPAY</button>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,14 +1,13 @@
-package com.hikari.hikari_jp.controller;
-import com.hikari.hikari_jp.entity.UserDetail;
-import com.hikari.hikari_jp.entity.Users;
-import com.hikari.hikari_jp.repository.UserDetailRepository;
-import com.hikari.hikari_jp.repository.UserRepository;
-import com.hikari.hikari_jp.service.EmailService;
-import com.hikari.hikari_jp.service.UserService;
+package com.controller;
+import com.model.UserDetail;
+import com.model.Users;
+import com.repository.UserDetailRepository;
+import com.repository.UserRepository;
+import com.service.EmailService;
+import com.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +35,7 @@ public class UserController {
 
     @GetMapping("/landingPage")
     public String landingPage(Model model) {
+        model.addAttribute("currentPage","landing" );
         return "landingPage";
     }
 
@@ -52,7 +52,7 @@ public class UserController {
             Users user = userRepository.findByEmail(email);
             UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
             session.setAttribute("user", user);
-            session.setAttribute("userDetail", userDetail);
+            session.setAttribute(   "userDetail", userDetail);
             return "redirect:/landingPage";
         } else {
             model.addAttribute("email", email);
