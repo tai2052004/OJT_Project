@@ -37,6 +37,7 @@ let listeningCheck = false;
 let grammarBtn = document.getElementById('grammar');
 let readingBtn = document.getElementById('reading');
 let listeningBtn = document.getElementById('listening');
+let countTimes = 0;
 
 
 async function initFaceCheck() {
@@ -81,11 +82,49 @@ async function startCheckingLoop(timestamp) {
             const msg = await captureAndValidate();
             console.log("📸 Số khuôn mặt phát hiện:", detections.length);
             if (detections.length === 0) {
-                mess.innerText = "Please let your face in camera";
-                triggerWarning();
+                countTimes++;
+                if ( countTimes > 3)
+                {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: "You have violated rules too much times. You will be redirected to Home Page",
+                        showConfirmButton: false,
+                        timer: 3000, // Swal sẽ tự động đóng sau 3 giây
+                        timerProgressBar: true
+                    });
+
+                    setTimeout(() => {
+                        window.location.href = "/backToHome";
+                    }, 3000);
+                }
+                else
+                {
+                    mess.innerText = "Please let your face in camera ( " + countTimes + " / 3 )";
+                    triggerWarning();
+                }
             } else if (!msg.includes("Face valid")) {
-                mess.innerText = "Please don't let anyone else in your camera";
-                triggerWarning();
+                countTimes++;
+                if ( countTimes > 3)
+                {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: "You have violated rules too much times. You will be redirected to Home Page",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+
+                    setTimeout(() => {
+                        window.location.href = "/backToHome";
+                    }, 3000);
+                }
+                else
+                {
+                    mess.innerText = "Please don't let anyone else in your camera ( " + countTimes + " / 3 )";
+                    triggerWarning();
+                }
             }
 
         } catch (err) {
@@ -257,23 +296,17 @@ initFaceCheck();
     function detectTabSwitch() {
         if (testSubmitted) return; // Disable tab switch detection if test is submitted
         if (document.hidden || document.visibilityState === "hidden") {
-            alert("You have violated the test rules! Redirecting in 3 seconds...");
-            setTimeout(() => {
+            alert("You have violated the test rules! Redirecting ...");
                 window.location.href = "/backToHome";
-            }, 3000);
         }
     }
 
     function detectWindowBlur() {
         if (testSubmitted) return; // Disable window blur detection if test is submitted
-        setTimeout(() => {
             if (!document.hasFocus()) {
-                alert("You have violated the test rules! Redirecting in 3 seconds...");
-                setTimeout(() => {
+                alert("You have violated the test rules! Redirecting to home page.....");
                     window.location.href = "/backToHome";
-                }, 3000);
             }
-        }, 200);
     }
     function attachListeners() {
         const questions = document.querySelectorAll(".question");

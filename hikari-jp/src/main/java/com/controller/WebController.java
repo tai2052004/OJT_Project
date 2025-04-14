@@ -13,7 +13,7 @@ public class WebController {
         return "landingPage";
     }
 
-    @GetMapping("/Practice")
+    @GetMapping("/practice")
     public String practice() { return "Practice"; }
 
     @GetMapping("/lookUp")
