@@ -556,3 +556,32 @@ body {
         border-bottom: none;
     }
 }
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    background: linear-gradient(45deg, #0099ff, #003366);
+    justify-content: space-around;
+    align-items: start;
+    padding: 10px 10px;
+}
+.quick-links, .contact-info{
+    color: #fff;
+    width: 25%;
+}
+.list {
+    list-style: none;
+    padding: 0;
+    font-size: 16px;
+}
+.quick-links li {
+    margin-bottom: 5px;
+}
+.quick-links a{
+    text-decoration: none;
+    color: #fff;
+}
+.quick-links h4, .contact-info h4 {
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 10px;
+}
