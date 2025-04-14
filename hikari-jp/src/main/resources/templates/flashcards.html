@@ -99,7 +99,7 @@
         <div class="container">
             <div class="container_first">
                 <h1 class="page-title">Flashcard</h1>
-                <button class="quiz-btn" onclick="window.location.href='test_quiz.html'"><i class="bi bi-question-square"></i>Quiz</button>
+                <button class="quiz-btn" onclick="window.location.href='quiz'"><i class="bi bi-question-square"></i>Quiz</button>
                 <button class="favorite-btn">
                     <a href="favoriteFlashcard.html"><i class="bi bi-star-fill"></i>Favorite</a>
                 </button>
@@ -111,7 +111,7 @@
                         <button id="fetchButton" onclick="fetchData()">Lấy từ vựng</button>
 
                         <h2>Select topic</h2>
-                        <ul class="selection-list">
+                        <ul class="selection-list no-select">
                             <li>
                                 <label class="radio-label">
                                     <input type="radio" name="wordType" value="vocabulary" checked>
@@ -127,7 +127,7 @@
                         </ul>
                     </div>
 
-                    <div class="selection-box" id="selection-box1">
+                    <div class="selection-box no-select" id="selection-box1">
                         <h2>Select level</h2>
                         <label><input type="radio" name="level" value="N5" checked> N5</label><br>
                         <label><input type="radio" name="level" value="N4"> N4</label><br>

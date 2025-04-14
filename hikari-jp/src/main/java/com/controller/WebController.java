@@ -13,7 +13,7 @@ public class WebController {
         return "landingPage";
     }
 
-    @GetMapping("/practice")
+    @GetMapping("/Practice")
     public String practice() { return "Practice"; }
 
     @GetMapping("/lookUp")
@@ -48,8 +48,13 @@ public class WebController {
     public String flashcards() { return "flashcards"; }
 
 
-//    @GetMapping("/test")
-//    public String test() {
-//        return "testJLPT";
-//    }
+
+    @GetMapping("/quiz")
+    public String quiz() { return "Quizz"; }
+
+    @GetMapping("/testQuiz")
+    public String testQuiz() { return "test_quiz"; }
+
+    @GetMapping("/quizResult")
+    public String quizResult() { return "Quizz_result"; }
 }

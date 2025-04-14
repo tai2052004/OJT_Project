@@ -1,7 +1,9 @@
 package com.controller;
 
+import com.model.TransactionHistory;
 import com.model.UserDetail;
 import com.model.Users;
+import com.repository.TransactionHistoryRepository;
 import com.repository.UserDetailRepository;
 import com.repository.UserRepository;
 import com.service.UserDetailService;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 public class ProfileController {
@@ -30,6 +33,8 @@ public class ProfileController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TransactionHistoryRepository transactionHistoryRepository;
 
     @Autowired
     private UserDetailRepository userDetailRepository;
@@ -68,8 +73,10 @@ public class ProfileController {
     public String transactionHistory(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
+        List<TransactionHistory> trans = transactionHistoryRepository.findAllById(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("userDetail", userDetail);
+        model.addAttribute("trans", trans);
         return "Transaction";
     }
 
