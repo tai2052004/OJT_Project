@@ -10,7 +10,7 @@ const rightPanel = document.querySelector(".right-panel");
 const progressBar = document.querySelector(".progress-bar");
 const timerElement = document.querySelector('.right-panel p');
 const submitButton = document.querySelector('.submit-btn');
-let timeGrammar = 5;
+let timeGrammar = 60 * 30;
 let timeVocab = 60 * 20;
 let timeListening = 60 * 30;
 let timeReading = 60 * 40;
@@ -182,6 +182,7 @@ async function captureAndValidate() {
 
 let recognition;
 let isVoiceDetected = false;
+let isVoiceDetectionActive = true;
 
 function startVoiceDetection() {
     try {
@@ -236,8 +237,11 @@ function startVoiceDetection() {
         };
 
         recognition.onend = () => {
-            // Tự động khởi động lại sau khi kết thúc
-            startVoiceDetection();
+            if(isVoiceDetectionActive)
+            {
+                // Tự động khởi động lại sau khi kết thúc
+                startVoiceDetection();
+            }
         };
 
         recognition.start();
@@ -247,7 +251,12 @@ function startVoiceDetection() {
         alert("Please grant permission to use microphone.");
     }
 }
-
+function stopVoiceDetection() {
+    isVoiceDetectionActive = false;
+    if (recognition) {
+        recognition.stop(); // Dừng recognition hiện tại
+    }
+}
 initFaceCheck();
 initVoiceCheck();
 
@@ -328,7 +337,6 @@ initVoiceCheck();
         if (timeLeft > 0) {
             timeLeft--;
         } else {
-            clearInterval(timerInterval);
             if (!testSubmitted) {
                 if ( grammarCheck === true && readingCheck === true && listeningCheck === true)
                 {
@@ -338,7 +346,8 @@ initVoiceCheck();
                         text: "Time's up! Your test will be submitted.",
                         confirmButtonText: 'OK'
                     });
-                    submitButton.click(); // Automatically trigger the submit button if time runs out
+                    clearInterval(timerInterval);
+                    submitButton.click();
                 }
                 else
                 {
@@ -481,97 +490,106 @@ initVoiceCheck();
                         '',
                         'success'
                     );
-                    scanning = false;
-                    if (animationId) {
-                        cancelAnimationFrame(animationId);
-                    }
-                    if (video.srcObject) {
-                        video.srcObject.getTracks().forEach(track => track.stop());
-                        video.style.display = "none";
-                    }
-                    document.exitFullscreen();
-                    clearInterval(timerInterval);
-                    timerElement.textContent = "Finished!";
-                    btnNavigate.forEach( bn => {
-                        bn.disabled = false;
-                    });
-                    document.querySelector('.back').style.display = "block";
-                    let variable = document.querySelectorAll('.question-item');
-                    document.querySelectorAll('.toggle-div-explain').forEach(item =>
-                    {
-                        item.classList.remove("hidden");
-                    });
-                    variable.forEach(qc =>
-                    {
-                        let parentID = qc.id.split('-')[1];
-                        let userAnswer = qc.querySelector('#userAnswer-' + parentID);
-                        let correctAnswer = qc.querySelector('#correctAnswer-' + parentID);
-                        let resultElement = qc.querySelector('#result-' + parentID);
-                        document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
-                        let answer = qc.querySelectorAll('.answer');
-                        answer.forEach(aq => {
-                            aq.onclick = null;
-                        });
-                        if ( userAnswer.value === correctAnswer.value)
-                        {
-                            score++;
-                            resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
-                        }else {
-                            document.querySelectorAll('.question-box').forEach( n =>
-                            {
-                                if ( parseInt( n.dataset.question) === parseInt(parentID))
-                                {
-                                    n.classList.remove("selectedNum");
-                                    n.classList.add("wrongNum");
-                                }
-                            })
-                            answer.forEach(aq =>
-                            {
-                                if(aq.innerText.trim() === correctAnswer.value)
-                                {
-                                    aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
-                                }
-                                if(aq.innerText.trim() === userAnswer.value)
-                                {
-                                    aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
-                                }
-                            });
-                            resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correctAnswer.value}</b></span>`;
-                        }
-
-                    });
-                    Swal.fire({
-                        title: 'Kết quả bài thi',
-                        html: `<h3 style="color: #007bff;">Số câu đúng: ${score}/${
-                            Number(vocabSize.value) +
-                            Number(grammarSize.value) +
-                            Number(readingSize.value) +
-                            Number(listeningSize.value)
-                        }</h3>`,
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                    });
-
-                    finalScore.innerText = `🎯 Total Score: ${score}/${
-                        Number(vocabSize.value) +
-                        Number(grammarSize.value) +
-                        Number(readingSize.value) +
-                        Number(listeningSize.value)
-                    }`;
-                    finalScore.style.display = "block";
-
-                    // Store updated score in the hidden input field
-
-                    // Mark the test as submitted and disable further submissions
-                    testSubmitted = true;
-                    submitButton.disabled = true;
+                    displayResult(score);
                 }
             });
-        }// Prevent multiple submissions
+        }
+        else
+        {
+            displayResult(score);
+        }
 
     });
 
 
+    function displayResult(score)
+    {
+        scanning = false;
+        clearInterval(timerInterval);
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+        stopVoiceDetection();
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+            video.style.display = "none";
+        }
+        document.exitFullscreen();
+        timerElement.textContent = "Finished!";
+        btnNavigate.forEach( bn => {
+            bn.disabled = false;
+        });
+        document.querySelector('.back').style.display = "block";
+        let variable = document.querySelectorAll('.question-item');
+        document.querySelectorAll('.toggle-div-explain').forEach(item =>
+        {
+            item.classList.remove("hidden");
+        });
+        variable.forEach(qc =>
+        {
+            let parentID = qc.id.split('-')[1];
+            let userAnswer = qc.querySelector('#userAnswer-' + parentID);
+            let correctAnswer = qc.querySelector('#correctAnswer-' + parentID);
+            let resultElement = qc.querySelector('#result-' + parentID);
+            document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
+            let answer = qc.querySelectorAll('.answer');
+            answer.forEach(aq => {
+                aq.onclick = null;
+            });
+            if ( userAnswer.value === correctAnswer.value)
+            {
+                score++;
+                resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
+            }else {
+                document.querySelectorAll('.question-box').forEach( n =>
+                {
+                    if ( parseInt( n.dataset.question) === parseInt(parentID))
+                    {
+                        n.classList.remove("selectedNum");
+                        n.classList.add("wrongNum");
+                    }
+                })
+                answer.forEach(aq =>
+                {
+                    if(aq.innerText.trim() === correctAnswer.value)
+                    {
+                        aq.style.backgroundImage   = "linear-gradient(45deg, #1B9544, lightgreen)";
+                    }
+                    if(aq.innerText.trim() === userAnswer.value)
+                    {
+                        aq.style.backgroundImage   = "linear-gradient(45deg, #bc2b26, lightcoral)";
+                    }
+                });
+                resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correctAnswer.value}</b></span>`;
+            }
+
+        });
+        Swal.fire({
+            title: 'Kết quả bài thi',
+            html: `<h3 style="color: #007bff;">Số câu đúng: ${score}/${
+                Number(vocabSize.value) +
+                Number(grammarSize.value) +
+                Number(readingSize.value) +
+                Number(listeningSize.value)
+            }</h3>`,
+            icon: 'success',
+            confirmButtonText: 'OK',
+        });
+
+        finalScore.innerText = `🎯 Total Score: ${score}/${
+            Number(vocabSize.value) +
+            Number(grammarSize.value) +
+            Number(readingSize.value) +
+            Number(listeningSize.value)
+        }`;
+        finalScore.style.display = "block";
+
+        // Store updated score in the hidden input field
+
+        // Mark the test as submitted and disable further submissions
+        testSubmitted = true;
+        submitButton.disabled = true;
+    }
 
     window.addEventListener("scroll", () => {
         const offset = 20; // Space from top
@@ -704,12 +722,13 @@ function handleClick(bn) {
                         abc = listeningPart;
                         updateQuestionVisibility();
                     }
-                    setInterval(updateTimer, 1000);
                 }
 
     }
     else
     {
+        currentQuestionIndex = 0;
+        clearInterval(timerInterval);
         btnNavigate.forEach( b => {
             if ( b.classList.contains('selected'))
             {
@@ -723,8 +742,6 @@ function handleClick(bn) {
                 document.querySelector('.' + b.id).style.display = "none";
             }
         });
-        currentQuestionIndex = 0;
-        clearInterval(timerInterval);
         if ( bn.id.includes("vocab"))
         {
             subjectNow.value = "vocab";
