@@ -10,7 +10,7 @@ const rightPanel = document.querySelector(".right-panel");
 const progressBar = document.querySelector(".progress-bar");
 const timerElement = document.querySelector('.right-panel p');
 const submitButton = document.querySelector('.submit-btn');
-let timeGrammar = 60 * 30;
+let timeGrammar = 5;
 let timeVocab = 60 * 20;
 let timeListening = 60 * 30;
 let timeReading = 60 * 40;
@@ -48,6 +48,17 @@ async function initFaceCheck() {
         });
     });
 }
+
+async function initVoiceCheck()
+{
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(() => {
+            startVoiceDetection();
+        })
+        .catch((err) => {
+            alert("You need to grant microphone permission to use voice recognition.");
+        });
+}
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl)
 ]).then(() => {
@@ -83,8 +94,9 @@ async function startCheckingLoop(timestamp) {
             console.log("📸 Số khuôn mặt phát hiện:", detections.length);
             if (detections.length === 0) {
                 countTimes++;
-                if ( countTimes > 3)
+                if ( countTimes > 5)
                 {
+                    cancelAnimationFrame(animationId)
                     Swal.fire({
                         icon: 'warning',
                         title: 'Warning',
@@ -93,20 +105,20 @@ async function startCheckingLoop(timestamp) {
                         timer: 3000, // Swal sẽ tự động đóng sau 3 giây
                         timerProgressBar: true
                     });
-
                     setTimeout(() => {
                         window.location.href = "/backToHome";
                     }, 3000);
                 }
                 else
                 {
-                    mess.innerText = "Please let your face in camera ( " + countTimes + " / 3 )";
+                    mess.innerText = "Please let your face in camera ( " + countTimes + " / 5 )";
                     triggerWarning();
                 }
             } else if (!msg.includes("Face valid")) {
                 countTimes++;
-                if ( countTimes > 3)
+                if ( countTimes > 5)
                 {
+                    cancelAnimationFrame(animationId);
                     Swal.fire({
                         icon: 'warning',
                         title: 'Warning',
@@ -115,14 +127,13 @@ async function startCheckingLoop(timestamp) {
                         timer: 3000,
                         timerProgressBar: true
                     });
-
                     setTimeout(() => {
                         window.location.href = "/backToHome";
                     }, 3000);
                 }
                 else
                 {
-                    mess.innerText = "Please don't let anyone else in your camera ( " + countTimes + " / 3 )";
+                    mess.innerText = "Please don't let anyone else in your camera ( " + countTimes + " / 5 )";
                     triggerWarning();
                 }
             }
@@ -168,8 +179,81 @@ async function captureAndValidate() {
         }, "image/jpeg");
     });
 }
-initFaceCheck();
 
+let recognition;
+let isVoiceDetected = false;
+
+function startVoiceDetection() {
+    try {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "vi-VN";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.continuous = false; // dùng false để tránh lỗi lặp chồng recognition
+
+        recognition.onresult = (event) => {
+            let transcript = event.results[0][0].transcript.trim();
+            console.log("Nghe được:", transcript);
+
+            if (!isVoiceDetected) {
+                isVoiceDetected = true;
+                countTimes++;
+                if ( countTimes > 5)
+                {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: "You have violated rules too much times. You will be redirected to Home Page",
+                        showConfirmButton: false,
+                        timer: 3000, // Swal sẽ tự động đóng sau 3 giây
+                        timerProgressBar: true
+                    });
+
+                    setTimeout(() => {
+                        window.location.href = "/backToHome";
+                    }, 3000);
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Voice Detection!",
+                        text: "Times : " + countTimes + "/5",
+                        confirmButtonText: 'OK'
+                    });
+                }
+
+
+                // Sau khi cảnh báo, reset để lắng nghe tiếp
+                setTimeout(() => {
+                    isVoiceDetected = false;
+                }, 3000);
+            }
+        };
+
+        recognition.onerror = (event) => {
+            console.warn("Lỗi nhận diện:", event.error);
+        };
+
+        recognition.onend = () => {
+            // Tự động khởi động lại sau khi kết thúc
+            startVoiceDetection();
+        };
+
+        recognition.start();
+        console.log("Bắt đầu lắng nghe...");
+    } catch (error) {
+        console.error("Không thể dùng microphone:", error);
+        alert("Please grant permission to use microphone.");
+    }
+}
+
+initFaceCheck();
+initVoiceCheck();
+
+
+
+// Gọi hàm lần đầu sau khi có quyền mic
 
 
 
