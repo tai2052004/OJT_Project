@@ -14,7 +14,7 @@ public class WebController {
     }
 
     @GetMapping("/Practice")
-    public String practice() { return "Practice"; }
+    public String practice() { return "practice"; }
 
     @GetMapping("/lookUp")
     public String lookUp(Model model) {
@@ -25,13 +25,13 @@ public class WebController {
     public String clearModelVariable(Model model, HttpSession session) {
         model.addAttribute("readingPractices", null);
         session.removeAttribute("readingPractices");
-        return "Practice"; // Trả về trang hiện tại
+        return "practice"; // Trả về trang hiện tại
     }
     @PostMapping("/clearListening")
     public String clearListening(Model model, HttpSession session) {
         model.addAttribute("listeningPractices", null);
         session.removeAttribute("listeningPractices");
-        return "Practice";
+        return "practice";
     }
     @GetMapping("/jlptTest")
     public String jlptTest() { return "welcomeJLPT"; }
@@ -50,7 +50,7 @@ public class WebController {
 
 
     @GetMapping("/quiz")
-    public String quiz() { return "Quizz"; }
+    public String quiz() { return "quizz"; }
 
     @GetMapping("/testQuiz")
     public String testQuiz() { return "test_quiz"; }

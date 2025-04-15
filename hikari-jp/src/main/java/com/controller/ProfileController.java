@@ -45,7 +45,7 @@ public class ProfileController {
         UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("userDetail", userDetail);
-        return "Profile";
+        return "profile";
     }
 
     @PostMapping("/profile")

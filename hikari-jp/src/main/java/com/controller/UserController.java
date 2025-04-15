@@ -151,7 +151,7 @@ public class UserController {
             // Xóa user tạm khỏi session
             session.removeAttribute("tempUser");
 
-            return "otp-success";
+            return "otpSuccess";
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -165,7 +165,7 @@ public class UserController {
 
     @GetMapping("/otp-success")
     public String otpSuccess(Model model) {
-        return "otp-success";
+        return "otpSuccess";
     }
 
     //Forget password
@@ -232,7 +232,7 @@ public class UserController {
         session.removeAttribute("tempUser");
 
         model.addAttribute("successMessage", "Password reset successful! You can log in now.");
-        return "otp-success";
+        return "otpSuccess";
     }
 
     //Logout

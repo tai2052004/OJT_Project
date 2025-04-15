@@ -50,6 +50,6 @@ public class PracticeController {
         }
 
 
-        return "Practice";
+        return "practice";
     }
 }

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     if (!level) {
         alert('No quiz level selected. Redirecting to quiz page.');
-        window.location.href = 'Quizz.html';
+        window.location.href = 'quizz.html';
         return;
     }
 

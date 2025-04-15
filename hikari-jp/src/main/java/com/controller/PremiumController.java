@@ -88,10 +88,10 @@ public class PremiumController {
                     System.out.println(e.getMessage());
                 }
             }
-            return "ordersuccess";
+            return "orderSuccess";
         }
 
-        return "orderfail";
+        return "orderFail";
     }
 
 }
