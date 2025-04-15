@@ -192,7 +192,7 @@ body {
     width: 90%;
     margin: 0 auto;
 }
-.topic > button
+.topic-content, .lock-topic
 {
     width: 200px;
     height: 80px;
@@ -207,7 +207,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.topic > button:hover {
+.topic-content:hover , .lock-topic:hover{
     background: lightblue;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);

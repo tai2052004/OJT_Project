@@ -4,6 +4,7 @@ let inputTopic = document.getElementById("topic_test");
 let inputLevel = document.getElementById("level_test");
 let selectLevel = document.getElementById("level");
 let topicList = document.querySelectorAll('.topic-content');
+let lockTopic = document.querySelectorAll('.lock-topic');
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,6 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
         tp.classList.add('active');
         inputTopic.value = tp.id;
     }));
+
+    lockTopic.forEach(lp => lp.addEventListener('click', () =>
+    {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: "You have to upgrade to premium to do more test.",
+            showCancelButton: true,
+            confirmButtonText: 'Upgrade Now',
+            cancelButtonText: 'Cancel',
+            heightAuto: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/buyPremium";
+            }
+        });
+    }));
+
 });
 
 

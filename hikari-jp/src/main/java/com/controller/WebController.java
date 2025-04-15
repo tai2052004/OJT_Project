@@ -33,8 +33,7 @@ public class WebController {
         session.removeAttribute("listeningPractices");
         return "Practice";
     }
-    @GetMapping("/jlptTest")
-    public String jlptTest() { return "welcomeJLPT"; }
+
 
 
     @GetMapping("/buyPremium")

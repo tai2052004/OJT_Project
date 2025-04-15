@@ -87,8 +87,14 @@
     </div>
     <div class="topic">
         <button class="topic-content" id="1">1</button>
-        <button class="topic-content" id="2">2</button>
-        <button class="topic-content" id="3">3</button>
+        <span th:if="${userPremium != null}">
+            <button class="topic-content" id="2">2</button>
+            <button class="topic-content" id="3">3</button>
+        </span>
+        <span th:unless="${userPremium != null}">
+            <button class="lock-topic">&#128274;</button>
+            <button class="lock-topic">&#128274;</button>
+        </span>
     </div>
 
     <div class="button-container" style="justify-content: space-between;">
