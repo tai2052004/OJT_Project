@@ -20,15 +20,14 @@ public class QuizController {
     public String quizInterface(@RequestParam(name = "level", required = false) String level, Model model, HttpSession session) {
         model.addAttribute("level", level);
         Users user = (Users) session.getAttribute("user");
-        PremiumPlan premiumPlan = null;
         boolean isPremium = false;
 
         if (user == null) return "quizzInterface";
         UserPremium userPremium = premiumService.getUserPremium(user.getId());
         if (userPremium != null) {
-            premiumPlan = premiumService.getPremiumPlanByPlanId(userPremium.getPlanId());
-            model.addAttribute("premiumPlan", premiumPlan);
+            //in case of using otherwise just delete this
             model.addAttribute("userPremium", userPremium);
+            //
             isPremium = true;
         }
         model.addAttribute("isPremium", isPremium);
