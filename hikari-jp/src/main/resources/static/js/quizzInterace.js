@@ -8,13 +8,7 @@ const JLPT_TO_WK = {
     "N1": "51,52,53,54,55,56,57,58,59,60"
 };
 
-const JLPT_TO_WK_LIMITED = {
-    "N5": "1,2,3,4",
-    "N4": "11,12,13",
-    "N3": "21,22,23",
-    "N2": "",
-    "N1": ""
-};
+
 
 const itemsPerPage = 5;
 let currentPage = 1;
@@ -87,8 +81,7 @@ async function fetchData() {
         alert("Vui lòng chọn cấp độ JLPT.");
         return;
     }
-    const levelMapping = isPremiumUser ? JLPT_TO_WK : JLPT_TO_WK_LIMITED;
-        const url = API_URL + selectedType + "&levels=" + levelMapping[selectedLevel];
+        const url = API_URL + selectedType + "&levels=" + JLPT_TO_WK[selectedLevel];
     const headers = { "Authorization": "Bearer " + API_KEY };
 
     try {
