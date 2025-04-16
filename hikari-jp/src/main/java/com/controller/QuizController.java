@@ -13,24 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class QuizController {
-    @Autowired
-    private PremiumService premiumService;
-
+//fix redundant code
     @GetMapping("/quizzInterface")
-    public String quizInterface(@RequestParam(name = "level", required = false) String level, Model model, HttpSession session) {
+    public String quizInterface(@RequestParam(name = "level", required = false) String level, Model model) {
         model.addAttribute("level", level);
-        Users user = (Users) session.getAttribute("user");
-        boolean isPremium = false;
-
-        if (user == null) return "quizzInterface";
-        UserPremium userPremium = premiumService.getUserPremium(user.getId());
-        if (userPremium != null) {
-            //in case of using otherwise just delete this
-            model.addAttribute("userPremium", userPremium);
-            //
-            isPremium = true;
-        }
-        model.addAttribute("isPremium", isPremium);
         return "quizzInterface";
     }
 }
