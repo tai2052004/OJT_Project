@@ -29,7 +29,7 @@ const JLPT_TO_WK = {
     "N1-6": "56", "N1-7": "57", "N1-8": "58", "N1-9": "59", "N1-10": "60"
 };
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function ()   {
     const fetchButton = document.getElementById("fetchButton");
     if (fetchButton) {
         fetchButton.style.display = "none";
@@ -102,7 +102,6 @@ async function fetchData(level = null) {
 function showCurrentFlashcard() {
     const flashcardFront = document.querySelector(".flashcard-front");
     const flashcardBack = document.querySelector(".flashcard-back");
-    const starIcon = document.querySelector(".flashcard i.bi-star-fill");
 
     let currentData = currentType === "vocabulary" ? vocabData : kanjiData;
 
@@ -134,13 +133,10 @@ function showCurrentFlashcard() {
         flashcardBack.textContent = `Meaning: ${item.data.meanings.map(m => m.meaning).join(", ")}\nReading: ${item.data.readings.map(r => r.reading).join(", ")}`;
     }
 
-    // Cập nhật trạng thái nút next/prev
-    document.getElementById("prevBtn").disabled = currentIndex === 0;
-    document.getElementById("nextBtn").disabled = currentIndex === currentData.length - 1;
-
     // Reset trạng thái lật của flashcard
     const flashcard = document.querySelector(".flashcard");
     flashcard.classList.remove("flipped");
+    updateCardCounter();
 }
 
 function flipCard(card) {
@@ -149,9 +145,36 @@ function flipCard(card) {
 
 function plusDivs(n) {
     let currentData = currentType === "vocabulary" ? vocabData : kanjiData;
-    currentIndex = (currentIndex + n + currentData.length) % currentData.length;
+
+    // Tính index mới
+    let newIndex = currentIndex + n;
+
+    // Nếu vượt quá cuối mảng thì bắt đầu từ đầu
+    if (newIndex >= currentData.length) {
+        newIndex = 0;
+    }
+    // Nếu nhỏ hơn 0 thì quay lại cuối mảng
+    else if (newIndex < 0) {
+        newIndex = currentData.length - 1;
+    }
+
+    currentIndex = newIndex;
     showCurrentFlashcard();
 }
+
+//Hàm hỗ trợ hiển thị số thứ tự thẻ
+function updateCardCounter() {
+    const counterElement = document.querySelector(".card-counter");
+    const currentData = currentType === "vocabulary" ? vocabData : kanjiData;
+
+    if (counterElement) {
+        counterElement.textContent = `${currentIndex + 1}/${currentData.length}`;
+    }
+}
+
+
+
+
 
 // function toggleLessonList() {
 //     let selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
@@ -196,52 +219,144 @@ function plusDivs(n) {
 //         lessonList.style.display = "none";
 //     }
 // }
+// function toggleLessonList() {
+//     let selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
+//     let lessonList = document.getElementById("lessonList");
+//     let lessonSelect = document.getElementById("lessonItems");
+//
+//     if (!selectedLevel || !["N5", "N4", "N3", "N2", "N1"].includes(selectedLevel)) {
+//         if (lessonList) lessonList.style.display = "none";
+//         return;
+//     }
+//
+//     if (lessonList) lessonList.style.display = "block";
+//     if (!lessonSelect) return;
+//
+//     // Xóa options cũ
+//     lessonSelect.innerHTML = '';
+//
+//     let startLesson, endLesson;
+//
+//     // Xác định phạm vi bài học
+//     switch (selectedLevel) {
+//         case "N5": startLesson = 1; endLesson = 10; break;
+//         case "N4": startLesson = 11; endLesson = 20; break;
+//         case "N3": startLesson = 21; endLesson = 30; break;
+//         case "N2": startLesson = 31; endLesson = 50; break;
+//         case "N1": startLesson = 51; endLesson = 60; break;
+//         default: return;
+//     }
+//
+//     // Thêm option mặc định
+//     let defaultOption = new Option("-- Chọn bài --", "");
+//     defaultOption.disabled = true;
+//     defaultOption.selected = true;
+//     lessonSelect.add(defaultOption);
+//
+//     // Thêm các option bài học
+//     const isPremium = document.getElementById("isPremium").value;
+//     const isFreeUser = isPremium === 'null' || isPremium === '';
+//     const premiumAlert = document.getElementById('premiumAlert');
+//     for (let i = startLesson; i <= endLesson; i++) {
+//         let lessonNumber = i - startLesson + 1;
+//         let option = new Option(`Bài ${lessonNumber}`, `${selectedLevel}-${lessonNumber}`);
+//         if (isPremium === 'null' || isPremium === '') {
+//             if (lessonNumber === 1) {
+//                 option.selected = true;
+//             } else {
+//                 option.disabled = true;
+//             }
+//         } else {
+//             if (lessonNumber === 1) option.selected = true;
+//         }
+//         lessonSelect.add(option);
+//     }
+//     fetchData(lessonSelect.value);
+//     // Xử lý khi chọn bài
+//     lessonSelect.addEventListener('change', function() {
+//         if (isFreeUser && this.value !== `${selectedLevel}-1`) {
+//             premiumAlert.style.display = 'block';
+//             this.value = `${selectedLevel}-1`; // Reset về bài 1
+//         } else {
+//             premiumAlert.style.display = 'none';
+//         }
+//         if (this.value) {
+//             fetchData(this.value);
+//         }
+//     });
+// }
 function toggleLessonList() {
-    let selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
-    let lessonList = document.getElementById("lessonList");
-    let lessonSelect = document.getElementById("lessonItems");
+    // Lấy thông tin level được chọn
+    const selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
+    const lessonList = document.getElementById("lessonList");
+    const lessonSelect = document.getElementById("lessonItems");
+    const isPremium = document.getElementById("isPremium").value;
+    const isFreeUser = isPremium === 'null' || isPremium === '';
+    const premiumAlert = document.getElementById('premiumAlert');
 
+    // Validate level
     if (!selectedLevel || !["N5", "N4", "N3", "N2", "N1"].includes(selectedLevel)) {
         if (lessonList) lessonList.style.display = "none";
         return;
     }
 
+    // Hiển thị danh sách bài học
     if (lessonList) lessonList.style.display = "block";
     if (!lessonSelect) return;
 
-    // Xóa options cũ
+    // Xác định phạm vi bài học
+    const lessonRanges = {
+        "N5": [1, 10],
+        "N4": [11, 20],
+        "N3": [21, 30],
+        "N2": [31, 50],
+        "N1": [51, 60]
+    };
+    const [startLesson, endLesson] = lessonRanges[selectedLevel] || [];
+
+    // Tạo danh sách bài học
     lessonSelect.innerHTML = '';
 
-    let startLesson, endLesson;
-
-    // Xác định phạm vi bài học
-    switch (selectedLevel) {
-        case "N5": startLesson = 1; endLesson = 10; break;
-        case "N4": startLesson = 11; endLesson = 20; break;
-        case "N3": startLesson = 21; endLesson = 30; break;
-        case "N2": startLesson = 31; endLesson = 50; break;
-        case "N1": startLesson = 51; endLesson = 60; break;
-        default: return;
-    }
-
     // Thêm option mặc định
-    let defaultOption = new Option("-- Chọn bài --", "");
+    const defaultOption = new Option("-- Chọn bài --", "");
     defaultOption.disabled = true;
     defaultOption.selected = true;
     lessonSelect.add(defaultOption);
 
-    // Thêm các option bài học
+    // Thêm các bài học
     for (let i = startLesson; i <= endLesson; i++) {
-        let lessonNumber = i - startLesson + 1;
-        let option = new Option(`Bài ${lessonNumber}`, `${selectedLevel}-${lessonNumber}`);
-        if (lessonNumber === 1) option.selected = true;
+        const lessonNumber = i - startLesson + 1;
+        const option = new Option(`Bài ${lessonNumber}`, `${selectedLevel}-${lessonNumber}`);
+
+        // Xử lý cho free user
+        if (isFreeUser) {
+            option.disabled = lessonNumber !== 1; // Chỉ cho phép chọn bài 1
+            if (lessonNumber === 1) option.selected = true;
+        }
+
         lessonSelect.add(option);
     }
-    fetchData(lessonSelect.value);
-    // Xử lý khi chọn bài
+
+    // Xử lý sự kiện chọn bài
     lessonSelect.addEventListener('change', function() {
+        if (isFreeUser && !this.value.endsWith('-1')) {
+            // Hiển thị thông báo và reset về bài 1
+            if (premiumAlert) {
+                premiumAlert.style.display = 'block';
+                setTimeout(() => premiumAlert.style.display = 'none', 3000);
+            }
+            this.value = `${selectedLevel}-1`;
+            return;
+        }
+
         if (this.value) {
             fetchData(this.value);
         }
     });
+
+    // Tự động load bài đầu tiên nếu có
+    const firstLesson = `${selectedLevel}-1`;
+    if (lessonSelect.value) {
+        fetchData(lessonSelect.value);
+    }
 }
