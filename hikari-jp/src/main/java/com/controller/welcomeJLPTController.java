@@ -20,7 +20,11 @@ public class welcomeJLPTController {
     public String jlptTest(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         UserPremium userPremium = null;
-        if (user == null) return "welcomeJLPT";
+        if (user == null)
+        {
+            model.addAttribute("alertMessage", "Please sign in before taking the exam");
+            return "landingPage";
+        }
         userPremium =  premiumService.getUserPremium(user.getId());
         model.addAttribute("userPremium", userPremium);
         return "welcomeJLPT";

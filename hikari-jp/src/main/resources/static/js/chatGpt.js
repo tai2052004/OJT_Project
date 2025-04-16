@@ -8,6 +8,9 @@ const KEYWORD_RESPONSES = {
         response: "http://localhost:8080/Practice",
         message: "Bạn muốn luyện tập? Truy cập ngay: {link}"
     },
+    "không muốn": {
+        message: "Không muốn thì thôi, làm gì căng."
+    },
     "học từ vựng": {
         response: "http://localhost:8080/quizzInterface",
         message: "Bạn muốn học từ vựng? Truy cập ngay: {link}"
