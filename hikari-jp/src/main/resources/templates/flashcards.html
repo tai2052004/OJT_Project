@@ -100,9 +100,6 @@
             <div class="container_first">
                 <h1 class="page-title">Flashcard</h1>
                 <button class="quiz-btn" onclick="window.location.href='quiz'"><i class="bi bi-question-square"></i>Quiz</button>
-                <button class="favorite-btn">
-                    <a href="favoriteFlashcard.html"><i class="bi bi-star-fill"></i>Favorite</a>
-                </button>
             </div>
             <div class="container-second">
                 <aside class="sidebar">
@@ -111,52 +108,64 @@
                         <button id="fetchButton" onclick="fetchData()">Lấy từ vựng</button>
 
                         <h2>Select topic</h2>
-                        <ul class="selection-list no-select">
+                        <ul class="selection-list">
                             <li>
                                 <label class="radio-label">
-                                    <input type="radio" name="wordType" value="vocabulary" checked>
+                                    <input type="radio" name="wordType" value="vocabulary" checked disabled>
                                     Vocabulary
                                 </label>
                             </li>
                             <li>
                                 <label class="radio-label">
-                                    <input type="radio" name="wordType" value="kanji">
+                                    <input type="radio" name="wordType" value="kanji" disabled>
                                     Kanji
                                 </label>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="selection-box no-select" id="selection-box1">
+                    <div>
+                        <input type="hidden" id="isPremium" th:value="${userPremium}">
+                    </div>
+                    <div id="premiumAlert" style="color: red; display: none;">
+                        Bạn cần nâng cấp Premium để học các bài này!
+                    </div>
+                    <div class="selection-box" id="selection-box1" >
                         <h2>Select level</h2>
-                        <label><input type="radio" name="level" value="N5" checked> N5</label><br>
-                        <label><input type="radio" name="level" value="N4"> N4</label><br>
-                        <label><input type="radio" name="level" value="N3"> N3</label><br>
-                        <label><input type="radio" name="level" value="N2"> N2</label><br>
-                        <label><input type="radio" name="level" value="N1"> N1</label><br>
+                        <label><input type="radio" name="level" value="N5" checked disabled> N5</label><br>
+                        <label><input type="radio" name="level" value="N4" disabled> N4</label><br>
+                        <label><input type="radio" name="level" value="N3" disabled> N3</label><br>
+                        <label><input type="radio" name="level" value="N2" disabled> N2</label><br>
+                        <label><input type="radio" name="level" value="N1" disabled> N1</label><br>
                     </div>
 
                     <div id="lessonList" class="selection-box" style="display: none;">
                         <h2>Select Lesson</h2>
-                        <select id="lessonItems" onchange="fetchData(this.value)">
-                            <!-- Danh sách bài học sẽ được tạo bằng JavaScript -->
+                        <select id="lessonItems" onchange="fetchData(this.value)" >
+
                         </select>
                     </div>
                 </aside>
 
                 <div class="flashcard-container">
                     <div class="flashcard" onclick="flipCard(this)">
-                        <i class="bi bi-star-fill"></i>
                         <div class="flashcard-inner">
                             <div class="flashcard-front" id="word"></div>
                             <div class="flashcard-back" id="meaning"></div>
                         </div>
                     </div>
 
+
+
+<!--                    <div id="pageJumpDialog" class="dialog">-->
+<!--                        <input type="number" id="pageInput" min="1" placeholder="Nhập trang (Enter)">-->
+<!--                    </div>-->
+
                     <div class="navigation-buttons">
                         <button class="nav-btn prev-btn" id="prevBtn" onclick="plusDivs(-1)">
                             <i class="bi bi-arrow-left-short"></i>
                         </button>
+                        <div class="card-counter">0/0</div>
                         <button class="nav-btn next-btn" id="nextBtn" onclick="plusDivs(+1)">
                             <i class="bi bi-arrow-right-short"></i>
                         </button>
@@ -167,5 +176,6 @@
     </main>
 <div th:replace="fragments/footer :: footer"></div>
 <script th:src="@{/js/flashcard.js}"></script>
+<script th:src="@{/js/userPremium.js}"></script>
     </body>
     </html>
