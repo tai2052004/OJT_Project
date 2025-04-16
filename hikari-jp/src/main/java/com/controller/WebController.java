@@ -1,6 +1,11 @@
 package com.controller;
 
+import com.model.UserPremium;
+import com.model.Users;
+import com.repository.UserPremiumRepository;
 import jakarta.servlet.http.HttpSession;
+import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class WebController {
+    @Autowired
+    private UserPremiumRepository userPremiumRepository;
+
     @GetMapping("/")
     public String home(Model model) {
         return "landingPage";
@@ -44,7 +52,15 @@ public class WebController {
     public String backToHome() { return "landingPage"; }
 
     @GetMapping("/flashcards")
-    public String flashcards() { return "flashcards"; }
+    public String flashcards(Model model, HttpSession session) {
+        Users user = (Users) session.getAttribute("user");
+        if(user == null) {
+            model.addAttribute("alertMessage", "Please sign in before taking the exam");
+            return "landingPage";
+        }
+        UserPremium userPremium = userPremiumRepository.findByUserId(user.getId());
+        model.addAttribute("userPremium", userPremium);
+        return "flashcards"; }
 
 
 
