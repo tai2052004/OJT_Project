@@ -54,6 +54,10 @@ public class WebController {
     @GetMapping("/flashcards")
     public String flashcards(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
+        if(user == null) {
+            model.addAttribute("alertMessage", "Please sign in before taking the exam");
+            return "landingPage";
+        }
         UserPremium userPremium = userPremiumRepository.findByUserId(user.getId());
         model.addAttribute("userPremium", userPremium);
         return "flashcards"; }
