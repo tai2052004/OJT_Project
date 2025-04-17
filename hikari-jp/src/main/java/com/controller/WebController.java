@@ -4,7 +4,6 @@ import com.model.UserPremium;
 import com.model.Users;
 import com.repository.UserPremiumRepository;
 import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +39,11 @@ public class WebController {
         model.addAttribute("listeningPractices", null);
         session.removeAttribute("listeningPractices");
         return "Practice";
+    }
+
+    @GetMapping("/saleStatistic")
+    public String saleStatistic() {
+        return "saleStatistic";
     }
 
 
