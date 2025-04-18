@@ -67,14 +67,16 @@
                         <li>
                             <a th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
                         </li>
-
+                        <div th:if="${userPremium != null}">
                         <li>
                             <a th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
                         </li>
                         <li>
                             <a th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
                         </li>
+                    </div>
                     </ul>
+
                 </li>
                 <li>
                     <a th:href="@{/writing}" class="dropdown-link">Writing</a>

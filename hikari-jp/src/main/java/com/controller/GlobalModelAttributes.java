@@ -14,7 +14,7 @@ public class GlobalModelAttributes {
 
     @Autowired
     private PremiumService premiumService;
-
+//
     @ModelAttribute
     public void addGlobalAttributes(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
