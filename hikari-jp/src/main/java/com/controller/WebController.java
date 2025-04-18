@@ -24,10 +24,10 @@ public class WebController {
     @GetMapping("/Practice")
     public String practice() { return "Practice"; }
 
-    @GetMapping("/lookUp")
-    public String lookUp(Model model) {
-        model.addAttribute("currentPage", "lookup");
-        return "lookUp"; }
+//    @GetMapping("/lookUp")
+//    public String lookUp(Model model) {
+//        model.addAttribute("currentPage", "lookup");
+//        return "lookUp"; }
 
     @PostMapping("/clearModel")
     public String clearModelVariable(Model model, HttpSession session) {

@@ -31,18 +31,24 @@ const KEYWORD_RESPONSES = {
         response: "http://localhost:8080/jlptTest",
         message: "Want to take a test? Visit: {link}"
     },
-    "tra cứu":{
+    "tra cứu": {
         response: "http://localhost:8080/lookUp",
         message: "Bạn muốn tra cứu? Truy cập ngay: {link}"
     },
-    "look up":{
+    "look up": {
         response: "http://localhost:8080/lookUp",
         message: "Do you want to look up? Visit: {link}"
     }
 };
 
-// Global chat history
+// Global chat history with system role
 let chatHistory = [
+    {
+        role: "system",
+        parts: [{
+            text: "Bạn là trợ lý tiếng Nhật. Chỉ trả lời các câu hỏi liên quan đến từ vựng, Kanji, JLPT, ngữ pháp, mẫu câu hoặc tra cứu. Nếu câu hỏi nằm ngoài lĩnh vực này, hãy từ chối trả lời một cách lịch sự."
+        }]
+    },
     { role: "user", parts: [{ text: "Xin chào" }] },
     { role: "model", parts: [{ text: "Chào bạn! Tôi là Gemini AI, tôi có thể giúp gì cho bạn?" }] }
 ];
@@ -61,24 +67,19 @@ async function fetchAnswerFromFile(userQuestion) {
 
 function checkKeywordResponse(message) {
     const lowerCaseMsg = message.toLowerCase();
-
     for (const [keyword, config] of Object.entries(KEYWORD_RESPONSES)) {
         if (lowerCaseMsg.includes(keyword)) {
             return {
-                text: config.message.replace('{link}', config.response),
+                text: config.message.replace('{link}', config.response || '#'),
                 isKeyword: true
             };
-
-
-
         }
     }
     return null;
 }
 
 // Main chatbot functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM elements
+document.addEventListener('DOMContentLoaded', function () {
     const elements = {
         logo: document.getElementById('chatbotLogo'),
         box: document.getElementById('chatBox'),
@@ -88,16 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
         messages: document.getElementById('chatMessages')
     };
 
-    // Event listeners
     elements.logo.addEventListener('click', toggleChatBox);
     elements.closeBtn.addEventListener('click', closeChatBox);
     elements.sendBtn.addEventListener('click', processUserMessage);
     elements.input.addEventListener('keypress', (e) => e.key === 'Enter' && processUserMessage());
 
-    // Initial display
     displayChatHistory();
 
-    // Core functions
     async function processUserMessage() {
         const message = elements.input.value.trim();
         if (!message) return;
@@ -105,30 +103,20 @@ document.addEventListener('DOMContentLoaded', function() {
         displayMessage('user', message);
         chatHistory.push({ role: "user", parts: [{ text: message }] });
         elements.input.value = '';
-        // === Adjusted Code Start ===
-        // Check if the message contains at least one Kanji character.
-        // The regular expression [\u4e00-\u9faf] matches common Kanji ranges.
+
+        // Check for Kanji character
         const kanjiMatch = message.match(/[\u4e00-\u9faf]/);
         if (kanjiMatch) {
-            const detectedKanji = kanjiMatch[0]; // Take the first Kanji found
-
-            // Transfer the detected Kanji into the search bar on the quizzInterface page
+            const detectedKanji = kanjiMatch[0];
             transferWordToSearch(detectedKanji);
-
-            // Build the URL containing the search parameter for the target page
             const link = `http://localhost:8080/quizzInterface?search=${encodeURIComponent(detectedKanji)}`;
-
-            // Compose a reply with an embedded link
-            const replyMessage = `Chữ "<strong>${detectedKanji}</strong>" bạn muốn biết có sẵn tại đây: http://localhost:8080/quizzInterface?search=${encodeURIComponent(detectedKanji)}`;
-
+            const replyMessage = `Chữ "<strong>${detectedKanji}</strong>" bạn muốn biết có sẵn tại đây: ${link}`;
             displayMessage('model', replyMessage);
             chatHistory.push({ role: "model", parts: [{ text: replyMessage }] });
-
-            // Stop further processing if a Kanji was detected
             return;
         }
-        // === Adjusted Code End ===
-        // Check for keyword responses first
+
+        // Check for keyword responses
         const keywordResponse = checkKeywordResponse(message);
         if (keywordResponse) {
             displayMessage('model', keywordResponse.text);
@@ -136,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Check JSON responses
+        // Check for JSON response
         const jsonResponse = await fetchAnswerFromFile(message);
         if (jsonResponse) {
             displayMessage('model', jsonResponse);
@@ -144,21 +132,31 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Fall back to Gemini API
+        // Block non-Japanese-related questions
+        const normalized = message.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (!normalized.match(/(kanji|tu vung|ngu phap|jlpt|tra cuu|look up|practice|test|thuc hanh|dich|translate)/i)) {
+            const warning = "❗Xin lỗi, tôi chỉ hỗ trợ các nội dung liên quan đến tiếng Nhật như từ vựng, Kanji, JLPT hoặc ngữ pháp.";
+            displayMessage('model', warning);
+            chatHistory.push({ role: "model", parts: [{ text: warning }] });
+            return;
+        }
+
+        // Fallback to Gemini
         fetchGeminiResponse();
     }
 
     async function fetchGeminiResponse() {
         showTypingIndicator();
-
         try {
+            const filteredHistory = chatHistory.filter(msg => msg.role !== 'system');
+
             const response = await fetch(
                 `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        contents: chatHistory,
+                        contents: filteredHistory,
                         generationConfig: {
                             temperature: 0.9,
                             topK: 1,
@@ -183,20 +181,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 const botReply = data.candidates[0].content.parts[0].text;
                 displayMessage('model', botReply);
                 chatHistory.push({ role: "model", parts: [{ text: botReply }] });
+
                 if (botReply.trim().split(/\s+/).length === 1) {
                     transferWordToSearch(botReply.trim());
                 }
             } else {
-                throw new Error("Invalid response from Gemini");
+                console.error("Raw Gemini response:", data);
+                throw new Error("Phản hồi không hợp lệ từ Gemini");
             }
         } catch (error) {
             console.error("Error:", error);
             hideTypingIndicator();
-            displayMessage('model', `⚠️ Error: ${error.message}`);
+            displayMessage('model', `⚠️ Lỗi khi gọi Gemini: ${error.message}`);
         }
     }
 
-    // UI functions
     function displayMessage(role, text) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', `${role}-message`);
@@ -236,28 +235,22 @@ document.addEventListener('DOMContentLoaded', function() {
         elements.box.style.display = 'none';
     }
 });
+
 function transferWordToSearch(word) {
     const searchInput = document.querySelector(".search-bar.wordSearch");
     const kanjiRadio = document.querySelector("input[name='wordType'][value='kanji']");
 
     if (kanjiRadio && !kanjiRadio.checked) {
         kanjiRadio.checked = true;
-        // Trigger change to refetch kanji data
         kanjiRadio.dispatchEvent(new Event("change"));
     }
 
     if (searchInput) {
         searchInput.value = word;
-
-        // Delay filter until data is loaded after change event
         setTimeout(() => {
             if (typeof filterData === "function") {
                 filterData();
             }
-        }, 300); // Adjust timing if needed
+        }, 300);
     }
 }
-
-
-
-

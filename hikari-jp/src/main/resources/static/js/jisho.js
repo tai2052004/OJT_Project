@@ -1,12 +1,107 @@
-document.getElementById('search-button').addEventListener('click', performSearch);
-document.getElementById('play-audio-btn').addEventListener('click', playAudio);
-
 const API_KEY = '0h5JCQWWS58FnIIbcRRDOohn75o-xl-0rbdtEEAFCkU'; // Thay bằng key của bạn
 const searchInput = document.getElementById('query');
 const imageResults = document.getElementById('image-results');
 const audioPlayer = document.getElementById('audioPlayer');
 const playAudioBtn = document.getElementById('play-audio-btn');
 let translatedText = ''; // Lưu trữ văn bản đã dịch
+const MAX_LOOKUPS = 5;
+const todayKey = `lookupCount_${new Date().toISOString().slice(0, 10)}`;
+let lookupCount = parseInt(localStorage.getItem(todayKey)) || 0;
+
+const searchButton = document.getElementById('search-button');
+
+function isUserPremium() {
+    return localStorage.getItem('userPremium') === 'true';
+}
+
+function updateRemaining() {
+    if (!isUserPremium()) {
+        const remaining = Math.max(0, MAX_LOOKUPS - lookupCount);
+        const remainingEl = document.getElementById("remaining");
+        if (remainingEl) {
+            remainingEl.textContent = remaining;
+        }
+    }
+}
+
+function disableSearch() {
+    if (searchButton) searchButton.disabled = true;
+    if (searchInput) searchInput.disabled = true;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    const premiumInput = document.getElementById("userPremium");
+    if (premiumInput) {
+        localStorage.setItem('userPremium', premiumInput.value === 'true' ? 'true' : 'false');
+    } else {
+        localStorage.setItem('userPremium', 'false');
+    }
+
+    if (!isUserPremium()) {
+        updateRemaining();
+        if (lookupCount >= MAX_LOOKUPS) {
+            disableSearch();
+            const message = "Bạn đã hết lượt tra miễn phí hôm nay. Vui lòng nâng cấp Premium để tra không giới hạn.";
+
+            Swal.fire({
+                title: 'Thông báo',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Nâng cấp Premium',
+                cancelButtonText: 'Để sau',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Chuyển hướng tới trang Premium
+                    window.location.href = "/premium"; // Thay bằng URL của trang Premium của bạn
+                } else {
+                    // Nếu người dùng bấm 'Để sau', không làm gì
+                }
+            });
+        }
+    } else {
+        const alertBox = document.getElementById("free-alert");
+        if (alertBox) alertBox.style.display = "none";
+    }
+});
+
+// Gắn sự kiện sau khi DOM đã load
+searchButton.addEventListener("click", function (e) {
+    if (!isUserPremium()) {
+        if (lookupCount >= MAX_LOOKUPS) {
+            const message = "Bạn đã hết lượt tra miễn phí hôm nay. Vui lòng nâng cấp Premium để tra không giới hạn.";
+
+            Swal.fire({
+                title: 'Thông báo',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Nâng cấp Premium',
+                cancelButtonText: 'Để sau',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Chuyển hướng tới trang Premium
+                    window.location.href = "/premium"; // Thay bằng URL của trang Premium của bạn
+                } else {
+                    // Nếu người dùng bấm 'Để sau', không làm gì
+                }
+            });
+            disableSearch();
+            e.preventDefault();
+            return;
+        }
+
+        lookupCount++;
+        localStorage.setItem(todayKey, lookupCount);
+        updateRemaining();
+    }
+
+    performSearch();
+});
+
+if (playAudioBtn) {
+    playAudioBtn.addEventListener("click", playAudio);
+}
 
 // Hàm kiểm tra ký tự kanji
 function isKanji(character) {
@@ -28,11 +123,18 @@ function getFirstKanji(text) {
 }
 
 async function performSearch() {
+    // Kiểm tra nếu người dùng đã hết lượt tra miễn phí và không phải Premium
+    // if (lookupCount >= MAX_LOOKUPS && !isPremium) {
+    //     return;  // Ngừng việc thực hiện tìm kiếm
+    // }
+
     const query = searchInput.value.trim();
     if (!query) return;
 
     const loadingElement = document.getElementById('loading');
     const resultsElement = document.getElementById('results');
+    const imageResults = document.getElementById('image-results'); // Đảm bảo có phần tử để hiển thị ảnh
+    const playAudioBtn = document.getElementById('play-audio-btn'); // Đảm bảo có phần tử phát âm
 
     loadingElement.style.display = 'block';
     resultsElement.innerHTML = '<div class="translation-status">Đang xử lý...</div>';
@@ -41,7 +143,7 @@ async function performSearch() {
 
     try {
         // Bước 1: Dịch sang tiếng Nhật
-        translatedText = await translateToJapanese(query);
+        const translatedText = await translateToJapanese(query);
         resultsElement.innerHTML = `<div class="translation-status">Đã dịch: "${query}" → "${translatedText}"</div>`;
 
         // Bước 2: Tìm kiếm trên Jisho
