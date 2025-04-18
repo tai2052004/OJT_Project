@@ -3,9 +3,11 @@ package com.service;
 import com.model.PremiumPlan;
 import com.model.TransactionHistory;
 import com.model.UserPremium;
+import com.model.Users;
 import com.repository.PremiumPlanRepository;
 import com.repository.TransactionHistoryRepository;
 import com.repository.UserPremiumRepository;
+import com.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.List;
 @Service
 public class PremiumService {
 
+    @Autowired
+    UserRepository usersRepository;
     @Autowired
     private PremiumPlanRepository premiumPlanRepo;
 
@@ -46,6 +50,9 @@ public class PremiumService {
 
     @Transactional
     public void buyPremium(Long userId, Long planId, String transactionId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         PremiumPlan plan = premiumPlanRepo.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("Plan not found"));
 
@@ -72,7 +79,7 @@ public class PremiumService {
         userPremiumRepo.save(userPremium);
 
         TransactionHistory transaction = new TransactionHistory();
-        transaction.setUserId(userId);
+        transaction.setUser(user); // <-- set the entire User object
         transaction.setPlanId(planId);
         transaction.setTransactionId(transactionId);
         transaction.setAmount(plan.getPrice());

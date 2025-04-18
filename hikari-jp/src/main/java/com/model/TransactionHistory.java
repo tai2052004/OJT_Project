@@ -19,8 +19,9 @@ public class TransactionHistory {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user; // <-- this gives you access to user.getUsername()
 
     @Column(name = "plan_id")
     private Long planId;

@@ -46,8 +46,8 @@
             <tbody>
 
             <tr th:each="tran : ${trans}">
-                <td th:text="${tran.getId()}"></td>
-                <td th:text="${tran.getTransactionDate()}"></td>
+                <td th:text="${tran.user.getId()}"></td>
+                <td th:text="${#temporals.format(tran.transactionDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${tran.getAmount()}"></td>
                 <td th:text="${tran.getAmount()}"></td>
                 <td class="status paid">Paid</td>

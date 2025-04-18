@@ -41,10 +41,7 @@ public class WebController {
         return "Practice";
     }
 
-    @GetMapping("/saleStatistic")
-    public String saleStatistic() {
-        return "saleStatistic";
-    }
+
 
 
 

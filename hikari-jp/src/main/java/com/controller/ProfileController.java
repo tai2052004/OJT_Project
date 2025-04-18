@@ -73,7 +73,7 @@ public class ProfileController {
     public String transactionHistory(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
-        List<TransactionHistory> trans = transactionHistoryRepository.findAllById(user.getId());
+        List<TransactionHistory> trans = transactionHistoryRepository.findAllByUserId(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("trans", trans);
