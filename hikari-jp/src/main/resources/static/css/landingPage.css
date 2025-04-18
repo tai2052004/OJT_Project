@@ -388,6 +388,15 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 153, 255, 0.8);
     transform: scale(1.1);
 }
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+.nav-link img{
+    width: 50px;
+    margin-right: 0.5em;
+    border-radius: 50%;
+}
 
 .footer-content {
     display: flex;

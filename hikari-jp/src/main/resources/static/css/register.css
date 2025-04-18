@@ -68,7 +68,7 @@ form {
     font-size: 20px;
     color: #ffffff;
 }
-.register-btn, .login-btn {
+.register-btn, .google-btn {
     width: 100%;
     padding: 15px;
     border: none;
@@ -82,14 +82,29 @@ form {
     background: #3A8CAA;
     color: white;
 }
-.login-btn {
-    background: transparent;
-    border: 2px solid #3A8CAA;
-    color: #3A8CAA;
+.google-btn {
+    background: #DB4437;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
 }
 .register-section p {
     text-align: center;
     margin: 10px 0;
     font-size: 14px;
     color: gray;
+}
+
+.signup-link-login {
+    text-decoration: none;
+    color: #3A8CAA;
+    font-weight: 600;
 }

@@ -8,6 +8,7 @@ import com.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,6 @@ import java.util.logging.Logger;
 
 @Controller
 public class UserController {
-
     @Autowired
     private UserRepository userRepository;
 
@@ -53,7 +53,7 @@ public class UserController {
             UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
             session.setAttribute("user", user);
             session.setAttribute(   "userDetail", userDetail);
-            if (user.getRole().equalsIgnoreCase("admin")) {
+            if (user.getRole().equalsIgnoreCase("ADMIN")) {
                 return "redirect:/admin/userManagement";
             }
             return "redirect:/landingPage";
@@ -91,10 +91,11 @@ public class UserController {
                 return "register";
             }
 
+            user.setPassword(user.getPassword());
             // Tạo OTP
             String otp = userService.generateOTP(user);
             user.setOtp(otp);
-            user.setRole("user");
+            user.setRole("USER");
 
             // Gửi OTP qua email
             emailService.sendOtpEmail(user.getEmail(), otp);
@@ -160,8 +161,6 @@ public class UserController {
             return "otp-verification-register";
         }
     }
-
-
 
     @GetMapping("/otp-success")
     public String otpSuccess(Model model) {

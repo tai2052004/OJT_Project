@@ -31,17 +31,28 @@ public class PremiumService {
         return premiumPlanRepo.findAll();
     }
 
-    public UserPremium getUserPremium(Long userId) {
-        return userPremiumRepo.findByUserId(userId);
-    }
+    public PremiumPlan getPlanById(long id) {return premiumPlanRepo.findPremiumPlanById(id);}
 
     public PremiumPlan getPremiumPlanByPlanId(Long premiumPlanId) {
         return premiumPlanRepo.findPremiumPlanById(premiumPlanId);
     }
 
-    public int getRemainingDays(UserPremium userPremium) {
-        if (userPremium.getEndDate() == null) return -1;
-        return (int) ChronoUnit.DAYS.between(LocalDate.now(), userPremium.getEndDate());
+    public UserPremium getUserPremium(Long userId) {
+        UserPremium premiumUser = userPremiumRepo.findByUserId(userId);
+        boolean isLifetime = false;
+        if (premiumUser == null) {
+            return null;
+        }
+        if (premiumUser.getPlanId() == 3){
+            isLifetime = true;
+        }
+        boolean isActive = isLifetime ||
+                (premiumUser.getEndDate() != null && premiumUser.getEndDate().isAfter(LocalDate.now()));
+
+        premiumUser.setLifetime(isLifetime);
+        premiumUser.setActive(isActive);
+
+        return premiumUser;
     }
 
     @Transactional
@@ -49,34 +60,34 @@ public class PremiumService {
         PremiumPlan plan = premiumPlanRepo.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("Plan not found"));
 
+        // Tim nguoi dung co goi khong
         UserPremium userPremium = userPremiumRepo.findByUserId(userId);
         if (userPremium == null) {
             userPremium = new UserPremium();
+            userPremium.setUserId(userId);
         }
-        userPremium.setUserId(userId);
         userPremium.setPlanId(planId);
         userPremium.setStartDate(LocalDate.now());
 
         if (plan.getDurationInMonths() != null) {
-            LocalDate endDate = userPremium.getEndDate();
-            if (endDate != null && endDate.isAfter(LocalDate.now())) {
-                endDate = endDate.plusMonths(plan.getDurationInMonths());
-            } else {
-                endDate = LocalDate.now().plusMonths(plan.getDurationInMonths());
-            }
-            userPremium.setEndDate(endDate);
+            // Gói có thời hạn
+            LocalDate newEndDate = LocalDate.now().plusMonths(plan.getDurationInMonths());
+            userPremium.setEndDate(newEndDate);
         } else {
-            userPremium.setEndDate(null); // Vĩnh viễn
+            // Gói vĩnh viễn
+            userPremium.setEndDate(null);
         }
 
+        // Lưu thông tin gói mới
         userPremiumRepo.save(userPremium);
 
+        // Ghi log giao dịch
         TransactionHistory transaction = new TransactionHistory();
         transaction.setUserId(userId);
         transaction.setPlanId(planId);
         transaction.setTransactionId(transactionId);
         transaction.setAmount(plan.getPrice());
-        transaction.setPaymentMethod("credit card"); // test chi dung credit card
+        transaction.setPaymentMethod("credit card"); // sandbox chi co credit
         transaction.setTransactionDate(LocalDateTime.now());
 
         transactionHistoryRepo.save(transaction);

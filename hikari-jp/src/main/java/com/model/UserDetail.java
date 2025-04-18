@@ -1,5 +1,6 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class UserDetail {
 
     @OneToOne
     @JoinColumn(name = "user_id") // FK trỏ tới bảng Users
+    @JsonBackReference
     private Users user;
 
 }
