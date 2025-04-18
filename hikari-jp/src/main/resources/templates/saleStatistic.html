@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sale Statistic - Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/adminStyles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="" class="sidebar-link">
+                <span class="material-icons">dashboard</span>
+                Dashboard
+            </a>
+            <a th:href="@{/admin/userManagement}" class="sidebar-link">
+                <span class="material-icons">people</span>
+                User Management
+            </a>
+            <a th:href="@{/saleStatistic}" class="sidebar-link active">
+                <span class="material-icons">layers</span>
+                Sale Statistic
+            </a>
+            <a href="" class="sidebar-link">
+                <span class="material-icons">settings</span>
+                Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="sidebar-logout">
+                <span class="material-icons">logout</span>
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Sale Statistic</h1>
+        </div>
+
+        <!-- Sales Chart -->
+        <div class="card">
+            <h2>Monthly Sales Overview</h2>
+            <canvas id="salesChart" height="100"></canvas>
+        </div>
+
+        <!-- Transaction Table -->
+        <div class="card">
+            <h2>Recent Transactions</h2>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Transaction ID</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tran : ${trans}">
+                    <td th:text="${#temporals.format(tran.transactionDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${tran.user.getUsername()}"></td>
+                    <td th:text="${tran.getTransactionId()}"></td>
+                    <td th:text="${tran.getAmount()}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Chart.js config
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April'],
+            datasets: [{
+                label: 'Sales ($)',
+                data: [120, 190, 300, 240],
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                borderColor: '#007bff',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
