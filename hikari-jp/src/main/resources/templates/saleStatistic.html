@@ -79,16 +79,19 @@
     </main>
 </div>
 
-<script>
-    // Chart.js config
+<script th:inline="javascript">
+    // Prepare data from Thymeleaf
+    const chartLabels = /*[[${salesData.keySet()}]]*/ [];
+    const chartData = /*[[${salesData.values()}]]*/ [];
+
     const ctx = document.getElementById('salesChart').getContext('2d');
     const salesChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['January', 'February', 'March', 'April'],
+            labels: chartLabels,
             datasets: [{
                 label: 'Sales ($)',
-                data: [120, 190, 300, 240],
+                data: chartData,
                 backgroundColor: 'rgba(0, 123, 255, 0.2)',
                 borderColor: '#007bff',
                 borderWidth: 2,
