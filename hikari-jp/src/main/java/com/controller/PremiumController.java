@@ -29,13 +29,18 @@ public class PremiumController {
     @GetMapping("/premium")
     public String viewMyPremium(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        PremiumPlan premiumPlan = null;
         if (user == null) return "premium";
         UserPremium userPremium = premiumService.getUserPremium(user.getId());
         if (userPremium != null) {
-            premiumPlan = premiumService.getPremiumPlanByPlanId(userPremium.getPlanId());
+            PremiumPlan premiumPlan = premiumService.getPremiumPlanByPlanId(userPremium.getPlanId());
+            model.addAttribute("currentPlan", premiumPlan.getName());
+            model.addAttribute("isLifetime", userPremium.isLifetime());
+            model.addAttribute("isActive", userPremium.isActive());
+        } else {
+            model.addAttribute("isLifetime", false);
+            model.addAttribute("isActive", false);
+            model.addAttribute("currentPlan", "");
         }
-        model.addAttribute("premiumPlan", premiumPlan);
         model.addAttribute("userPremium", userPremium);
         return "premium";
     }

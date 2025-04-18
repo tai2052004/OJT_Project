@@ -275,6 +275,17 @@ body {
     transform: scale(1.1);
 }
 
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link img{
+    width: 50px;
+    margin-right: 0.5em;
+    border-radius: 50%;
+}
+
 .footer-content {
     display: flex;
     flex-wrap: wrap;

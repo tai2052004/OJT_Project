@@ -27,4 +27,10 @@ public class UserPremium {
     @Column (name = "end_date")
     private LocalDate endDate;
 
+    @Transient
+    private boolean isLifetime;
+
+    @Transient
+    private boolean isActive;
+
 }

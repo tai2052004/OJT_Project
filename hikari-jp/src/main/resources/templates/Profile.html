@@ -33,7 +33,7 @@
     <form action="/profile" method="post">
       <div class="profile-inf">
         <label>Full name</label>
-        <input class="input" type="text" th:value="${userDetail.fullName}" name="fullName">
+        <input class="input" type="text" th:value="${userDetail.fullName}" name="fullName" required>
       </div>
 
       <div class="profile-inf">
@@ -43,12 +43,12 @@
 
       <div class="profile-inf">
         <label>Phone number</label>
-        <input class="input" type="text" th:value="${userDetail.phoneNumber}" name="phoneNumber">
+        <input class="input" type="text" th:value="${userDetail.phoneNumber}" name="phoneNumber" required>
       </div>
 
       <div class="profile-inf">
         <label>Birthdate</label>
-        <input class="input" type="date" th:value="${userDetail.birthdate}" name="birthdate">
+        <input class="input" type="date" th:value="${userDetail.birthdate}" name="birthdate" required>
       </div>
 
       <button type="submit" class="edit-btn">Edit Profile</button>
@@ -79,4 +79,50 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
+
+<script>
+  document.querySelector("form").addEventListener("submit", function (e) {
+    const fullName = document.querySelector("input[name='fullName']").value.trim();
+    const phone = document.querySelector("input[name='phoneNumber']").value.trim();
+    const birthdate = document.querySelector("input[name='birthdate']").value.trim();
+    const email = document.querySelector("input[name='email']").value.trim();
+
+    // [1] Validate full name (only letters and spaces allowed)
+    if (fullName !== "" && !/^[a-zA-Z\s]+$/.test(fullName)) {
+      alert("Full name must not contain numbers or special characters.");
+      e.preventDefault();
+      return;
+    }
+
+    // [2] Validate phone number format
+    if (phone !== "" && !/^0[0-9]{9}$/.test(phone)) {
+      alert("Phone number must start with 0 and be exactly 10 digits.");
+      e.preventDefault();
+      return;
+    }
+
+    // [3] Validate birthdate: not in future, and age >= 10
+    if (birthdate !== "") {
+      const inputDate = new Date(birthdate);
+      const today = new Date();
+
+      if (inputDate > today) {
+        alert("Birthdate cannot be in the future.");
+        e.preventDefault();
+        return;
+      }
+
+      const age = today.getFullYear() - inputDate.getFullYear();
+      const m = today.getMonth() - inputDate.getMonth();
+      const d = today.getDate() - inputDate.getDate();
+      const adjustedAge = m < 0 || (m === 0 && d < 0) ? age - 1 : age;
+
+      if (adjustedAge < 10) {
+        alert("You must be at least 10 years old.");
+        e.preventDefault();
+        return;
+      }
+    }
+  });
+</script>
 </html>

@@ -7,7 +7,9 @@ import java.awt.*;
 import java.net.URI;
 
 @SpringBootApplication
-public class SpringWeb {
+public class
+
+SpringWeb {
     public static void main(String[] args) {
         SpringApplication.run(SpringWeb.class, args);
         openBrowser("http://localhost:8080");

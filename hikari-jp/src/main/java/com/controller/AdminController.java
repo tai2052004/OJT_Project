@@ -24,7 +24,7 @@ public class AdminController {
 
     @GetMapping("/userManagement")
     public String userManagement(Model model) {
-        List<Users> usersWithDetails = userRepository.findAllUsersWithDetails();
+        List<Users> usersWithDetails = userRepository.findAllUsersWithDetailsByRole();
         model.addAttribute("users", usersWithDetails);
         return "user-management";
     }

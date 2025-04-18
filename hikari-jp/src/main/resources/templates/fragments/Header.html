@@ -35,7 +35,6 @@
         <div class="jlpt">
             <a th:href="@{/jlptTest}">JLPT Test</a>
         </div>
-
         <div class="premium" th:class="'premium' + (${currentPage} == 'buyPremium' ? ' active' : '')">
             <a th:href="@{/premium}">Premium</a>
         </div>
@@ -68,15 +67,17 @@
                         <li>
                             <a th:href="@{/quizzInterface(level='N3')}" class="dropdown_sublink">N3</a>
                         </li>
-                        <div th:if="${userPremium != null}">
+
                         <li>
                             <a th:href="@{/quizzInterface(level='N2')}" class="dropdown_sublink">N2</a>
                         </li>
                         <li>
                             <a th:href="@{/quizzInterface(level='N1')}" class="dropdown_sublink">N1</a>
                         </li>
-                        </div>
                     </ul>
+                </li>
+                <li>
+                    <a th:href="@{/writing}" class="dropdown-link">Writing</a>
                 </li>
                 <li>
                     <a th:href="@{/practice}" class="dropdown-link">MiniTest</a>
@@ -96,6 +97,7 @@
     <div class="auth-info" th:if="${session.user != null}">
         <div class="dropdown-item">
             <div class="nav-link">
+<!--                <img th:src="${session.userDetail.avatar != null ? '/upload/' + session.userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">-->
                 <span th:text="${session.user.email}"></span>
             </div>
             <ul class="dropdown-menu">
