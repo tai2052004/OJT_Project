@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -10,11 +9,26 @@
     <link rel="stylesheet" href="/css/chatbot.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@2.0/dist/hanzi-writer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<!-- Phần header giữ nguyên như của bạn -->
+<!-- Header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
+<!-- Thông báo Premium hoặc Free -->
+<div class="container mt-3">
+    <div th:if="${userPremium != null}">
+        <div class="alert alert-success">Bạn đang sử dụng <strong>gói Premium</strong>. Không giới hạn lượt tra!</div>
+        <input type="hidden" id="userPremium" th:value="${userPremium != null ? 'true' : 'false'}" />
+    </div>
+    <div th:if="${userPremium == null}">
+        <div id="free-alert" class="alert alert-info">
+            Bạn đang sử dụng <strong>gói miễn phí</strong>. Còn <strong id="remaining">3</strong> lượt tra miễn phí hôm nay.
+        </div>
+    </div>
+</div>
+
+<!-- Phần tra từ -->
 <div class="container search_chat">
     <div class="search_rs gap-3">
         <div class="search col-12 mb-4">
@@ -23,7 +37,7 @@
                     <div class="d-flex justify-content-between mb-3 gap-3">
                         <input type="text" id="query" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
                         <button id="search-button" class="btn btn-primary icon1">🔍</button>
-                        <button id="voice-button"class="btn btn-dark icon2">🎤</button>
+                        <button id="voice-button" class="btn btn-dark icon2">🎤</button>
                     </div>
                     <div id="suggestions-dropdown"></div>
                 </div>
@@ -42,6 +56,7 @@
     </div>
 </div>
 
+<!-- Kết quả và chatbot -->
 <div class="container infor">
     <div>
         <div id="loading" class="loading" style="display: none;">Đang tải...</div>
@@ -61,6 +76,8 @@
                 <button class="btn btn-outline-primary">N5</button>
             </div>
         </div>
+
+        <!-- Chatbot -->
         <div class="chatbot-logo" id="chatbotLogo">
             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -80,9 +97,9 @@
         </div>
     </div>
 </div>
+
 <script src="/js/header.js"></script>
 <script src="/js/jisho.js"></script>
 <script src="/js/chatGpt.js"></script>
 </body>
-
 </html>
