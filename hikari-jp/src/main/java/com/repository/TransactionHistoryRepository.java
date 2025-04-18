@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TransactionHistoryRepository extends JpaRepository<TransactionHistory, Long> {
-    List<TransactionHistory> findAllById(Long transactionId);
-
+    List<TransactionHistory> findAllByUserId(Long transactionId);
 }
