@@ -38,7 +38,12 @@ let grammarBtn = document.getElementById('grammar');
 let readingBtn = document.getElementById('reading');
 let listeningBtn = document.getElementById('listening');
 let countTimes = 0;
-
+let countCheck = 0;
+let scoreInput = document.getElementById('score');
+let statusInput = document.getElementById('status');
+let progressInput = document.getElementById('progress');
+statusInput.value = "Finished";
+let isViolated = false;
 
 async function initFaceCheck() {
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
@@ -96,14 +101,30 @@ async function startCheckingLoop(timestamp) {
                 countTimes++;
                 if ( countTimes > 5)
                 {
-                    cancelAnimationFrame(animationId)
+                    isVoiceDetected = false;
+                    scanning = false;
+                    testSubmitted = true;
+                    cancelAnimationFrame(animationId);
+                    stopVoiceDetection();
+                    clearInterval(timerInterval);
+                    timeLeft = 0;
+                    statusInput.value = "Violated"
+                    scoreInput.value = "No Score"
+                    await saveHistory();
                     Swal.fire({
                         icon: 'warning',
                         title: 'Warning',
                         text: "You have violated rules too much times. You will be redirected to Home Page",
                         showConfirmButton: false,
                         timer: 3000, // Swal sẽ tự động đóng sau 3 giây
-                        timerProgressBar: true
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'custom-swal-popup'
+                        },
+                        didOpen: () => {
+                            // Thay đổi overlay sau khi mở
+                            document.querySelector('.swal2-container').style.background = 'rgba(0, 0, 0, 0.8)';
+                        }
                     });
                     setTimeout(() => {
                         window.location.href = "/backToHome";
@@ -118,14 +139,30 @@ async function startCheckingLoop(timestamp) {
                 countTimes++;
                 if ( countTimes > 5)
                 {
+                    isVoiceDetected = false;
+                    scanning = false;
+                    testSubmitted = true;
                     cancelAnimationFrame(animationId);
+                    stopVoiceDetection();
+                    clearInterval(timerInterval);
+                    timeLeft = 0;
+                    statusInput.value = "Violated"
+                    scoreInput.value = "No Score"
+                    await saveHistory();
                     Swal.fire({
                         icon: 'warning',
                         title: 'Warning',
                         text: "You have violated rules too much times. You will be redirected to Home Page",
                         showConfirmButton: false,
                         timer: 3000,
-                        timerProgressBar: true
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'custom-swal-popup'
+                        },
+                        didOpen: () => {
+                            // Thay đổi overlay sau khi mở
+                            document.querySelector('.swal2-container').style.background = 'rgba(0, 0, 0, 0.8)';
+                        }
                     });
                     setTimeout(() => {
                         window.location.href = "/backToHome";
@@ -143,7 +180,10 @@ async function startCheckingLoop(timestamp) {
         }
     }
 
-    animationId = requestAnimationFrame(startCheckingLoop);
+    if(scanning)
+    {
+        animationId = requestAnimationFrame(startCheckingLoop);
+    }
 }
 
 function triggerWarning() {
@@ -181,10 +221,10 @@ async function captureAndValidate() {
 }
 
 let recognition;
-let isVoiceDetected = false;
+let isVoiceDetected = true;
 let isVoiceDetectionActive = true;
 
-function startVoiceDetection() {
+async function startVoiceDetection() {
     try {
         recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = "vi-VN";
@@ -196,18 +236,34 @@ function startVoiceDetection() {
             let transcript = event.results[0][0].transcript.trim();
             console.log("Nghe được:", transcript);
 
-            if (!isVoiceDetected) {
-                isVoiceDetected = true;
+            if (isVoiceDetected) {
                 countTimes++;
                 if ( countTimes > 5)
                 {
+                    isVoiceDetected = false;
+                    scanning = false;
+                    testSubmitted = true;
+                    cancelAnimationFrame(animationId);
+                    stopVoiceDetection();
+                    clearInterval(timerInterval);
+                    timeLeft = 0;
+                    statusInput.value = "Violated"
+                    scoreInput.value = "No Score"
+                    saveHistory();
                     Swal.fire({
                         icon: 'warning',
                         title: 'Warning',
                         text: "You have violated rules too much times. You will be redirected to Home Page",
                         showConfirmButton: false,
                         timer: 3000, // Swal sẽ tự động đóng sau 3 giây
-                        timerProgressBar: true
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'custom-swal-popup'
+                        },
+                        didOpen: () => {
+                            // Thay đổi overlay sau khi mở
+                            document.querySelector('.swal2-container').style.background = 'rgba(0, 0, 0, 0.8)';
+                        }
                     });
 
                     setTimeout(() => {
@@ -223,12 +279,6 @@ function startVoiceDetection() {
                         confirmButtonText: 'OK'
                     });
                 }
-
-
-                // Sau khi cảnh báo, reset để lắng nghe tiếp
-                setTimeout(() => {
-                    isVoiceDetected = false;
-                }, 3000);
             }
         };
 
@@ -385,88 +435,106 @@ document.addEventListener("webkitfullscreenchange", preventFullscreenExit);
 document.addEventListener("MSFullscreenChange", preventFullscreenExit);
 
 // Detect tab/app switch
-function detectTabSwitch() {
+async function detectTabSwitch() {
     if (testSubmitted) return; // Disable tab switch detection if test is submitted
     if (document.hidden || document.visibilityState === "hidden") {
-        alert("You have violated the test rules! Redirecting ...");
-        window.location.href = "/backToHome";
+        isVoiceDetected = false;
+        scanning = false;
+        cancelAnimationFrame(animationId);
+        stopVoiceDetection();
+        clearInterval(timerInterval);
+        timeLeft = 0;
+        statusInput.value = "Violated"
+        scoreInput.value = "No Score"
+        await saveHistory();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: "You have violated rules. You will be redirected to Home Page",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'custom-swal-popup'
+            },
+            didOpen: () => {
+                // Thay đổi overlay sau khi mở
+                document.querySelector('.swal2-container').style.background = 'rgba(0, 0, 0, 0.8)';
+            }
+        });
+        setTimeout(() => {
+            window.location.href = "/backToHome";
+        }, 3000);
     }
 }
 
-function detectWindowBlur() {
+async function detectWindowBlur() {
     if (testSubmitted) return; // Disable window blur detection if test is submitted
     if (!document.hasFocus()) {
-        alert("You have violated the test rules! Redirecting to home page.....");
-        window.location.href = "/backToHome";
+        isVoiceDetected = false;
+        scanning = false;
+        cancelAnimationFrame(animationId);
+        stopVoiceDetection();
+        clearInterval(timerInterval);
+        timeLeft = 0;
+        statusInput.value = "Violated"
+        scoreInput.value = "No Score"
+        await saveHistory();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: "You have violated rules. You will be redirected to Home Page",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'custom-swal-popup'
+            },
+            didOpen: () => {
+                // Thay đổi overlay sau khi mở
+                document.querySelector('.swal2-container').style.background = 'rgba(0, 0, 0, 0.8)';
+            }
+        });
+        setTimeout(() => {
+            window.location.href = "/backToHome";
+        }, 3000);
     }
 }
-// function attachListeners() {
-//     const questions = document.querySelectorAll(".question");
-//     questionBoxContainer.innerHTML = "";
-//
-//     questions.forEach((question, index) => {
-//         const box = document.createElement("div");
-//         box.classList.add("question-box");
-//         box.textContent = index + 1;
-//         box.dataset.index = index;
-//         box.addEventListener("click", () => {
-//             question.scrollIntoView({ behavior: "smooth", block: "start" });
-//         });
-//         questionBoxContainer.appendChild(box);
-//     });
-//
-//     trackAnswers();
-// }
+
 
 document.addEventListener("visibilitychange", detectTabSwitch);
 window.addEventListener("blur", detectWindowBlur);
-function updateProgress() {
-    const totalQuestions = document.querySelectorAll(".question").length;
-    const answeredCount = document.querySelectorAll(".question-box.answered").length;
-    const progress = (answeredCount / totalQuestions) * 100;
-    progressBar.style.width = `${progress}%`;
-}
-
-
-// Track answer selection
-// Track answer selection and add unselect functionality
-// function trackAnswers() {
-//     const questions = document.querySelectorAll(".question");
-//     let answeredCount = 0;
-//
-//     questions.forEach((question, index) => {
-//         const boxDiv = question.querySelector(".box");
-//         const inputs = question.querySelectorAll("input[type='radio']");
-//         const box = document.querySelector(`.question-boxes .question-box:nth-child(${index + 1})`);
-//
-//         const unselectButton = document.createElement("button");
-//         unselectButton.textContent = "Unselect";
-//         unselectButton.style.display = "none";
-//         unselectButton.addEventListener("click", () => {
-//             inputs.forEach(input => input.checked = false);
-//             if (box.classList.contains("answered")) {
-//                 answeredCount--;
-//                 box.classList.remove("answered");
-//                 box.style.backgroundColor = "";
-//             }
-//             unselectButton.style.display = "none";
-//             updateProgress();
-//         });
-//         boxDiv.appendChild(unselectButton);
-//
-//         inputs.forEach(input => {
-//             input.addEventListener("change", () => {
-//                 if (!box.classList.contains("answered")) {
-//                     answeredCount++;
-//                     box.classList.add("answered");
-//                     box.style.backgroundColor = "green";
-//                 }
-//                 unselectButton.style.display = "block";
-//                 updateProgress();
-//             });
-//         });
-//     });
+// function updateProgress() {
+//     const totalQuestions = document.querySelectorAll(".question").length;
+//     const answeredCount = document.querySelectorAll(".question-box.answered").length;
+//     const progress = (answeredCount / totalQuestions) * 100;
+//     progressBar.style.width = `${progress}%`;
 // }
+
+async function saveHistory()
+{
+    const total =
+        Number(vocabSize.value) +
+        Number(grammarSize.value) +
+        Number(readingSize.value) +
+        Number(listeningSize.value);
+
+    const percentage = Math.round((countCheck / total) * 100);
+    progressInput.value = `${percentage}%`;
+    const formData = new FormData()
+    formData.append("topic", document.getElementById('topic').value);
+    formData.append("level", document.getElementById('level').value);
+    formData.append("score", document.getElementById('score').value);
+    formData.append("status", document.getElementById('status').value);
+    formData.append("progress", document.getElementById('progress').value);
+    formData.append("date-taken", document.getElementById('date-taken').value);
+
+    const response = await fetch("/saveResult", {
+        method: "POST",
+        body: formData
+    });
+    console.log(await response.text());
+}
 
 submitButton.addEventListener("click", function () {
     if (testSubmitted) return;
@@ -583,6 +651,16 @@ function displayResult(score)
     }`;
     finalScore.style.display = "block";
 
+    scoreInput.value = `${score}/${
+        Number(vocabSize.value) +
+        Number(grammarSize.value) +
+        Number(readingSize.value) +
+        Number(listeningSize.value)
+    }`;
+
+
+
+    saveHistory();
     // Store updated score in the hidden input field
 
     // Mark the test as submitted and disable further submissions
@@ -821,6 +899,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function selectAnswer(abc)
 {
+    countCheck++;
     abc.parentElement.querySelectorAll('.answer').forEach(a => a.classList.remove('selectedRead'));
     let parentID = null;
     let userAnswer;

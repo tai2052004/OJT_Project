@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -21,6 +24,8 @@ public class TestController {
 
     @GetMapping("/test")
     public String test(@RequestParam("level_id") int levelID, @RequestParam("topic_num") int topicNUM, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         ReadingPractice rp = null;
         List<ListeningPractice> practiceList = null;
         List<GrammarPractice> grammarPracticeList = null;
@@ -38,10 +43,13 @@ public class TestController {
         vocabList = testService.getVocabAndKanji(levelID,topicNUM);
         model.addAttribute("vocabList", vocabList);
 
-        System.out.println(vocabList.size());
-        System.out.println(grammarPracticeList.size());
-        System.out.println(practiceList.size());
-        System.out.println(rp.getPassage());
+        model.addAttribute("topic", topicNUM);
+        model.addAttribute("level", levelID);
+        model.addAttribute("date", today.format(formatter));
+//        System.out.println(vocabList.size());
+//        System.out.println(grammarPracticeList.size());
+//        System.out.println(practiceList.size());
+//        System.out.println(rp.getPassage());
 
         return "testJLPT";
     }

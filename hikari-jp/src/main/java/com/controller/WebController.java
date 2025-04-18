@@ -56,7 +56,7 @@ public class WebController {
     public String flashcards(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         if(user == null) {
-            model.addAttribute("alertMessage", "Please sign in before taking the exam");
+            model.addAttribute("alertMessage", "Please sign in before using flashcards");
             return "landingPage";
         }
         UserPremium userPremium = userPremiumRepository.findByUserId(user.getId());

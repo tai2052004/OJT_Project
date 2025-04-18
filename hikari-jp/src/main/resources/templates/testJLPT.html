@@ -27,6 +27,13 @@
 <div class="final-score" style="display: none;"></div>
 <div class="container">
 
+        <input type="hidden" name="topic" id="topic" th:value="${topic}">
+        <input type="hidden" name="level" id="level" th:value="${level}">
+        <input type="hidden" name="score" id="score" value="">
+        <input type="hidden" name="status" id="status" value="">
+        <input type="hidden" name="progress" id="progress" value="">
+        <input type="hidden" name="date-taken" id="date-taken" th:value="${date}">
+
 <!--    <div class="content">-->
 <!--        &lt;!&ndash; Questions will be loaded dynamically here &ndash;&gt;-->
 <!--        &lt;!&ndash; Loop through questions &ndash;&gt;-->
@@ -47,6 +54,7 @@
     <input type="hidden" id="readingSize" value="2" >
     <input type="hidden" id="listeningSize" th:value="${listeningTest.size()}" >
     <input type="hidden" id="subjectNow" value="vocab">
+
     <div class="vocabPart vocab">
         <div class="question-container">
         <div class="questionVocab question-item" th:each="question, iterStat : ${vocabList}"

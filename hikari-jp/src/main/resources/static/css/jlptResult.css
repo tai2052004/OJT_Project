@@ -1,0 +1,108 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+.title {
+    font-size: 2.0rem;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0099ff, #003366);
+    padding: 20px 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: fit-content;
+    margin: 30px auto;
+    transition: transform 0.3s ease;
+}
+
+.history-container {
+    background: lightgray;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    min-height: 270px;
+}
+
+.history {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    row-gap: 10px;
+}
+
+.history:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.history > div {
+    font-size: 16px;
+    padding: 5px 0;
+    color: #333;
+    font-weight: 500;
+}
+
+.history .name {
+    color: #0077cc;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.history .score {
+    color: #28a745;
+}
+
+.history .status {
+    color: #ffc107;
+}
+
+.history .progress {
+    color: #17a2b8;
+}
+
+.history .date-taken {
+    color: #6c757d;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.nav-buttons button {
+    background-color: #0099ff;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.nav-buttons button:hover:not(:disabled) {
+    background-color: #007acc;
+}
+
+.nav-buttons button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+

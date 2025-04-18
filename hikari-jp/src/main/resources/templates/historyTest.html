@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="stylesheet" href="/css/jlptResult.css">
 </head>
 <body>
-    <div class="history-container">
-        <div class="history">
-            <div class="name"></div>
-            <div class="score"></div>
-            <div class="status"></div>
-            <div class="progress"></div>
-            <div class="date-taken"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+    <div class="title">History Test Result</div>
+    <div class="history-container" th:if="${jlptResultList != null}">
+        <div class="history" th:each="result, iterStat : ${jlptResultList}" th:id="'result-' + ${iterStat.index  + 1}">
+            <div class="name" th:text="'Test ' +  ${result.getTopic_num()}  + ' - N' + ${result.getLevel_id().getLevel_id()}"></div>
+            <div class="score"  th:text="'Score : ' + ${result.getScore()}"></div>
+            <div class="status" th:if="${result.getStatus().equalsIgnoreCase('Finished')}" th:text="'Status : ' + ${result.getStatus()}"></div>
+            <div class="status" style="color: red;" th:if="${result.getStatus().equalsIgnoreCase('Violated')}" th:text="'Status : ' + ${result.getStatus()}"></div>
+            <div class="progress" th:text="'Progress : ' + ${result.getProgress()}"></div>
+            <div class="date-taken" th:text="'Date-taken : ' + ${result.getDate_taken()}"></div>
         </div>
     </div>
+    <div class="nav-buttons">
+        <button class="prev-btn"  onclick="showPrev()" disabled>&larr;</button>
+        <button class="next-btn"  onclick="showNext()">&rarr;</button>
+    </div>
+<div th:replace="fragments/footer :: footer"></div>
+<script src="/js/historyResult.js"></script>
+<script src="/js/chatGpt.js"></script>
 </body>
 </html>
