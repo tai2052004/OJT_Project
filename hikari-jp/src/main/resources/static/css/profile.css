@@ -101,6 +101,14 @@ h2 {
 form {
     max-width: 500px;
 }
+.profile-inf.error small {
+    color: #d53123;
+}
+
+.profile-inf.error input {
+    border: 2px solid #d53123;
+    transition: 0.3s;
+}
 
 label {
     display: block;
@@ -202,4 +210,18 @@ label {
     0% { opacity: 1; }
     80% { opacity: 1; }
     100% { opacity: 0; }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+input.invalid {
+    border-color: red;
 }

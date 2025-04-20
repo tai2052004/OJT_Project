@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/HikariJP.iml" filepath="$PROJECT_DIR$/.idea/HikariJP.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hikari-jp/hikari-jp.iml" filepath="$PROJECT_DIR$/hikari-jp/hikari-jp.iml" />
     </modules>
   </component>
 </project>

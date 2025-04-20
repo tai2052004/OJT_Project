@@ -8,11 +8,14 @@ import com.repository.UserDetailRepository;
 import com.repository.UserRepository;
 import com.service.UserDetailService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,8 +43,13 @@ public class ProfileController {
     private UserDetailRepository userDetailRepository;
 
     @GetMapping("/profile")
-    public String profile(Model model, HttpSession session) {
+    public String profile(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "Session expired. Please login again.");
+            return "redirect:/landingPage";
+        }
+
         UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("userDetail", userDetail);
@@ -70,8 +78,13 @@ public class ProfileController {
     }
 
     @GetMapping("/transaction-history")
-    public String transactionHistory(Model model, HttpSession session) {
+    public String transactionHistory(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "Session expired. Please login again.");
+            return "redirect:/landingPage";
+        }
+
         UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
         List<TransactionHistory> trans = transactionHistoryRepository.findAllByUserId(user.getId());
         model.addAttribute("user", user);
@@ -81,8 +94,13 @@ public class ProfileController {
     }
 
     @GetMapping("/security")
-    public String changePassword(Model model, HttpSession session) {
+    public String changePassword(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "Session expired. Please login again.");
+            return "redirect:/landingPage";
+        }
+
         UserDetail userDetail = userDetailService.getUserDetailById(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("userDetail", userDetail);
@@ -92,12 +110,18 @@ public class ProfileController {
     @PostMapping("/security")
     public String changePassword(@RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String reNewPassword, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "Session expired. Please login again.");
+            return "redirect:/landingPage";
+        }
+
         if (!user.getPassword().equals(oldPassword)) {
             redirectAttributes.addFlashAttribute("error", "Old password not correct!");
             model.addAttribute("oldPassword", oldPassword);
             model.addAttribute("newPassword", newPassword);
             return "security";
         }
+
         if (!newPassword.equals(reNewPassword)) {
             redirectAttributes.addFlashAttribute("error", "Confirm new password do not match!");
             model.addAttribute("oldPassword", oldPassword);
@@ -133,6 +157,10 @@ public class ProfileController {
 
             Users user = (Users) session.getAttribute("user");
             userDetailService.updateUserAvatar(user.getId(), filename);
+
+            UserDetail updatedDetail = userDetailService.getUserDetailById(user.getId());
+            session.setAttribute("userDetail", updatedDetail);
+
             redirectAttributes.addFlashAttribute("success", "Avatar updated successfully!");
             return "redirect:/profile";
         } catch (IOException e) {

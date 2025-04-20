@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/profile.css">
-  <link rel="stylesheet" href="/css/chatbot.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
@@ -14,41 +14,53 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="profile-pic">
-      <img th:src="${userDetail.avatar != null ? '/upload/' + userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">
+      <img id="profileImage" th:src="${userDetail.avatar != null ? '/upload/' + userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">
       <form method="post" enctype="multipart/form-data" action="/update-avatar">
-        <input type="file" name="avatar" accept="image/*" class="file-input">
+        <input type="file" id="avatarInput" name="avatar" accept="image/*" class="file-input" onchange="previewImage(event)">
         <button type="submit" class="change-pic-btn"><i class="bi bi-camera-fill"></i> Change Profile picture</button>
       </form>
     </div>
     <nav class="menu">
       <a href="/profile" class="active"><i class="bi bi-person-circle bi-icon"></i>Personal information</a>
       <a href="/transaction-history"><i class="bi bi-clock-history bi-icon"></i>Transaction history</a>
-      <a href="/security"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
+      <a th:if="${user.password != null && !user.password.isEmpty()}" href="/security"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
     </nav>
   </aside>
 
   <!-- Main Content -->
   <main class="profile-content">
     <h2>Personal information</h2>
-    <form action="/profile" method="post">
+    <form id="profileForm" th:action="@{/profile}" th:object="${userDetail}" method="post">
       <div class="profile-inf">
         <label>Full name</label>
-        <input class="input" type="text" th:value="${userDetail.fullName}" name="fullName" required>
+        <label for="fullName">
+          <input class="input" type="text" id="fullName" name="fullName" th:value="${userDetail.fullName}" required>
+        </label>
+        <small></small>
       </div>
 
       <div class="profile-inf">
         <label>Email</label>
-        <input class="input" type="email" th:value="${user.email}" name="email" readonly>
+        <label>
+          <input class="input" type="email" th:value="${user.email}" name="email" readonly>
+        </label>
       </div>
 
       <div class="profile-inf">
         <label>Phone number</label>
-        <input class="input" type="text" th:value="${userDetail.phoneNumber}" name="phoneNumber" required>
+        <label for="phoneNumber">
+          <input class="input" type="text" id="phoneNumber" name="phoneNumber" th:value="${userDetail.phoneNumber}" required>
+        </label>
+        <small></small>
+        <div class="error-message" id="phoneNumber-error"></div>
       </div>
 
       <div class="profile-inf">
         <label>Birthdate</label>
-        <input class="input" type="date" th:value="${userDetail.birthdate}" name="birthdate" required>
+        <label for="birthdate">
+          <input class="input" type="date" id="birthdate" name="birthdate" th:value="${userDetail.birthdate}" required>
+        </label>
+        <small></small>
       </div>
 
       <button type="submit" class="edit-btn">Edit Profile</button>
@@ -78,51 +90,6 @@
   </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/profile.js"></script>
 </body>
-
-<script>
-  document.querySelector("form").addEventListener("submit", function (e) {
-    const fullName = document.querySelector("input[name='fullName']").value.trim();
-    const phone = document.querySelector("input[name='phoneNumber']").value.trim();
-    const birthdate = document.querySelector("input[name='birthdate']").value.trim();
-    const email = document.querySelector("input[name='email']").value.trim();
-
-    // [1] Validate full name (only letters and spaces allowed)
-    if (fullName !== "" && !/^[a-zA-Z\s]+$/.test(fullName)) {
-      alert("Full name must not contain numbers or special characters.");
-      e.preventDefault();
-      return;
-    }
-
-    // [2] Validate phone number format
-    if (phone !== "" && !/^0[0-9]{9}$/.test(phone)) {
-      alert("Phone number must start with 0 and be exactly 10 digits.");
-      e.preventDefault();
-      return;
-    }
-
-    // [3] Validate birthdate: not in future, and age >= 10
-    if (birthdate !== "") {
-      const inputDate = new Date(birthdate);
-      const today = new Date();
-
-      if (inputDate > today) {
-        alert("Birthdate cannot be in the future.");
-        e.preventDefault();
-        return;
-      }
-
-      const age = today.getFullYear() - inputDate.getFullYear();
-      const m = today.getMonth() - inputDate.getMonth();
-      const d = today.getDate() - inputDate.getDate();
-      const adjustedAge = m < 0 || (m === 0 && d < 0) ? age - 1 : age;
-
-      if (adjustedAge < 10) {
-        alert("You must be at least 10 years old.");
-        e.preventDefault();
-        return;
-      }
-    }
-  });
-</script>
 </html>

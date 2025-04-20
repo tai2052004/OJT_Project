@@ -96,7 +96,7 @@
     <div class="auth-info" th:if="${session.user != null}">
         <div class="dropdown-item">
             <div class="nav-link">
-<!--                <img th:src="${session.userDetail.avatar != null ? '/upload/' + session.userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">-->
+                <img class="avatar-img" th:src="${session.userDetail.avatar != null ? '/upload/' + session.userDetail.avatar : '/images/profile-image.png'}" alt="Profile Picture">
                 <span th:text="${session.user.email}"></span>
             </div>
             <ul class="dropdown-menu">
