@@ -63,6 +63,28 @@
             </div>
         </div>
     </div>
+
+    <div class="notifications">
+        <!-- Hiển thị thông báo lỗi -->
+        <div th:if="${error}" class="toast error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div class="content">
+                <div class="title">Error</div>
+                <span th:text="${error}"></span>
+            </div>
+            <i class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>
+
+        <!-- Hiển thị thông báo thành công -->
+        <div th:if="${success}" class="toast success">
+            <i class="fa-solid fa-circle-check"></i>
+            <div class="content">
+                <div class="title">Success</div>
+                <span th:text="${success}"></span>
+            </div>
+            <i class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>
+    </div>
 </section>
 
 <div th:if="${alertMessage != null}">

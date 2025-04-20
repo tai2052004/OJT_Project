@@ -45,7 +45,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 user.setUsername(generateUsernameFromEmail(email)); // Tạo username từ email
                 user.setPassword(""); // Login qua Google không cần password
                 user.setGoogleId(googleId); // Gán Google ID
-                user.setRole("USER");
+                user.setRole("user");
 
                 // Tạo thông tin chi tiết người dùng
                 UserDetail detail = new UserDetail();

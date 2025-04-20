@@ -19,7 +19,7 @@
         <nav class="menu">
             <a href="/profile"><i class="bi bi-person-circle bi-icon"></i>Personal information</a>
             <a href="/transaction-history"><i class="bi bi-clock-history bi-icon"></i>Transaction history</a>
-            <a href="/security" class="active"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
+            <a th:if="${user.password != null && !user.password.isEmpty()}" href="/security"><i class="bi bi-shield-lock bi-icon"></i>Security</a>
         </nav>
     </aside>
 

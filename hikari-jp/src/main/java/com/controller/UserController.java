@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.logging.Logger;
 
@@ -34,7 +35,12 @@ public class UserController {
     //Login
 
     @GetMapping("/landingPage")
-    public String landingPage(Model model) {
+    public String landingPage(Model model, HttpSession session) {
+        Users user = (Users) session.getAttribute("user");
+        if (user != null) {
+            UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
+            session.setAttribute("userDetail", userDetail);
+        }
         model.addAttribute("currentPage","landing" );
         return "landingPage";
     }
@@ -42,27 +48,6 @@ public class UserController {
     @GetMapping("/login")
     public String showLoginForm() {
         return "login"; // Trả về trang đăng nhập
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password,
-                        Model model, HttpSession session) {
-        if (userService.checkLogin(email, password)) {
-            Users user = userRepository.findByEmail(email);
-            UserDetail userDetail = userDetailRepository.findByUserId(user.getId());
-            session.setAttribute("user", user);
-            session.setAttribute(   "userDetail", userDetail);
-            if (user.getRole().equalsIgnoreCase("ADMIN")) {
-                return "redirect:/admin/userManagement";
-            }
-            return "redirect:/landingPage";
-        } else {
-            model.addAttribute("email", email);
-            model.addAttribute("password", password);
-            model.addAttribute("error", "Username or password is incorrect.");
-            return "login";
-        }
     }
 
     //Register
@@ -191,6 +176,7 @@ public class UserController {
         return "redirect:/verify-otp-reset?email=" + user.getEmail();
     }
 
+
     @GetMapping("/verify-otp-reset")
     public String showOtpVerificationFormReset(@RequestParam String email, Model model, HttpSession session) {
         Users resetUser = (Users) session.getAttribute("tempUser");
@@ -219,7 +205,7 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public String processResetPassword(@RequestParam String newPassword, @RequestParam String rePassword, Model model, HttpSession session) {
+    public String processResetPassword(@RequestParam String newPassword, @RequestParam String rePassword, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Users resetUser = (Users) session.getAttribute("tempUser");
         if (!newPassword.equals(rePassword)) {
             model.addAttribute("error", "Passwords do not match!");
@@ -230,8 +216,8 @@ public class UserController {
         userRepository.save(resetUser);
         session.removeAttribute("tempUser");
 
-        model.addAttribute("successMessage", "Password reset successful! You can log in now.");
-        return "otp-success";
+        redirectAttributes.addFlashAttribute("success", "Password reset successful! You can log in now");
+        return "redirect:/landingPage";
     }
 
     //Logout
