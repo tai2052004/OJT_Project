@@ -43,7 +43,10 @@ let scoreInput = document.getElementById('score');
 let statusInput = document.getElementById('status');
 let progressInput = document.getElementById('progress');
 statusInput.value = "Finished";
-let isViolated = false;
+let vocabRateInput = document.getElementById('vocab-rate');
+let grammarRateInput = document.getElementById('grammar-rate');
+let readingRateInput = document.getElementById('reading-rate');
+let listeningRateInput = document.getElementById('listening-rate');
 
 async function initFaceCheck() {
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
@@ -528,6 +531,11 @@ async function saveHistory()
     formData.append("status", document.getElementById('status').value);
     formData.append("progress", document.getElementById('progress').value);
     formData.append("date-taken", document.getElementById('date-taken').value);
+    formData.append("vocab-rate", document.getElementById('vocab-rate').value);
+    formData.append("grammar-rate", document.getElementById('grammar-rate').value);
+    formData.append("reading-rate", document.getElementById('reading-rate').value);
+    formData.append("listening-rate", document.getElementById('listening-rate').value);
+    formData.append("user-answer", JSON.stringify(answers));
 
     const response = await fetch("/saveResult", {
         method: "POST",
@@ -568,7 +576,9 @@ submitButton.addEventListener("click", function () {
 
 });
 
-
+let indexx = 0;
+let userCorrect = 0;
+const answers = [];
 function displayResult(score)
 {
     scanning = false;
@@ -594,9 +604,15 @@ function displayResult(score)
     });
     variable.forEach(qc =>
     {
+        indexx++;
         let parentID = qc.id.split('-')[1];
         let userAnswer = qc.querySelector('#userAnswer-' + parentID);
         let correctAnswer = qc.querySelector('#correctAnswer-' + parentID);
+        let testQuestionID = qc.querySelector('.test_question_id');
+        answers.push( {
+            userAnswer : userAnswer.value,
+            testQuestionId : testQuestionID.value,
+        } )
         let resultElement = qc.querySelector('#result-' + parentID);
         document.querySelectorAll('.result-text').forEach(rt => rt.classList.remove('hidden'));
         let answer = qc.querySelectorAll('.answer');
@@ -606,6 +622,7 @@ function displayResult(score)
         if ( userAnswer.value === correctAnswer.value)
         {
             score++;
+            userCorrect++;
             resultElement.innerHTML = `<span class="correct ">✅ Correct!</span>`;
         }else {
             document.querySelectorAll('.question-box').forEach( n =>
@@ -628,6 +645,27 @@ function displayResult(score)
                 }
             });
             resultElement.innerHTML = `<span class="wrong ">❌ Incorrect! Correct answer is: <b>${correctAnswer.value}</b></span>`;
+        }
+
+        if ( indexx === Number(vocabSize.value))
+        {
+            vocabRateInput.value = Math.floor((userCorrect / Number(vocabSize.value)) * 100 ) + '%';
+            userCorrect = 0;
+        }
+        if (indexx === (Number(vocabSize.value) + Number(grammarSize.value)))
+        {
+            grammarRateInput.value = Math.floor((userCorrect / Number(grammarSize.value)) * 100 ) + '%';
+            userCorrect = 0;
+        }
+        if (indexx === (Number(vocabSize.value) + Number(grammarSize.value) + Number(readingSize.value)))
+        {
+            readingRateInput.value = Math.floor((userCorrect / Number(readingSize.value)) * 100 ) + '%';
+            userCorrect = 0;
+        }
+        if (indexx === (Number(vocabSize.value) + Number(grammarSize.value) + Number(readingSize.value) + Number(listeningSize.value)) )
+        {
+            listeningRateInput.value = Math.floor((userCorrect / Number(listeningSize.value)) * 100 ) + '%';
+            userCorrect = 0;
         }
 
     });
