@@ -34,10 +34,10 @@
     </nav>
     <div class="sidebar-footer">
       <a href="/logout">
-      <button class="sidebar-logout">
-       <span class="material-icons">logout</span>
-        Logout
-      </button>
+        <button class="sidebar-logout">
+          <span class="material-icons">logout</span>
+          Logout
+        </button>
       </a>
     </div>
   </aside>
@@ -99,14 +99,14 @@
               <button class="dropdown-toggle">
                 <span class="material-icons">more_horiz</span>
               </button>
-                <div class="dropdown-menu">
-                    <div class="dropdown-header">Actions</div>
-                    <!-- Sử dụng th:attr để thay data-id thành user.id động -->
-                    <button class="dropdown-item edit-user" th:attr="data-id=${user.id}">Edit user</button>
-                    <button class="dropdown-item reset-password" th:attr="data-id=${user.id}">Reset password</button>
-                    <div class="dropdown-divider"></div>
-                    <button class="dropdown-item delete-user text-danger" th:attr="data-id=${user.id}">Delete user</button>
-                </div>
+              <div class="dropdown-menu">
+                <div class="dropdown-header">Actions</div>
+                <!-- Sử dụng th:attr để thay data-id thành user.id động -->
+                <button class="dropdown-item edit-user" th:attr="data-id=${user.id}">Edit user</button>
+                <button class="dropdown-item reset-password" th:attr="data-id=${user.id}">Reset password</button>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item delete-user text-danger" th:attr="data-id=${user.id}">Delete user</button>
+              </div>
             </div>
           </td>
         </tr>
@@ -124,31 +124,36 @@
       <button class="modal-close">&times;</button>
     </div>
     <div class="modal-body">
-      <form id="editUserForm">
+      <form id="editUserForm" enctype="multipart/form-data">
         <input type="hidden" id="editUserId">
         <div class="form-group">
           <label for="editUsername">Username</label>
-          <input type="text" id="editUsername" class="form-control">
+          <input type="text" id="editUsername" class="form-control" required>
+          <small></small>
         </div>
         <div class="form-group">
           <label for="editEmail">Email</label>
-          <input type="email" id="editEmail" class="form-control">
+          <input type="email" id="editEmail" class="form-control" required>
+          <small></small>
         </div>
         <div class="form-group">
           <label for="editFullName">Full Name</label>
-          <input type="text" id="editFullName" class="form-control">
+          <input type="text" id="editFullName" class="form-control" required>
+          <small></small>
         </div>
         <div class="form-group">
           <label for="editPhone">Phone Number</label>
-          <input type="text" id="editPhone" class="form-control">
+          <input type="text" id="editPhone" class="form-control" required>
+          <small></small>
         </div>
         <div class="form-group">
           <label for="editBirthdate">Birthdate</label>
-          <input type="date" id="editBirthdate" class="form-control">
+          <input type="date" id="editBirthdate" class="form-control" required>
+          <small></small>
         </div>
         <div class="form-group">
           <label for="editRole">Role</label>
-          <select id="editRole" class="form-control">
+          <select id="editRole" class="form-control" required>
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
@@ -202,6 +207,112 @@
     <div class="modal-footer">
       <button class="btn btn-outline" id="generatePasswordBtn">Generate Password</button>
       <button class="btn btn-primary" id="confirmResetBtn">Reset Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="addUserModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add New User</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="addUserForm" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="addUsername">Username</label>
+            <input type="text" id="addUsername" class="form-control" required>
+            <div class="hint-text">4-20 alphanumeric characters</div>
+            <small></small>
+          </div>
+          <div class="form-group">
+            <label for="addEmail">Email</label>
+            <input type="email" id="addEmail" class="form-control" required>
+            <div class="hint-text">Enter a valid email</div>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="addPassword">Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="addPassword" class="form-control" required>
+              <button type="button" class="toggle-password">
+                <span class="material-icons">visibility</span>
+              </button>
+            </div>
+            <div class="hint-text">Minimum 8 characters</div>
+            <small></small>
+          </div>
+          <div class="form-group">
+            <label for="addConfirmPassword">Confirm Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="addConfirmPassword" class="form-control" required>
+              <button type="button" class="toggle-password">
+                <span class="material-icons">visibility</span>
+              </button>
+            </div>
+            <div class="hint-text">Re-enter your password</div>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="addFullName">Full Name</label>
+            <input type="text" id="addFullName" class="form-control" required>
+            <div class="hint-text">Enter full name</div>
+            <small class="error-text"></small>
+          </div>
+          <div class="form-group">
+            <label for="addPhone">Phone Number</label>
+            <input type="text" id="addPhone" class="form-control" required>
+            <div class="hint-text">Format: 0xxxxxxxxx</div>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="addBirthdate">Birthdate</label>
+            <input type="date" id="addBirthdate" class="form-control" required>
+            <div class="hint-text">Select birthdate</div>
+            <small></small>
+          </div>
+          <div class="form-group">
+            <label for="addRole">Role</label>
+            <select id="addRole" class="form-control" required>
+              <option value="" disabled selected>Select role</option>
+              <option value="USER">User</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+            <div class="hint-text">Select user role</div>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="addAvatar">Profile Picture</label>
+          <div class="avatar-upload">
+            <div class="avatar-preview" id="addAvatarPreview">
+              <img src="/images/profile-image.png" alt="Avatar Preview">
+            </div>
+            <div class="avatar-upload-controls">
+              <label for="addAvatar" class="btn btn-outline">Choose Image</label>
+              <input type="file" id="addAvatar" name="avatar" accept="image/*">
+              <div class="hint-text">Max 2MB (JPEG, PNG)</div>
+              <small></small>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline modal-close-btn">Cancel</button>
+      <button class="btn btn-primary" id="confirmAddBtn">Add User</button>
     </div>
   </div>
 </div>

@@ -37,14 +37,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/forget-password",
                                 "/verify-otp-**", "/reset-password", "/oauth2/**",
-                                "/css/**", "/js/**", "/images/**", "/otp-success", "/premium", "/lookUp", "/quizzInterface").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                                "/css/**", "/js/**", "/images/**", "/otp-success", "/premium", "/lookUp",
+                                "/quizzInterface", "/landingPage", "/jlptTest", "/flashcards").permitAll()
+                        .requestMatchers("/admin/**", "/saleStatistic").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .usernameParameter("email") // Chỉ định tham số email
+                        .passwordParameter("password")
                         .successHandler(authenticationSuccessHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
@@ -58,7 +60,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()

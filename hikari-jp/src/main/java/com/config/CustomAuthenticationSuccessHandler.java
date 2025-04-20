@@ -27,7 +27,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-
         HttpSession session = request.getSession();
 
         Object principal = authentication.getPrincipal();
@@ -93,7 +92,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 user.setUsername(generateUsernameFromEmail(email));
                 user.setPassword(""); // Google login không cần password
                 user.setGoogleId(googleId);
-                user.setRole("USER");
+                user.setRole("user");
 
                 UserDetail detail = new UserDetail();
                 detail.setFullName(name);
@@ -116,7 +115,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
                 userRepository.save(user);
             }
-
             // Lưu người dùng vào session
             session.setAttribute("user", user);
 
@@ -127,7 +125,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         } else {
             // fallback (nếu có trường hợp nào khác)
-            response.sendRedirect("/login");
+            response.sendRedirect("/landingPage");
         }
     }
 
