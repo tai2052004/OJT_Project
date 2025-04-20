@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.JLPTTestResult;
+import com.model.UserAnswer;
 import com.repository.JLPTResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,16 @@ public class JLPTResultService {
         return jlptResultRepository.findByJLPTResultByUserID(userID);
     }
 
-    public void saveJLPTResult(JLPTTestResult jlptResult) {
-         jlptResultRepository.save(jlptResult);
+    public JLPTTestResult saveJLPTResult(JLPTTestResult jlptResult) {
+        JLPTTestResult savedResult = jlptResultRepository.save(jlptResult);
+        return savedResult;
+    }
+
+    public List<UserAnswer> findUserAnswerByResultID(int rsID) {
+        return jlptResultRepository.findUserAnswerByResultId(rsID);
+    }
+
+    public JLPTTestResult findById(int id) {
+        return jlptResultRepository.findById(id).orElse(null);
     }
 }

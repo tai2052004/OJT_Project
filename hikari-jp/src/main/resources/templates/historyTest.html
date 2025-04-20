@@ -18,14 +18,66 @@
             <div class="status" style="color: red;" th:if="${result.getStatus().equalsIgnoreCase('Violated')}" th:text="'Status : ' + ${result.getStatus()}"></div>
             <div class="progress" th:text="'Progress : ' + ${result.getProgress()}"></div>
             <div class="date-taken" th:text="'Date-taken : ' + ${result.getDate_taken()}"></div>
+            <input type="hidden" id="userAnswersData" th:value="${result.getUser_answer_JSON()}" />
+            <input type="hidden" class="readingPassage" th:value="${result.getPassage()}" />
+            <input type="hidden" class="vocab-bar" th:value="${result.getVocab_and_kanji_rate()}" />
+            <input type="hidden" class="grammar-bar" th:value="${result.getGrammar_rate()}" />
+            <input type="hidden" class="reading-bar" th:value="${result.getReading_rate()}" />
+            <input type="hidden" class="listening-bar" th:value="${result.getListening_rate()}" />
         </div>
     </div>
     <div class="nav-buttons">
         <button class="prev-btn"  onclick="showPrev()" disabled>&larr;</button>
         <button class="next-btn"  onclick="showNext()">&rarr;</button>
     </div>
+
+<div class="overlay hidden"></div>
+
+<div class="result-detail hidden">
+    <div class="chart-container">
+        <div class="y-axis">
+            <div class="tick">100%</div>
+            <div class="tick">80%</div>
+            <div class="tick">60%</div>
+            <div class="tick">40%</div>
+            <div class="tick">20%</div>
+            <div class="tick" style="position: absolute;height: 20px; bottom: -10px; left: 5px">0%</div>
+        </div>
+        <div class="bars">
+            <div class="bar-wrapper">
+                <div class="bar" id="bar-vocab">
+                    <div class="rate" id="rate-vocab"></div>
+                </div>
+                <div class="label">Vocab & Kanji</div>
+            </div>
+            <div class="bar-wrapper">
+                <div class="bar" id="bar-grammar">
+                    <div class="rate" id="rate-grammar"></div>
+                </div>
+                <div class="label">Grammar</div>
+            </div>
+            <div class="bar-wrapper">
+                <div class="bar" id="bar-reading">
+                    <div class="rate" id="rate-reading"></div>
+                </div>
+                <div class="label">Reading</div>
+            </div>
+            <div class="bar-wrapper">
+                <div class="bar" id="bar-listening">
+                    <div class="rate" id="rate-listening"></div>
+                </div>
+                <div class="label">Listening</div>
+            </div>
+        </div>
+    </div>
+    <div class="AI-recommend">
+        <div class="recommend-title">Assessment from AI</div>
+        <div class="recommend-content"></div>
+    </div>
+    <button id="back-btn">Back</button>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
-<script src="/js/historyResult.js"></script>
 <script src="/js/chatGpt.js"></script>
+<script src="/js/historyResult.js"></script>
 </body>
 </html>

@@ -33,6 +33,10 @@
         <input type="hidden" name="status" id="status" value="">
         <input type="hidden" name="progress" id="progress" value="">
         <input type="hidden" name="date-taken" id="date-taken" th:value="${date}">
+        <input type="hidden" name="vocab-rate" id="vocab-rate" value="">
+        <input type="hidden" name="grammar-rate" id="grammar-rate" value="">
+        <input type="hidden" name="reading-rate" id="reading-rate" value="">
+        <input type="hidden" name="listening-rate" id="listening-rate" value="">
 
 <!--    <div class="content">-->
 <!--        &lt;!&ndash; Questions will be loaded dynamically here &ndash;&gt;-->
@@ -68,6 +72,7 @@
             </div>
             <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
             <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
+            <input type="hidden" class="test_question_id" th:value="${question.getTestQuestion().getTest_question_id()}">
             <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
             <div class="toggle-div-explain hidden" onclick="toggleExplain(this)" th:id="'toggleExplain-' + ${iterStat.index + 1}">
                 <div>Explain</div>
@@ -94,6 +99,7 @@
         </div>
         <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
         <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
+        <input type="hidden" class="test_question_id" th:value="${question.getTestQuestion().getTest_question_id()}">
         <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
         <div class="toggle-div-explain hidden" onclick="toggleExplain(this)" th:id="'toggleExplain-' + ${iterStat.index + 1}">
             <div>Explain</div>
@@ -125,6 +131,7 @@
             <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
             <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}"
                    th:value="${question.getTestQuestion().getCorrect_answer()}">
+            <input type="hidden" class="test_question_id" th:value="${question.getTestQuestion().getTest_question_id()}">
             <div class="result-wrap">
                 <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
                 <div class="toggle-div-explain hidden" onclick="toggleExplain(this)"
@@ -160,6 +167,7 @@
         </div>
         <input type="hidden" th:id="'userAnswer-' + ${iterStat.index + 1}" value="">
         <input type="hidden" th:id="'correctAnswer-' + ${iterStat.index + 1}" th:value="${question.getTestQuestion().getCorrect_answer()}">
+        <input type="hidden" class="test_question_id" th:value="${question.getTestQuestion().getTest_question_id()}">
         <p th:id="'result-' + ${iterStat.index + 1}" class="result-text hidden"></p>
         <div class="toggle-div-explain hidden" onclick="toggleExplain(this)" th:id="'toggleExplain-' + ${iterStat.index + 1}">
             <div>Explain</div>
