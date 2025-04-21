@@ -3,6 +3,8 @@ package com.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.model.*;
 import com.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -50,8 +52,10 @@ public class JLPTResultController {
             rp = testService.getReading(jlptResult.getLevel_id().getLevel_id(), jlptResult.getTopic_num());
             jlptResult.setPassage(rp.getPassage());
             userAnswers = jLPTResultService.findUserAnswerByResultID(jlptResult.getResult_id());
-            System.out.println(userAnswers.size());
+            //parse to JSON
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             String userAnswersJson = mapper.writeValueAsString(userAnswers);
             jlptResult.setUser_answer_JSON(userAnswersJson);
         }
