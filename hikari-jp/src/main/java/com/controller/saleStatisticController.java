@@ -27,6 +27,7 @@ public class saleStatisticController {
                         TreeMap::new, // Sorted by date
                         Collectors.summingDouble(TransactionHistory::getAmount)
                 ));
+        model.addAttribute("salesData", salesData);
         return "saleStatistic";
     }
 }
