@@ -110,7 +110,6 @@ async function startCheckingLoop(timestamp) {
                     cancelAnimationFrame(animationId);
                     stopVoiceDetection();
                     clearInterval(timerInterval);
-                    timeLeft = 0;
                     statusInput.value = "Violated"
                     scoreInput.value = "No Score"
                     await saveHistory();
@@ -148,7 +147,6 @@ async function startCheckingLoop(timestamp) {
                     cancelAnimationFrame(animationId);
                     stopVoiceDetection();
                     clearInterval(timerInterval);
-                    timeLeft = 0;
                     statusInput.value = "Violated"
                     scoreInput.value = "No Score"
                     await saveHistory();
@@ -249,7 +247,6 @@ async function startVoiceDetection() {
                     cancelAnimationFrame(animationId);
                     stopVoiceDetection();
                     clearInterval(timerInterval);
-                    timeLeft = 0;
                     statusInput.value = "Violated"
                     scoreInput.value = "No Score"
                     saveHistory();
@@ -443,12 +440,13 @@ async function detectTabSwitch() {
     if (document.hidden || document.visibilityState === "hidden") {
         isVoiceDetected = false;
         scanning = false;
+        testSubmitted = true;
         cancelAnimationFrame(animationId);
         stopVoiceDetection();
         clearInterval(timerInterval);
-        timeLeft = 0;
         statusInput.value = "Violated"
         scoreInput.value = "No Score"
+        overlay.style.display = "none";
         await saveHistory();
         Swal.fire({
             icon: 'warning',
@@ -476,12 +474,13 @@ async function detectWindowBlur() {
     if (!document.hasFocus()) {
         isVoiceDetected = false;
         scanning = false;
+        testSubmitted = true;
         cancelAnimationFrame(animationId);
         stopVoiceDetection();
         clearInterval(timerInterval);
-        timeLeft = 0;
         statusInput.value = "Violated"
         scoreInput.value = "No Score"
+        overlay.style.display = "none";
         await saveHistory();
         Swal.fire({
             icon: 'warning',
@@ -522,7 +521,12 @@ async function saveHistory()
         Number(readingSize.value) +
         Number(listeningSize.value);
 
+    console.log(Number(vocabSize.value));
+    console.log(Number(grammarSize.value));
+    console.log(Number(readingSize.value));
+    console.log(Number(listeningSize.value));
     const percentage = Math.round((countCheck / total) * 100);
+    console.log(percentage);
     progressInput.value = `${percentage}%`;
     const formData = new FormData()
     formData.append("topic", document.getElementById('topic').value);
