@@ -280,14 +280,24 @@ function displayResults(results) {
     if (firstKanji) {
         html += `
             <div class="text-center">
-                <button id="show-kanji-btn" class="btn btn-outline-primary mb-3">
+                <button id="show-kanji-btn" class="btn btn-outline-primary mb-2 me-2">
                     <i class="fas fa-pen"></i> Xem cách viết
                 </button>
-                <div id="kanji-animation-container" style="display: none; margin-top: 20px;">
-                    <div id="kanji" style="width: 120px; height: 120px; margin: 0 auto;"></div>
+            <button id="practice-kanji-btn" class="btn btn-outline-success mb-2">
+                    <i class="fas fa-pencil-alt"></i> Luyện viết
+            </button>
+    
+            <div id="kanji-animation-container" style="display: none; margin-top: 20px;">
+                <div id="kanji" style="width: 120px; height: 120px; margin: 0 auto;"></div>
+            </div>
+    
+            <div id="kanji-practice-container" style="display: none; margin-top: 20px;">
+                <div id="kanji-practice" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+            <p class="text-muted mt-2">Vẽ chữ vào ô, bạn sẽ được chấm điểm theo độ chính xác.</p>
                 </div>
             </div>
         `;
+
     }
 
     html += `
@@ -358,6 +368,26 @@ function displayResults(results) {
             }
         });
     }
+    if (firstKanji) {
+        document.getElementById('practice-kanji-btn').addEventListener('click', function () {
+            const practiceContainer = document.getElementById('kanji-practice-container');
+            const animationContainer = document.getElementById('kanji-animation-container');
+
+            // Ẩn phần xem animation nếu đang hiển thị
+            animationContainer.style.display = 'none';
+            document.getElementById('show-kanji-btn').innerHTML = '<i class="fas fa-pen"></i> Xem cách viết';
+
+            // Toggle hiển thị khung luyện viết
+            if (practiceContainer.style.display === 'none') {
+                practiceContainer.style.display = 'block';
+                startPracticeKanji(firstKanji);
+                this.innerHTML = '<i class="fas fa-times"></i> Thoát luyện viết';
+            } else {
+                practiceContainer.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-pencil-alt"></i> Luyện viết';
+            }
+        });
+    }
 }
 
 // Hàm hiển thị animation kanji bằng HanziWriter
@@ -387,6 +417,28 @@ function showKanji(kanji) {
         console.error('Lỗi khi tạo HanziWriter:', error);
     }
 }
+function startPracticeKanji(kanji) {
+    const container = document.getElementById('kanji-practice');
+    container.innerHTML = ''; // clear cũ
+
+    try {
+        const writer = HanziWriter.create('kanji-practice', kanji, {
+            width: 200,
+            height: 200,
+            padding: 10,
+            strokeColor: '#000',
+            showOutline: true,
+            showCharacter: false, // Ẩn chữ mẫu
+            strokeAnimationSpeed: 1,
+        });
+
+        writer.quiz(); // Kích hoạt chế độ luyện
+    } catch (error) {
+        container.innerHTML = kanji;
+        console.error('Lỗi khi luyện viết:', error);
+    }
+}
+
 
 async function fetchImages(query) {
     try {
