@@ -330,29 +330,31 @@ function toggleLessonList() {
 
         // Xử lý cho free user
         if (isFreeUser) {
-            option.disabled = lessonNumber !== 1; // Chỉ cho phép chọn bài 1
-            if (lessonNumber === 1) option.selected = true;
-        }
+            if (lessonNumber === 1) {
+                option.selected = true; // Mặc định chọn bài 1
+            }
 
+            // Thêm sự kiện khi người dùng thay đổi lựa chọn
+            lessonSelect.addEventListener('change', function() {
+                if (this.value !== `${selectedLevel}-1`) {
+                    if (premiumAlert) {
+                        premiumAlert.style.display = 'block';
+                        setTimeout(() => premiumAlert.style.display = 'none', 10000);
+                    }
+                    // alert('Tính năng này chỉ dành cho tài khoản Premium. Vui lòng nâng cấp tài khoản!');
+                    this.value = `${selectedLevel}-1`; // Reset về bài 1
+
+                }
+                if(this.value) {
+                    fetchData(this.value);
+                }
+            });
+        }
         lessonSelect.add(option);
     }
 
     // Xử lý sự kiện chọn bài
-    lessonSelect.addEventListener('change', function() {
-        if (isFreeUser && !this.value.endsWith('-1')) {
-            // Hiển thị thông báo và reset về bài 1
-            if (premiumAlert) {
-                premiumAlert.style.display = 'block';
-                setTimeout(() => premiumAlert.style.display = 'none', 3000);
-            }
-            this.value = `${selectedLevel}-1`;
-            return;
-        }
 
-        if (this.value) {
-            fetchData(this.value);
-        }
-    });
 
     // Tự động load bài đầu tiên nếu có
     const firstLesson = `${selectedLevel}-1`;

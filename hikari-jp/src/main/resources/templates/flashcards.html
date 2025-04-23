@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/chatbot.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/js/chatGpt.js"></script>
 </head>
 <body>
@@ -18,6 +19,17 @@
             <div class="container_first">
                 <h1 class="page-title">Flashcard</h1>
                 <button class="quiz-btn" onclick="window.location.href='quiz'"><i class="bi bi-question-square"></i>Quiz</button>
+            </div>
+            <div class="container-third">
+                <div th:if="${userPremium != null}">
+                    <div class="alert alert-success">Bạn đang sử dụng gói Premium. Không giới hạn bài học!</div>
+                    <input type="hidden" id="userPremium" th:value="${userPremium != null ? 'true' : 'false'}" />
+                </div>
+                <div th:if="${userPremium == null}">
+                    <div id="free-alert" class="alert alert-info">
+                        Bạn đang sử dụng gói miễn phí. Chỉ truy cập được bài 1.
+                    </div>
+                </div>
             </div>
             <div class="container-second">
                 <aside class="sidebar">
