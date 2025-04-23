@@ -358,8 +358,11 @@ function displayResults(results) {
     if (firstKanji) {
         document.getElementById('show-kanji-btn').addEventListener('click', function() {
             const kanjiContainer = document.getElementById('kanji-animation-container');
+            // const animationContainer = document.getElementById('kanji-practice-container');
             if (kanjiContainer.style.display === 'none') {
                 kanjiContainer.style.display = 'block';
+                // animationContainer.style.display = 'none';
+                // document.getElementById('practice-kanji-btn').innerHTML = '<i class="fas fa-pen"></i> Luyện viết';
                 showKanji(firstKanji);
                 this.innerHTML = '<i class="fas fa-times"></i> Ẩn cách viết';
             } else {
@@ -371,11 +374,11 @@ function displayResults(results) {
     if (firstKanji) {
         document.getElementById('practice-kanji-btn').addEventListener('click', function () {
             const practiceContainer = document.getElementById('kanji-practice-container');
-            const animationContainer = document.getElementById('kanji-animation-container');
+            //const animationContainer = document.getElementById('kanji-animation-container');
 
             // Ẩn phần xem animation nếu đang hiển thị
-            animationContainer.style.display = 'none';
-            document.getElementById('show-kanji-btn').innerHTML = '<i class="fas fa-pen"></i> Xem cách viết';
+            // animationContainer.style.display = 'none';
+            // document.getElementById('show-kanji-btn').innerHTML = '<i class="fas fa-pen"></i> Xem cách viết';
 
             // Toggle hiển thị khung luyện viết
             if (practiceContainer.style.display === 'none') {
