@@ -47,6 +47,7 @@ let vocabRateInput = document.getElementById('vocab-rate');
 let grammarRateInput = document.getElementById('grammar-rate');
 let readingRateInput = document.getElementById('reading-rate');
 let listeningRateInput = document.getElementById('listening-rate');
+let testStarted = false;
 
 async function initFaceCheck() {
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
@@ -174,7 +175,45 @@ async function startCheckingLoop(timestamp) {
                     mess.innerText = "Please don't let anyone else in your camera ( " + countTimes + " / 5 )";
                     triggerWarning();
                 }
+            } else if (detections.length > 1) {
+                countTimes++;
+                if ( countTimes > 5)
+                {
+                    isVoiceDetected = false;
+                    scanning = false;
+                    testSubmitted = true;
+                    cancelAnimationFrame(animationId);
+                    stopVoiceDetection();
+                    clearInterval(timerInterval);
+                    statusInput.value = "Violated"
+                    scoreInput.value = "No Score"
+                    await saveHistory();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: "You have violated rules too much times. You will be redirected to Home Page",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'custom-swal-popup'
+                        },
+                        didOpen: () => {
+                            // Thay đổi overlay sau khi mở
+                            document.querySelector('.swal2-container').style.background = 'rgba(0, 0, 0, 0.8)';
+                        }
+                    });
+                    setTimeout(() => {
+                        window.location.href = "/backToHome";
+                    }, 3000);
+                }
+                else
+                {
+                    mess.innerText = "Please don't let anyone else in your camera ( " + countTimes + " / 5 )";
+                    triggerWarning();
+                }
             }
+
 
         } catch (err) {
             console.error("Lỗi validate:", err);
@@ -423,7 +462,12 @@ function startTest() {
     if (testSubmitted) return; // If test has been submitted, do nothing
     enableFullscreen();
     overlay.style.display = "none";
-    timerInterval = setInterval(updateTimer, 1000); // Start countdown timer
+    //If test started, don't set time interval
+    if (!testStarted)
+    {
+        timerInterval = setInterval(updateTimer, 1000); // Start countdown timer
+    }
+    testStarted = true;
     // attachListeners();
 }
 

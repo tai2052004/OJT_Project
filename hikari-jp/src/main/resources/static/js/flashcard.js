@@ -172,119 +172,6 @@ function updateCardCounter() {
     }
 }
 
-
-
-
-
-// function toggleLessonList() {
-//     let selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
-//     let lessonList = document.getElementById("lessonList");
-//     let lessonItems = document.getElementById("lessonItems");
-//
-//     if (["N5", "N4", "N3", "N2", "N1"].includes(selectedLevel)) {
-//         lessonList.style.display = "block";
-//         lessonItems.innerHTML = ""; // Xóa danh sách cũ nếu có
-//
-//         let startLesson, endLesson;
-//
-//         switch (selectedLevel) {
-//             case "N5":
-//                 startLesson = 1; endLesson = 10;
-//                 break;
-//             case "N4":
-//                 startLesson = 11; endLesson = 20;
-//                 break;
-//             case "N3":
-//                 startLesson = 21; endLesson = 30;
-//                 break;
-//             case "N2":
-//                 startLesson = 31; endLesson = 50;
-//                 break;
-//             case "N1":
-//                 startLesson = 51; endLesson = 60;
-//                 break;
-//         }
-//         const activeLesson = 1
-//         // Tạo danh sách bài học
-//         for (let i = startLesson; i <= endLesson; i++) {
-//             let lesson = document.createElement("li");
-//             let isActive = (i - startLesson + 1) === activeLesson; // activeLesson is the current lesson
-//             lesson.innerHTML = `<button onclick="fetchData('${selectedLevel}-${i - startLesson + 1}')"
-//                          class="${isActive ? 'active' : ''}">
-//                          Lesson ${i - startLesson + 1}
-//                          </button>`;
-//             lessonItems.appendChild(lesson);
-//         }
-//     } else {
-//         lessonList.style.display = "none";
-//     }
-// }
-// function toggleLessonList() {
-//     let selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
-//     let lessonList = document.getElementById("lessonList");
-//     let lessonSelect = document.getElementById("lessonItems");
-//
-//     if (!selectedLevel || !["N5", "N4", "N3", "N2", "N1"].includes(selectedLevel)) {
-//         if (lessonList) lessonList.style.display = "none";
-//         return;
-//     }
-//
-//     if (lessonList) lessonList.style.display = "block";
-//     if (!lessonSelect) return;
-//
-//     // Xóa options cũ
-//     lessonSelect.innerHTML = '';
-//
-//     let startLesson, endLesson;
-//
-//     // Xác định phạm vi bài học
-//     switch (selectedLevel) {
-//         case "N5": startLesson = 1; endLesson = 10; break;
-//         case "N4": startLesson = 11; endLesson = 20; break;
-//         case "N3": startLesson = 21; endLesson = 30; break;
-//         case "N2": startLesson = 31; endLesson = 50; break;
-//         case "N1": startLesson = 51; endLesson = 60; break;
-//         default: return;
-//     }
-//
-//     // Thêm option mặc định
-//     let defaultOption = new Option("-- Chọn bài --", "");
-//     defaultOption.disabled = true;
-//     defaultOption.selected = true;
-//     lessonSelect.add(defaultOption);
-//
-//     // Thêm các option bài học
-//     const isPremium = document.getElementById("isPremium").value;
-//     const isFreeUser = isPremium === 'null' || isPremium === '';
-//     const premiumAlert = document.getElementById('premiumAlert');
-//     for (let i = startLesson; i <= endLesson; i++) {
-//         let lessonNumber = i - startLesson + 1;
-//         let option = new Option(`Bài ${lessonNumber}`, `${selectedLevel}-${lessonNumber}`);
-//         if (isPremium === 'null' || isPremium === '') {
-//             if (lessonNumber === 1) {
-//                 option.selected = true;
-//             } else {
-//                 option.disabled = true;
-//             }
-//         } else {
-//             if (lessonNumber === 1) option.selected = true;
-//         }
-//         lessonSelect.add(option);
-//     }
-//     fetchData(lessonSelect.value);
-//     // Xử lý khi chọn bài
-//     lessonSelect.addEventListener('change', function() {
-//         if (isFreeUser && this.value !== `${selectedLevel}-1`) {
-//             premiumAlert.style.display = 'block';
-//             this.value = `${selectedLevel}-1`; // Reset về bài 1
-//         } else {
-//             premiumAlert.style.display = 'none';
-//         }
-//         if (this.value) {
-//             fetchData(this.value);
-//         }
-//     });
-// }
 function toggleLessonList() {
     // Lấy thông tin level được chọn
     const selectedLevel = document.querySelector('input[name="level"]:checked')?.value;
@@ -318,7 +205,7 @@ function toggleLessonList() {
     lessonSelect.innerHTML = '';
 
     // Thêm option mặc định
-    const defaultOption = new Option("-- Chọn bài --", "");
+    const defaultOption = new Option("-- Choose lesson --", "");
     defaultOption.disabled = true;
     defaultOption.selected = true;
     lessonSelect.add(defaultOption);
@@ -326,7 +213,7 @@ function toggleLessonList() {
     // Thêm các bài học
     for (let i = startLesson; i <= endLesson; i++) {
         const lessonNumber = i - startLesson + 1;
-        const option = new Option(`Bài ${lessonNumber}`, `${selectedLevel}-${lessonNumber}`);
+        const option = new Option(`Lesson ${lessonNumber}`, `${selectedLevel}-${lessonNumber}`);
 
         // Xử lý cho free user
         if (isFreeUser) {

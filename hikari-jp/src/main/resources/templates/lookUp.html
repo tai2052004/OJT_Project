@@ -19,12 +19,12 @@
 <!-- Thông báo Premium hoặc Free -->
 <div class="container mt-3">
     <div th:if="${userPremium != null}">
-        <div class="alert alert-success">Bạn đang sử dụng <strong>gói Premium</strong>. Không giới hạn lượt tra!</div>
+        <div class="alert alert-success">You are using <strong>Premium package</strong>. Unlimited searches!</div>
         <input type="hidden" id="userPremium" th:value="${userPremium != null ? 'true' : 'false'}" />
     </div>
     <div th:if="${userPremium == null}">
         <div id="free-alert" class="alert alert-info">
-            Bạn đang sử dụng <strong>gói miễn phí</strong>. Còn <strong id="remaining">3</strong> lượt tra miễn phí hôm nay.
+            You are using <strong>free package</strong>. Have <strong id="remaining"></strong> free search left today.
         </div>
     </div>
 </div>
@@ -36,21 +36,13 @@
             <div class="mt-4">
                 <div>
                     <div class="d-flex justify-content-between mb-3 gap-3">
-                        <input type="text" id="query" name="keyword" class="form-control w-75" placeholder="Nhập từ cần tra...">
+                        <input type="text" id="query" name="keyword" class="form-control w-75" placeholder="Enter word...">
                         <button id="search-button" class="btn btn-primary icon1">🔍</button>
                         <button id="voice-button" class="btn btn-dark icon2">🎤</button>
                     </div>
                     <div id="suggestions-dropdown"></div>
                 </div>
                 <div class="d-flex mb-3 gap-3">
-                    <select class="form-select w-25 me-2">
-                        <option>Nhật - Việt</option>
-                        <option>Việt - Nhật</option>
-                        <option>Nhật - Nhật</option>
-                    </select>
-                    <button class="btn btn-secondary">Từ vựng</button>
-                    <button class="btn btn-secondary">Hán tự</button>
-                    <button class="btn btn-secondary">Ngữ pháp</button>
                 </div>
             </div>
         </div>
@@ -87,13 +79,13 @@
 
         <div class="chat-box" id="chatBox">
             <div class="chat-header">
-                <h3>Chat với chúng tôi</h3>
+                <h3>Chat with me</h3>
                 <span class="close-btn" id="closeBtn">×</span>
             </div>
             <div class="chat-messages" id="chatMessages"></div>
             <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Nhập tin nhắn...">
-                <button id="sendBtn">Gửi</button>
+                <input type="text" id="userInput" placeholder="Enter your message...">
+                <button id="sendBtn">Send</button>
             </div>
         </div>
     </div>

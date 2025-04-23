@@ -22,12 +22,12 @@
             </div>
             <div class="container-third">
                 <div th:if="${userPremium != null}">
-                    <div class="alert alert-success">Bạn đang sử dụng gói Premium. Không giới hạn bài học!</div>
+                    <div class="alert alert-success">You are on Premium package. Unlimited lessons!</div>
                     <input type="hidden" id="userPremium" th:value="${userPremium != null ? 'true' : 'false'}" />
                 </div>
                 <div th:if="${userPremium == null}">
                     <div id="free-alert" class="alert alert-info">
-                        Bạn đang sử dụng gói miễn phí. Chỉ truy cập được bài 1.
+                        You are using the free package. Only lesson 1 can be accessed.
                     </div>
                 </div>
             </div>
