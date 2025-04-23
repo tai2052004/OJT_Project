@@ -120,7 +120,7 @@ public class AdminController {
         }
         user.setPassword(newPassword);
         userRepository.save(user);
-        return ResponseEntity.ok("Password updated successfully!");
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("delete-user/{id}")

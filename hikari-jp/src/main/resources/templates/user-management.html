@@ -6,6 +6,7 @@
   <title>User Management - Admin Dashboard</title>
   <link rel="stylesheet" href="/css/adminStyles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="admin-container">
@@ -88,7 +89,7 @@
           <td th:text="${user.role}"></td>
           <td th:text="${user.userDetail?.fullName}"></td>
           <td th:text="${user.userDetail?.phoneNumber}"></td>
-          <td th:text="${user.userDetail?.birthdate}"></td>
+          <td th:text="${#temporals.format(user.userDetail?.birthdate, 'dd/MM/yyyy')}"></td>
           <td>
             <div class="avatar">
               <img th:src="${user.userDetail?.avatar != null ? '/upload/' + user.userDetail?.avatar : '/images/profile-image.png'}" alt="Profile Picture">

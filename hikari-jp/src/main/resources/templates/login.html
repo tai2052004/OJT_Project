@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
   <meta charset="UTF-8">
   <title>Login Page</title>
@@ -14,7 +14,9 @@
     <div class="login-section">
       <h2>Login</h2>
       <p>Login into your account</p>
-      <span class="error-message" th:if="${error}" th:text="${error}" style="color:red;"></span>
+      <c:if test="${param.error == 'true'}">
+        <p style="color: red"> Email or password is invalid. Please try again. </p>
+      </c:if>
       <form action="/login" method="post">
         <label for="email">Email address</label>
         <div class="input-group">

@@ -13,19 +13,14 @@ userSearchInput?.addEventListener("input", function () {
         const fullName = row.cells[4].textContent.toLowerCase()
         const phone = row.cells[5].textContent.toLowerCase()
 
-        if (
-            username.includes(searchTerm) ||
-            email.includes(searchTerm) ||
-            role.includes(searchTerm) ||
-            fullName.includes(searchTerm) ||
-            phone.includes(searchTerm)
-        ) {
+        if (username.includes(searchTerm) || email.includes(searchTerm) || role.includes(searchTerm) || fullName.includes(searchTerm) || phone.includes(searchTerm)) {
             row.style.display = ""
         } else {
             row.style.display = "none"
         }
     })
 })
+
 
 // === EDIT USER ===
 const editUserModal = document.getElementById("editUserModal")
@@ -213,9 +208,11 @@ saveUserBtn.addEventListener("click", () => {
     })
         .then(response => response.json())
         .then(() => {
-            alert('User updated successfully!');
             editUserModal.classList.remove('active');
-            location.reload();
+            showToast('success', 'Success!', 'User updated successfully');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
         })
         .catch(error => console.error('Error updating user:', error));
 });
@@ -275,19 +272,27 @@ confirmResetBtn?.addEventListener("click", () => {
             },
             body: JSON.stringify({ newPassword: newPassword.value }),
         })
-            .then((response) => response.text())
-            .then((data) => {
-                alert(data)
-                resetPasswordModal.classList.remove("active")
+            .then((response) => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.text();
+            })
+            .then(() => {
+                resetPasswordModal.classList.remove("active");
+                showToast('success', 'Success!', 'Reset password successful!');
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
             })
             .catch((error) => {
-                console.error("Error resetting password:", error)
-                alert("Failed to reset password. Please try again.")
-            })
+                showToast('error', 'Error!', error.message || "Failed to reset password.");
+                console.error("Error resetting password:", error);
+            });
     } else {
-        alert("Please generate or enter a password first.")
+        showToast('error', 'Error!', "Please generate or enter a password first.");
     }
-})
+});
 
 // === DELETE USER ===
 const deleteUserBtns = document.querySelectorAll(".delete-user")
@@ -306,7 +311,10 @@ deleteUserBtns.forEach((btn) => {
                 deleteUserName.textContent = data.userDetail.fullName
                 deleteUserModal.classList.add("active")
             })
-            .catch((err) => console.error("Fetch error:", err))
+            .catch((err) => {
+                showToast('error', 'Error!', err.message);
+                console.error("Fetch error:", err)
+            })
     })
 })
 
@@ -324,12 +332,14 @@ confirmDeleteBtn.addEventListener("click", () => {
                 return response.text()
             })
             .then(() => {
-                alert("User deleted successfully!")
-                deleteUserModal.classList.remove("active")
-                location.reload()
+                deleteUserModal.classList.remove("active");
+                showToast('success', 'Success!', 'Delete user successful');
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
             })
             .catch((err) => {
-                alert(err.message)
+                showToast('error', 'Error!', err.message);
                 console.error("Delete error:", err)
             })
     }
@@ -472,12 +482,27 @@ confirmAddBtn.addEventListener("click", () => {
             return response.json()
         })
         .then(() => {
-            alert("User added successfully!")
             addUserModal.classList.remove("active")
-            location.reload()
+            showToast('success', 'Success!', 'User added successfully!');
+            setTimeout(() => {
+                location.reload(); // Tải lại trang sau 1 giây
+            }, 1500);
         })
         .catch((error) => {
-            alert(error.message)
+            showToast('error', 'Error!', error.message);
             console.error("Error adding user:", error)
         })
 })
+
+
+function showToast(icon, title, text) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        confirmButtonColor: '#3085d6',
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false
+    });
+}
