@@ -4,7 +4,7 @@ const imageResults = document.getElementById('image-results');
 const audioPlayer = document.getElementById('audioPlayer');
 const playAudioBtn = document.getElementById('play-audio-btn');
 let translatedText = ''; // Lưu trữ văn bản đã dịch
-const MAX_LOOKUPS = 5;
+const MAX_LOOKUPS = 21;
 const todayKey = `lookupCount_${new Date().toISOString().slice(0, 10)}`;
 let lookupCount = parseInt(localStorage.getItem(todayKey)) || 0;
 
@@ -41,15 +41,15 @@ window.addEventListener("DOMContentLoaded", () => {
         updateRemaining();
         if (lookupCount >= MAX_LOOKUPS) {
             disableSearch();
-            const message = "Bạn đã hết lượt tra miễn phí hôm nay. Vui lòng nâng cấp Premium để tra không giới hạn.";
+            const message = "You have used up all your free searches today. Please upgrade to Premium for unlimited searches.";
 
             Swal.fire({
-                title: 'Thông báo',
+                title: 'Notification',
                 text: message,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Nâng cấp Premium',
-                cancelButtonText: 'Để sau',
+                confirmButtonText: 'Premium Upgrade',
+                cancelButtonText: 'Later',
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Chuyển hướng tới trang Premium
@@ -69,15 +69,15 @@ window.addEventListener("DOMContentLoaded", () => {
 searchButton.addEventListener("click", function (e) {
     if (!isUserPremium()) {
         if (lookupCount >= MAX_LOOKUPS) {
-            const message = "Bạn đã hết lượt tra miễn phí hôm nay. Vui lòng nâng cấp Premium để tra không giới hạn.";
+            const message = "You have used up all your free searches today. Please upgrade to Premium for unlimited searches.";
 
             Swal.fire({
-                title: 'Thông báo',
+                title: 'Notification',
                 text: message,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Nâng cấp Premium',
-                cancelButtonText: 'Để sau',
+                confirmButtonText: 'Premium Upgrade',
+                cancelButtonText: 'Later',
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Chuyển hướng tới trang Premium
@@ -171,8 +171,8 @@ async function translateToJapanese(text) {
         const data = await response.json();
         return data[0].map(item => item[0]).join('');
     } catch (error) {
-        console.error('Lỗi dịch:', error);
-        throw new Error('Không thể dịch từ khóa');
+        console.error('Translation error:', error);
+        throw new Error('Keyword cannot be translated');
     }
 }
 
@@ -184,8 +184,9 @@ async function searchJisho(query) {
     const response = await fetch(proxyUrl + jishoUrl);
     const data = await response.json();
 
-    if (!response.ok) throw new Error(data.message || 'Lỗi API');
-    if (!data.contents) throw new Error('Không có dữ liệu trả về');
+    if (!response.ok) throw new Error(data.message || '\n' +
+        'API error');
+    if (!data.contents) throw new Error('No data returned');
 
     return JSON.parse(data.contents).data;
 }
@@ -197,7 +198,7 @@ function displayResults(results) {
     container.innerHTML = "";
 
     if (!results || results.length === 0) {
-        container.innerHTML += '<p class="text-center text-danger">Không tìm thấy kết quả</p>';
+        container.innerHTML += '<p class="text-center text-danger">No results found</p>';
         return;
     }
 
@@ -246,7 +247,7 @@ function displayResults(results) {
         // Thêm ví dụ
         let examplesHtml = '';
         if (sense.examples?.length) {
-            examplesHtml = '<div class="mt-2"><strong>Ví dụ:</strong><ul class="list-group mt-2">';
+            examplesHtml = '<div class="mt-2"><strong>For example:</strong><ul class="list-group mt-2">';
             sense.examples.forEach(example => {
                 examplesHtml += `
                 <li class="list-group-item">
@@ -261,7 +262,7 @@ function displayResults(results) {
 
         html += `
             <div class="meaning-card p-3 mb-3 border rounded">
-                <p class="fw-bold mb-2">Ý nghĩa ${index + 1}: <span class="text-success">${meaning}</span></p>
+                <p class="fw-bold mb-2">Meaning ${index + 1}: <span class="text-success">${meaning}</span></p>
                 ${additionalInfo ? `<div class="tags mt-2">${additionalInfo}</div>` : ''}
                 ${examplesHtml}
             </div>
@@ -281,10 +282,10 @@ function displayResults(results) {
         html += `
             <div class="text-center">
                 <button id="show-kanji-btn" class="btn btn-outline-primary mb-2 me-2">
-                    <i class="fas fa-pen"></i> Xem cách viết
+                    <i class="fas fa-pen"></i> See how to write
                 </button>
             <button id="practice-kanji-btn" class="btn btn-outline-success mb-2">
-                    <i class="fas fa-pencil-alt"></i> Luyện viết
+                    <i class="fas fa-pencil-alt"></i> Practice writing
             </button>
     
             <div id="kanji-animation-container" style="display: none; margin-top: 20px;">
@@ -293,7 +294,7 @@ function displayResults(results) {
     
             <div id="kanji-practice-container" style="display: none; margin-top: 20px;">
                 <div id="kanji-practice" style="width: 200px; height: 200px; margin: 0 auto;"></div>
-            <p class="text-muted mt-2">Vẽ chữ vào ô, bạn sẽ được chấm điểm theo độ chính xác.</p>
+            <p class="text-muted mt-2">Draw letters in the boxes and you will be scored according to accuracy.</p>
                 </div>
             </div>
         `;
@@ -306,13 +307,13 @@ function displayResults(results) {
         
         <div class="audio-section text-center mt-3">
             <button id="play-audio-btn" class="btn btn-primary">
-                <i class="fas fa-volume-up"></i> Nghe phát âm
+                <i class="fas fa-volume-up"></i> Listen to pronunciation
             </button>
             <audio id="audioPlayer" style="display: none;"></audio>
         </div>
     </div>
     
-    <h3 class="text-primary mt-4 mb-3"><i class="fas fa-search"></i> Các kết quả khác</h3>
+    <h3 class="text-primary mt-4 mb-3"><i class="fas fa-search"></i>Other results</h3>
     <div class="other-results row">
     `;
 
@@ -325,7 +326,7 @@ function displayResults(results) {
         const word = japanese.word || japanese.reading || 'N/A';
         const reading = japanese.reading && japanese.reading !== word ? japanese.reading : '';
         const firstSense = senses.length > 0 ? senses[0] : null;
-        const meaning = firstSense ? firstSense.english_definitions?.join(', ') : 'Không có thông tin';
+        const meaning = firstSense ? firstSense.english_definitions?.join(', ') : 'No information available';
 
         html += `
         <div class="col-md-6 col-lg-4 mb-3">
@@ -358,25 +359,22 @@ function displayResults(results) {
     if (firstKanji) {
         document.getElementById('show-kanji-btn').addEventListener('click', function() {
             const kanjiContainer = document.getElementById('kanji-animation-container');
-            // const animationContainer = document.getElementById('kanji-practice-container');
             if (kanjiContainer.style.display === 'none') {
                 kanjiContainer.style.display = 'block';
-                // animationContainer.style.display = 'none';
-                // document.getElementById('practice-kanji-btn').innerHTML = '<i class="fas fa-pen"></i> Luyện viết';
                 showKanji(firstKanji);
-                this.innerHTML = '<i class="fas fa-times"></i> Ẩn cách viết';
+                this.innerHTML = '<i class="fas fa-times"></i> Hide spelling';
             } else {
                 kanjiContainer.style.display = 'none';
-                this.innerHTML = '<i class="fas fa-pen"></i> Xem cách viết';
+                this.innerHTML = '<i class="fas fa-pen"></i> See how to write';
             }
         });
     }
     if (firstKanji) {
         document.getElementById('practice-kanji-btn').addEventListener('click', function () {
             const practiceContainer = document.getElementById('kanji-practice-container');
-            //const animationContainer = document.getElementById('kanji-animation-container');
+            const animationContainer = document.getElementById('kanji-animation-container');
 
-            // Ẩn phần xem animation nếu đang hiển thị
+            // // Ẩn phần xem animation nếu đang hiển thị
             // animationContainer.style.display = 'none';
             // document.getElementById('show-kanji-btn').innerHTML = '<i class="fas fa-pen"></i> Xem cách viết';
 
@@ -384,10 +382,10 @@ function displayResults(results) {
             if (practiceContainer.style.display === 'none') {
                 practiceContainer.style.display = 'block';
                 startPracticeKanji(firstKanji);
-                this.innerHTML = '<i class="fas fa-times"></i> Thoát luyện viết';
+                this.innerHTML = '<i class="fas fa-times"></i> Exit writing practice';
             } else {
                 practiceContainer.style.display = 'none';
-                this.innerHTML = '<i class="fas fa-pencil-alt"></i> Luyện viết';
+                this.innerHTML = '<i class="fas fa-pencil-alt"></i> Practice writing';
             }
         });
     }
@@ -452,11 +450,11 @@ async function fetchImages(query) {
         if (data.results && data.results.length > 0) {
             displayImages(data.results[0]);
         } else {
-            imageResults.innerHTML = '<p>Không tìm thấy ảnh phù hợp</p>';
+            imageResults.innerHTML = '<p>No matching images found</p>';
         }
     } catch (error) {
         console.error('Lỗi khi tải ảnh:', error);
-        imageResults.innerHTML = '<p>Không thể tải ảnh</p>';
+        imageResults.innerHTML = '<p>Unable to load photo</p>';
     }
 }
 
@@ -468,7 +466,7 @@ function displayImages(image) {
 
     const imgElement = document.createElement('img');
     imgElement.src = image.urls.regular;
-    imgElement.alt = image.alt_description || 'Ảnh minh họa';
+    imgElement.alt = image.alt_description || 'Illustration photo';
     imgElement.style.maxWidth = '450px';
     imgElement.style.maxHeight = '300px';
     imgElement.style.borderRadius = '8px';
@@ -539,20 +537,20 @@ document.getElementById("voice-button").addEventListener("click", async () => {
         };
 
         recognition.onerror = (event) => {
-            console.error("Lỗi nhận diện giọng nói:", event.error);
-            alert("Lỗi nhận diện giọng nói: " + event.error);
+            console.error("Voice recognition error:", event.error);
+            alert("Voice recognition error: " + event.error);
         };
 
         recognition.onend = () => {
-            console.log("Dừng ghi âm do người dùng im lặng.");
+            console.log("Stop recording due to user silence.");
             document.getElementById("voice-button").disabled = false;
         };
 
         recognition.start();
         document.getElementById("voice-button").disabled = true;
     } catch (error) {
-        console.error("Không thể sử dụng microphone:", error);
-        alert("Vui lòng cấp quyền truy cập microphone.");
+        console.error("Microphone cannot be used:", error);
+        alert("Please grant microphone access.");
     }
 });
 

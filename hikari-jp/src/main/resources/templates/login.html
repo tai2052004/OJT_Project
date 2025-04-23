@@ -14,9 +14,9 @@
     <div class="login-section">
       <h2>Login</h2>
       <p>Login into your account</p>
-      <c:if test="${param.error == 'true'}">
+      <div th:if="${param.error}">
         <p style="color: red"> Email or password is invalid. Please try again. </p>
-      </c:if>
+      </div>
       <form action="/login" method="post">
         <label for="email">Email address</label>
         <div class="input-group">
