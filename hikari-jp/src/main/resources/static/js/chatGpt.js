@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Block non-Japanese-related questions
         const normalized = message.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        if (!normalized.match(/(kanji|tu vung|ngu phap|jlpt|tra cuu|look up|practice|test|thuc hanh|dich|translate)/i)) {
+        if (!normalized.match(/(kanji|tu vung|ngu phap|jlpt|tra cuu|look up|practice|test|thuc hanh|dich|translate|tôi muốn biết thêm)/i)) {
             const warning = "❗Xin lỗi, tôi chỉ hỗ trợ các nội dung liên quan đến tiếng Nhật như từ vựng, Kanji, JLPT hoặc ngữ pháp.";
             displayMessage('model', warning);
             chatHistory.push({ role: "model", parts: [{ text: warning }] });
